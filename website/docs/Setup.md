@@ -13,7 +13,7 @@ You need a React-based UI project with:
 Install the library:
 
 ```bash
-npm install @sap/metadata-renderer
+npm install @open-resource-discovery/metadata-renderer
 ```
 
 The library ships its peer dependencies on `react` and `react-dom`. Make sure your project has those installed.

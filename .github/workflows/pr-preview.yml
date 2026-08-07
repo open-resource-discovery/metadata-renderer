@@ -1,14 +1,16 @@
 name: PR Preview
 
 on:
-    workflow_dispatch:
     pull_request:
+        branches: [main]
         types: [opened, reopened, synchronize, closed]
 
 jobs:
     pr-preview:
-        # Only run for PRs from the same repository (no forks)
-        if: github.event.pull_request.head.repo.full_name == github.repository
+        permissions:
+            contents: read
+            actions: write # required for upload-artifact in fork PRs
+            pull-requests: read
 
         runs-on: ubuntu-latest
 
@@ -25,28 +27,26 @@ jobs:
               if: github.event.action != 'closed'
               uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
               with:
-                  node-version: 24
-
-            - name: Update npm
-              if: github.event.action != 'closed'
-              run: npm install -g npm@latest
+                  node-version: '24'
 
             - name: Build preview
               if: github.event.action != 'closed'
               env:
                   PR_PREVIEW_NUMBER: ${{ github.event.pull_request.number }}
-                  BASE_URL: /ORD/pr-preview/metadata-renderer/pr-${{ github.event.pull_request.number }}/
+                  BASE_URL: /pr-preview/metadata-renderer/pr-${{ github.event.pull_request.number }}/
               run: |
                   set -euo pipefail
                   npm ci
-                  cd ./website
+                  npm run build
+                  cd website
                   npm ci
                   npm run build
 
             - name: PR preview
               uses: open-resource-discovery/pr-preview-action@2abf52396925f6bb4d0a82e27bd6f060260d09ae # main
               with:
-                  target-repo: ORD/pr-preview
+                  fork: true
+                  target-repo: open-resource-discovery/pr-preview
                   pages-base-url: https://open-resource-discovery.github.io/pr-preview
                   umbrella-dir: metadata-renderer
                   token: ${{ secrets.PR_PREVIEW_TOKEN }}

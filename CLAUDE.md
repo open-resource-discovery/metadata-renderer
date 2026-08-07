@@ -70,7 +70,7 @@ The lib build produces separate entry points for tree-shaking: `index`, `openapi
 
 The ORD card libraries (a2a-editor, mcp-server-card-ui) are Tailwind v4, which wraps its preflight reset in a cascade layer (`@layer base { *, ::before, ::after { margin: 0; box-sizing: border-box; … } }`). That layered reset **does** ship in `dist/index.css`, but because styles inside any `@layer` lose to unlayered styles regardless of specificity, the host page's own (unlayered) resets — e.g. Docusaurus/Infima — always win. So the preflight can't leak into the host page even though it's present.
 
-This cascade-layer behavior is why the old `stripUnscopedPreflight` Vite plugin (which surgically removed the reset at build time, needed back when Tailwind v3 emitted *unlayered* preflight) is no longer necessary. It is left commented out in `vite.config.ts` and has no implementation in the repo.
+This cascade-layer behavior is why the old `stripUnscopedPreflight` Vite plugin (which surgically removed the reset at build time, needed back when Tailwind v3 emitted _unlayered_ preflight) is no longer necessary. It is left commented out in `vite.config.ts` and has no implementation in the repo.
 
 CSN renders in **light DOM** — a `.csn-root` div with an inline `<style>`, isolated purely by the `.csn-root` class prefix on every rule. (A `ShadowRoot` wrapper exists at `src/lib/core/ShadowRoot.tsx` but is not currently used by CsnRenderer.)
 

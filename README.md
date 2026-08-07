@@ -24,7 +24,7 @@ More formats will be added over time. See the [Support](https://open-resource-di
 Requires Node.js ≥ 22, npm ≥ 10, and React 18 or 19.
 
 ```bash
-npm install @sap/metadata-renderer
+npm install @open-resource-discovery/metadata-renderer
 ```
 
 ## Usage
@@ -32,11 +32,11 @@ npm install @sap/metadata-renderer
 The default `MetadataRenderer` auto-detects the format from the input string and dispatches to the appropriate renderer.
 
 ```tsx
-import { MetadataRenderer } from "@sap/metadata-renderer";
-import "@sap/metadata-renderer/styles";
+import { MetadataRenderer } from '@open-resource-discovery/metadata-renderer';
+import '@open-resource-discovery/metadata-renderer/styles';
 
 export function MyView({ file }: { file: string }) {
-  return <MetadataRenderer content={file} />;
+    return <MetadataRenderer content={file} />;
 }
 ```
 
@@ -47,11 +47,11 @@ The `styles` import is side-effecting and must appear once in your application e
 If you already know the format, import only the renderer you need — the rest stays out of your bundle:
 
 ```tsx
-import { OpenApiRenderer } from "@sap/metadata-renderer/openapi";
-import { CsnRenderer } from "@sap/metadata-renderer/csn";
-import { AsyncApiRenderer } from "@sap/metadata-renderer/asyncapi";
-import { A2ARenderer } from "@sap/metadata-renderer/a2a";
-import { McpRenderer } from "@sap/metadata-renderer/mcp";
+import { OpenApiRenderer } from '@open-resource-discovery/metadata-renderer/openapi';
+import { CsnRenderer } from '@open-resource-discovery/metadata-renderer/csn';
+import { AsyncApiRenderer } from '@open-resource-discovery/metadata-renderer/asyncapi';
+import { A2ARenderer } from '@open-resource-discovery/metadata-renderer/a2a';
+import { McpRenderer } from '@open-resource-discovery/metadata-renderer/mcp';
 ```
 
 ### Theming
@@ -59,12 +59,12 @@ import { McpRenderer } from "@sap/metadata-renderer/mcp";
 Pass a `theme` prop to override the default color tokens. Use the `createTheme` helper for a type-safe camelCase API:
 
 ```tsx
-import { MetadataRenderer, createTheme } from "@sap/metadata-renderer";
+import { MetadataRenderer, createTheme } from '@open-resource-discovery/metadata-renderer';
 
 const theme = createTheme({
-  primary: "#0098ff",
-  background: "#1e1e1e",
-  foreground: "#d4d4d4",
+    primary: '#0098ff',
+    background: '#1e1e1e',
+    foreground: '#d4d4d4',
 });
 
 <MetadataRenderer content={file} className="dark" theme={theme} />;

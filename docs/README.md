@@ -1,6 +1,6 @@
 # Adding a New Protocol
 
-This guide walks a contributor through wiring a new metadata protocol into `@sap/metadata-renderer` end-to-end. It is contributor-facing; for end-user documentation see `website/docs/`.
+This guide walks a contributor through wiring a new metadata protocol into `@open-resource-discovery/metadata-renderer` end-to-end. It is contributor-facing; for end-user documentation see `website/docs/`.
 
 ## Overview
 
@@ -24,18 +24,18 @@ Pick the existing wrapper closest to what you need and copy it.
 
 ## Architecture Quick Map
 
-| Path                                                      | Role                                                               |
-| --------------------------------------------------------- | ------------------------------------------------------------------ |
-| `src/lib/core/utils.ts`                                   | `MetaType` union + `detectMetaType()`. The only detection logic.   |
-| `src/lib/core/index.tsx`                                  | `MetadataRenderer` dispatcher. `switch` on detected type.          |
-| `src/lib/<protocol>/index.tsx`                            | Per-protocol wrapper component.                                    |
-| `src/lib/entries/<protocol>.ts`                           | One-line re-export — Vite named-entry stub.                        |
-| `src/lib/index.ts`                                        | Public barrel.                                                     |
-| `src/lib/styles.ts`                                       | CSS aggregator (`@sap/metadata-renderer/styles`).                  |
-| `vite.config.ts` `build.lib.entry`                        | Lib entry registration.                                            |
-| `website/src/components/Playground/example.tsx`           | `fileExamples` array — playground chips.                           |
-| `website/src/components/Playground/icons/`                | SVG logos for playground chips.                                    |
-| `website/src/components/Playground/ThemeEditor/adapters/` | Optional — only if the new renderer uses non-shadcn CSS variables. |
+| Path                                                      | Role                                                                  |
+| --------------------------------------------------------- | --------------------------------------------------------------------- |
+| `src/lib/core/utils.ts`                                   | `MetaType` union + `detectMetaType()`. The only detection logic.      |
+| `src/lib/core/index.tsx`                                  | `MetadataRenderer` dispatcher. `switch` on detected type.             |
+| `src/lib/<protocol>/index.tsx`                            | Per-protocol wrapper component.                                       |
+| `src/lib/entries/<protocol>.ts`                           | One-line re-export — Vite named-entry stub.                           |
+| `src/lib/index.ts`                                        | Public barrel.                                                        |
+| `src/lib/styles.ts`                                       | CSS aggregator (`@open-resource-discovery/metadata-renderer/styles`). |
+| `vite.config.ts` `build.lib.entry`                        | Lib entry registration.                                               |
+| `website/src/components/Playground/example.tsx`           | `fileExamples` array — playground chips.                              |
+| `website/src/components/Playground/icons/`                | SVG logos for playground chips.                                       |
+| `website/src/components/Playground/ThemeEditor/adapters/` | Optional — only if the new renderer uses non-shadcn CSS variables.    |
 
 ## Step-by-Step
 
@@ -118,7 +118,7 @@ build.lib.entry = {
 };
 ```
 
-This produces `dist/graphql.js` so consumers can `import { GraphqlRenderer } from '@sap/metadata-renderer/graphql'` without pulling the rest of the bundle.
+This produces `dist/graphql.js` so consumers can `import { GraphqlRenderer } from '@open-resource-discovery/metadata-renderer/graphql'` without pulling the rest of the bundle.
 
 ### 6. Public barrel
 

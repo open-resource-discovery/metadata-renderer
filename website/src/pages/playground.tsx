@@ -1,6 +1,11 @@
 import Layout from '@theme/Layout';
 import { Panel, PanelGroup, PanelResizeHandle, type ImperativePanelHandle } from 'react-resizable-panels';
-import type { MetaType, MetadataRendererOptions, RendererTheme, detectMetaType } from '@sap/metadata-renderer';
+import type {
+    MetaType,
+    MetadataRendererOptions,
+    RendererTheme,
+    detectMetaType,
+} from '@open-resource-discovery/metadata-renderer';
 import styles from './playground.module.css';
 import EditorComponent, { type MetaTypeChoice } from '@site/src/components/Playground/editorComponent';
 import Renderer from '@site/src/components/Playground/renderer';

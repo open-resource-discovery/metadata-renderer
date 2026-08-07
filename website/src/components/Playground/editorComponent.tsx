@@ -2,7 +2,7 @@ import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
 import { useRef, useState } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { useColorMode } from '@docusaurus/theme-common';
-import type { MetaType } from '@sap/metadata-renderer';
+import type { MetaType } from '@open-resource-discovery/metadata-renderer';
 import { fileExamples, FileFormats } from '@site/src/components/Playground/example';
 import style from './editorComponent.module.css';
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { MetadataRendererOptions } from '@sap/metadata-renderer';
+import type { MetadataRendererOptions } from '@open-resource-discovery/metadata-renderer';
 import s from './optionsEditor.module.css';
 
 type Props = {

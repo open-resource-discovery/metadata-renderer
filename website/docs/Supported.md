@@ -5,7 +5,7 @@ title: Support
 
 # Environments
 
-The `@sap/metadata-renderer` library is designed to be compatible with React 18+ applications and modern web browsers.
+The `@open-resource-discovery/metadata-renderer` library is designed to be compatible with React 18+ applications and modern web browsers.
 
 Please raise an [issue](https://github.com/open-resource-discovery/metadata-renderer/issues) if there are any problems with UI libraries or framework integrations.
 

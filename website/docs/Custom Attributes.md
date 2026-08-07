@@ -49,7 +49,7 @@ The examples in this section use **OpenAPI**; the pattern is identical for Async
 Pass `options.customAttributes.openapi` to override or replace the default preset. Each entry in the array is an `OpenApiCustomAttributesConfig` that covers one prefix:
 
 ```tsx
-import { MetadataRenderer } from '@sap/metadata-renderer';
+import { MetadataRenderer } from '@open-resource-discovery/metadata-renderer';
 
 <MetadataRenderer
     content={openapiDocument}
@@ -164,7 +164,7 @@ The `callback` receives the raw attribute value and must return a URL string (or
 For complex attributes that need bespoke rendering, provide a `component` function. The component receives the full data object passed by Scalar; the attribute value is available under a camelCase property derived from the attribute name (`x-acme-state-info` → `xAcmeStateInfo`).
 
 ```tsx
-import type { OpenApiCustomAttributesConfig } from '@sap/metadata-renderer';
+import type { OpenApiCustomAttributesConfig } from '@open-resource-discovery/metadata-renderer';
 
 const acmeConfig: OpenApiCustomAttributesConfig = {
     prefixStartsWith: 'x-acme-',
@@ -185,8 +185,8 @@ const acmeConfig: OpenApiCustomAttributesConfig = {
 Import `sapOpenApiAttributesConfig` to extend the built-in SAP preset rather than replacing it:
 
 ```ts
-import { sapOpenApiAttributesConfig } from '@sap/metadata-renderer';
-import type { OpenApiCustomAttributesConfig } from '@sap/metadata-renderer';
+import { sapOpenApiAttributesConfig } from '@open-resource-discovery/metadata-renderer';
+import type { OpenApiCustomAttributesConfig } from '@open-resource-discovery/metadata-renderer';
 
 const myConfig: OpenApiCustomAttributesConfig = {
     ...sapOpenApiAttributesConfig,
@@ -207,7 +207,7 @@ const myConfig: OpenApiCustomAttributesConfig = {
 If you are using `OpenApiRenderer` directly instead of `MetadataRenderer`, pass the config via the `customAttributes` prop:
 
 ```tsx
-import { OpenApiRenderer } from '@sap/metadata-renderer/openapi';
+import { OpenApiRenderer } from '@open-resource-discovery/metadata-renderer/openapi';
 
 <OpenApiRenderer content={openapiDocument} customAttributes={[acmeConfig]} />;
 ```
@@ -255,7 +255,7 @@ Unlike OpenAPI (which surfaces extensions per schema/operation), AsyncAPI auto-d
 For AsyncAPI, a custom `component` receives the library's `ExtensionComponentProps`. The field value arrives as **`propertyValue`** and the field name as `propertyName` (there is **no** camelCase property derivation as in OpenAPI):
 
 ```tsx
-import type { AsyncApiCustomAttributesConfig } from '@sap/metadata-renderer';
+import type { AsyncApiCustomAttributesConfig } from '@open-resource-discovery/metadata-renderer';
 
 const acmeConfig: AsyncApiCustomAttributesConfig = {
     prefixStartsWith: 'x-acme-',
@@ -274,11 +274,11 @@ The built-in SAP preset uses this mechanism for `x-sap-stateInfo` (rendered by a
 ### Extending the SAP preset / using the renderer directly
 
 ```ts
-import { sapAsyncApiAttributesConfig } from '@sap/metadata-renderer';
+import { sapAsyncApiAttributesConfig } from '@open-resource-discovery/metadata-renderer';
 ```
 
 ```tsx
-import { AsyncApiRenderer } from '@sap/metadata-renderer/asyncapi';
+import { AsyncApiRenderer } from '@open-resource-discovery/metadata-renderer/asyncapi';
 
 <AsyncApiRenderer content={asyncapiDocument} customAttributes={[acmeConfig]} />;
 ```
@@ -354,8 +354,8 @@ Labels are auto-generated from the key by stripping the prefix, splitting on `.`
 ### Using the renderer directly
 
 ```tsx
-import { CsnRenderer } from '@sap/metadata-renderer/csn';
-import { sapCsnAttributesConfig } from '@sap/metadata-renderer';
+import { CsnRenderer } from '@open-resource-discovery/metadata-renderer/csn';
+import { sapCsnAttributesConfig } from '@open-resource-discovery/metadata-renderer';
 
 <CsnRenderer content={csnDocument} customAttributes={[sapCsnAttributesConfig]} />;
 ```

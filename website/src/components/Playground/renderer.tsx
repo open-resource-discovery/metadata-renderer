@@ -1,7 +1,7 @@
 import ErrorBoundary from '@docusaurus/ErrorBoundary';
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import { forwardRef, lazy, Suspense } from 'react';
-import type { MetaType, MetadataRendererOptions, RendererTheme } from '@sap/metadata-renderer';
+import type { MetaType, MetadataRendererOptions, RendererTheme } from '@open-resource-discovery/metadata-renderer';
 
 type Props = {
     file: string;
@@ -16,14 +16,14 @@ type Props = {
 // because module bodies execute in the wrong order. A dynamic import()
 // behind React.lazy keeps the module ESM all the way through.
 const MetadataRenderer = lazy(async () => {
-    await import('@sap/metadata-renderer/styles');
+    await import('@open-resource-discovery/metadata-renderer/styles');
     const [mod, openapi, csn, asyncapi, a2a, mcp] = await Promise.all([
-        import('@sap/metadata-renderer'),
-        import('@sap/metadata-renderer/openapi'),
-        import('@sap/metadata-renderer/csn'),
-        import('@sap/metadata-renderer/asyncapi'),
-        import('@sap/metadata-renderer/a2a'),
-        import('@sap/metadata-renderer/mcp'),
+        import('@open-resource-discovery/metadata-renderer'),
+        import('@open-resource-discovery/metadata-renderer/openapi'),
+        import('@open-resource-discovery/metadata-renderer/csn'),
+        import('@open-resource-discovery/metadata-renderer/asyncapi'),
+        import('@open-resource-discovery/metadata-renderer/a2a'),
+        import('@open-resource-discovery/metadata-renderer/mcp'),
     ]);
     const renderers = {
         openapi: openapi.OpenApiRenderer,

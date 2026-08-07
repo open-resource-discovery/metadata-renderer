@@ -4,14 +4,14 @@ sidebar_position: 2
 
 # Usage
 
-After installing `@sap/metadata-renderer`, import the React component and the bundled stylesheet.
+After installing `@open-resource-discovery/metadata-renderer`, import the React component and the bundled stylesheet.
 
 ## Importing styles
 
 The stylesheet import is side-effecting and must appear **once** in your application — typically in your entry file alongside other global stylesheets:
 
 ```ts
-import '@sap/metadata-renderer/styles';
+import '@open-resource-discovery/metadata-renderer/styles';
 ```
 
 Without this import the renderers will have no styling.
@@ -21,8 +21,8 @@ Without this import the renderers will have no styling.
 `MetadataRenderer` auto-detects the format and dispatches to the right renderer. One import is all you need:
 
 ```tsx
-import { MetadataRenderer } from '@sap/metadata-renderer';
-import '@sap/metadata-renderer/styles';
+import { MetadataRenderer } from '@open-resource-discovery/metadata-renderer';
+import '@open-resource-discovery/metadata-renderer/styles';
 
 export function MyView({ file }: { file: string }) {
     return <MetadataRenderer content={file} />;
@@ -48,9 +48,9 @@ Because `renderers` is an explicit map you control, bundlers can statically see 
 modules are imported and drop the rest. To render only A2A and OpenAPI documents:
 
 ```tsx
-import { MetadataRenderer } from '@sap/metadata-renderer';
-import { OpenApiRenderer } from '@sap/metadata-renderer/openapi';
-import { A2ARenderer } from '@sap/metadata-renderer/a2a';
+import { MetadataRenderer } from '@open-resource-discovery/metadata-renderer';
+import { OpenApiRenderer } from '@open-resource-discovery/metadata-renderer/openapi';
+import { A2ARenderer } from '@open-resource-discovery/metadata-renderer/a2a';
 
 <MetadataRenderer content={file} renderers={{ openapi: OpenApiRenderer, a2a: A2ARenderer }} />;
 ```
@@ -105,8 +105,8 @@ Each renderer accepts `content`, `className`, and `theme`. Additional props:
 Pass a `theme` prop to override the default color tokens. Use the `createTheme` helper for a type-safe camelCase API:
 
 ```tsx
-import { MetadataRenderer, createTheme } from '@sap/metadata-renderer';
-import { OpenApiRenderer } from '@sap/metadata-renderer/openapi';
+import { MetadataRenderer, createTheme } from '@open-resource-discovery/metadata-renderer';
+import { OpenApiRenderer } from '@open-resource-discovery/metadata-renderer/openapi';
 
 const theme = createTheme({
     primary: '#0098ff',
@@ -151,7 +151,7 @@ For dark mode, combine `theme` with `className="dark"`:
 You can also provide raw `--ord-*` CSS custom properties directly as the `RendererTheme` type:
 
 ```tsx
-import type { RendererTheme } from '@sap/metadata-renderer';
+import type { RendererTheme } from '@open-resource-discovery/metadata-renderer';
 
 const theme: RendererTheme = {
     '--ord-primary': '#0098ff',

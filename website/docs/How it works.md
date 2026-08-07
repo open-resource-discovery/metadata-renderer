@@ -13,4 +13,4 @@ Underneath, each protocol delegates to a specialized library:
 - **A2A** — [@open-resource-discovery/a2a-editor](https://www.npmjs.com/package/@open-resource-discovery/a2a-editor)
 - **MCP** — [@open-resource-discovery/mcp-server-card-ui](https://www.npmjs.com/package/@open-resource-discovery/mcp-server-card-ui)
 
-Use the protocol-specific subpath imports (`@sap/metadata-renderer/openapi`, `/csn`, `/asyncapi`, `/a2a`, `/mcp`) when you only need one renderer — the rest stays out of your bundle.
+Use the protocol-specific subpath imports (`@open-resource-discovery/metadata-renderer/openapi`, `/csn`, `/asyncapi`, `/a2a`, `/mcp`) when you only need one renderer — the rest stays out of your bundle.

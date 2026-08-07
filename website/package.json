@@ -23,7 +23,7 @@
         "@mdx-js/react": "^3.0.0",
         "@monaco-editor/react": "^4.7.0",
         "@open-resource-discovery/a2a-editor": "^0.4.2",
-        "@sap/metadata-renderer": "file:..",
+        "@open-resource-discovery/metadata-renderer": "file:..",
         "clsx": "^2.0.0",
         "monaco-editor": "^0.53.0",
         "prism-react-renderer": "^2.3.0",

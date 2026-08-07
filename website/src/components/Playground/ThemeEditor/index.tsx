@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, type JSX, type RefObject } from 'react';
-import type { RendererTheme } from '@sap/metadata-renderer';
+import type { RendererTheme } from '@open-resource-discovery/metadata-renderer';
 import { ADAPTERS } from './adapters/registry';
 import type { ThemeAdapter } from './adapters/types';
 import styles from './themeEditor.module.css';
