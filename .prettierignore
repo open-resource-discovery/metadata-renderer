@@ -1,0 +1,8 @@
+# Add files here to ignore them from prettier formatting
+/dist
+/dist-demo
+/coverage
+/.nx/cache
+/.nx/workspace-data
+/website/build
+/website/.docusaurus
