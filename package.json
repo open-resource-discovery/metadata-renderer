@@ -24,6 +24,9 @@
         "npm": ">=10"
     },
     "type": "module",
+    "scarfSettings": {
+        "enabled": false
+    },
     "main": "./dist/index.js",
     "module": "./dist/index.js",
     "types": "./dist/index.d.ts",
