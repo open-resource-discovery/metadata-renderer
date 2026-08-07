@@ -1,0 +1,24 @@
+.supported {
+    h2 {
+        text-align: center;
+    }
+
+    .types {
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        gap: 4ch;
+        grid-template-columns: auto auto;
+
+        .img {
+            width: 35ch;
+            height: 6rem;
+        }
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .supported .types {
+        grid-template-columns: auto;
+    }
+}

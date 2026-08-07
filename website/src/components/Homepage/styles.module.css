@@ -1,0 +1,32 @@
+.header {
+    font-size: xxx-large;
+    font-weight: 600;
+    line-height: normal;
+    text-shadow: 0 0 7px black;
+}
+
+.title {
+    position: absolute;
+    z-index: 10;
+    top: min(40%, 320px);
+    left: 15%;
+
+    .interaction {
+        display: flex;
+        align-items: center;
+        gap: 2ch;
+        margin-top: 2rem;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .title {
+        top: 15%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .header {
+        font-size: xx-large;
+    }
+}

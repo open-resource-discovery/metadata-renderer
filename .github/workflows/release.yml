@@ -1,0 +1,35 @@
+name: "GitHub Release"
+
+on:
+    workflow_dispatch:
+        inputs:
+            version:
+                description: "Version for the release (e.g. 1.2.3)"
+                required: false
+                type: string
+
+jobs:
+    create-release:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Check out repository
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+              with:
+                  fetch-depth: 0
+
+            - name: Setup Node
+              uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+              with:
+                  node-version: "24"
+                  cache: "npm"
+
+            - name: Install and build
+              run: |
+                  npm ci
+                  npm run build
+
+            - name: Create GitHub Release
+              uses: open-resource-discovery/github-release@8370a11e3d73508f14faa051ada263eea2dfb65d # main
+              with:
+                  tag-template: "rel/<version>"
+                  version: ${{ inputs.version }}

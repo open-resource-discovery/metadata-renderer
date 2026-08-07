@@ -1,0 +1,280 @@
+.heroContainer {
+    position: relative;
+    width: 100%;
+    height: 800px;
+    overflow: visible;
+}
+
+.animationSvg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.pulse {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px #14e4c5);
+}
+
+.exitPulse {
+    opacity: 1;
+    filter: drop-shadow(0 0 12px #14e4c5) drop-shadow(0 0 24px #5197f2);
+}
+
+.contentWrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 100%;
+}
+
+.leftContent {
+    flex: 1;
+    max-width: 500px;
+    animation: fadeInLeft 1.5s ease-out;
+}
+
+.rightContent {
+    position: absolute;
+    left: 90%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    animation: fadeIn 2s ease-out;
+}
+
+.iconContainer {
+    position: relative;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+}
+
+.icon {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.3s ease;
+    overflow: visible;
+}
+
+.icon:hover {
+    transform: scale(1.02);
+}
+
+.squircleBg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    overflow: visible;
+}
+
+.iconSvg {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    z-index: 2;
+}
+
+/* Removed pulseRing - keeping only simple icon glow */
+
+.title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00ffcc 0%, #0099ff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.2;
+    /* No animation - static gradient */
+}
+
+.subtitle {
+    font-size: 1.5rem;
+    color: #00ffcc;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+    animation: fadeInUp 2s ease-out 0.3s both;
+}
+
+.description {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+    line-height: 1.6;
+    animation: fadeInUp 2s ease-out 0.6s both;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes smoothGlow {
+    0%,
+    100% {
+        box-shadow:
+            0 0 60px rgba(0, 255, 204, 0.4),
+            0 0 120px rgba(0, 153, 255, 0.2),
+            inset 0 0 30px rgba(0, 255, 204, 0.1);
+    }
+    50% {
+        box-shadow:
+            0 0 80px rgba(0, 255, 204, 0.6),
+            0 0 140px rgba(0, 153, 255, 0.4),
+            inset 0 0 35px rgba(0, 255, 204, 0.15);
+    }
+}
+
+@keyframes flowPulseReverse {
+    0% {
+        stroke-dashoffset: -150;
+    }
+    100% {
+        stroke-dashoffset: 150;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 996px) {
+    .heroContainer {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .rightContent {
+        position: relative;
+        left: auto;
+        top: auto;
+        transform: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    .iconContainer {
+        width: 420px;
+        height: 420px;
+    }
+    .icon {
+        width: 260px;
+        height: 260px;
+    }
+    .iconSvg {
+        width: 170px;
+        height: 170px;
+    }
+}
+
+/* Tablet-specific adjustments */
+@media (min-width: 481px) and (max-width: 996px) {
+    .heroContainer {
+        min-height: 300px;
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .rightContent {
+        margin-top: auto;
+    }
+
+    .iconContainer {
+        width: 440px;
+        height: 440px;
+    }
+    .icon {
+        width: 280px;
+        height: 280px;
+    }
+    .iconSvg {
+        width: 190px;
+        height: 190px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    .heroContainer {
+        min-height: 300px;
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
+    }
+    .iconContainer {
+        width: 260px;
+        height: 260px;
+    }
+    .icon {
+        width: 200px;
+        height: 200px;
+    }
+    .iconSvg {
+        width: 130px;
+        height: 130px;
+    }
+}
+
+/* Performance optimization */
+@media (prefers-reduced-motion: reduce) {
+    .iconSvg,
+    .pulseRing,
+    .title,
+    .wave1,
+    .wave2,
+    .icon {
+        animation: none;
+    }
+}

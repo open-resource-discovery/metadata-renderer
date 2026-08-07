@@ -1,0 +1,31 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  website-build:
+    name: Website Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+      - name: Install NPM dependencies
+        working-directory: .
+        run: npm ci
+      - name: Install NPM dependencies for Docusaurus
+        working-directory: ./website
+        run: npm ci
+      - name: Build
+        working-directory: ./website
+        run: npm run build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f # v4
+        with:
+          folder: ./website/build

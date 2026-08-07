@@ -1,0 +1,197 @@
+.Container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--color-bg-primary);
+    font-family: var(--font-stack), serif;
+}
+
+.Panel {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: calc(100vh - 60px);
+}
+
+.ThemePanel {
+    height: 100%;
+    padding: 0;
+    background: var(--color-bg-secondary);
+    overflow: hidden;
+    border-right: 1px solid var(--color-border);
+    min-width: 0;
+    transition: opacity 200ms ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.Panel[data-panel-size='0.0'] .ThemePanel {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.LeftPanel {
+    height: 100%;
+    padding: 0;
+    background: var(--color-bg-secondary);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-right: 1px solid var(--color-border);
+    min-width: 0;
+    transition: opacity 200ms ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hide content when panel is collapsed */
+.Panel[data-panel-size='0.0'] .LeftPanel {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.MiddlePanel {
+    height: 100%;
+    padding: 0;
+    background: var(--color-bg-primary);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.RightPanel {
+    height: 100%;
+    padding: 0;
+    background: var(--color-bg-secondary);
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-left: 1px solid var(--color-border);
+    min-width: 0;
+    transition: opacity 200ms ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hide content when panel is collapsed */
+.Panel[data-panel-size='0.0'] .RightPanel {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Resize handle styling */
+.ResizeHandle {
+    position: relative;
+    width: 1px;
+    background: transparent;
+    transition: background 150ms ease;
+    cursor: col-resize;
+    /* Increase touch target */
+    padding: 0 4px;
+    margin: 0 -4px;
+    z-index: 10;
+}
+
+.ResizeHandleInner {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: var(--color-border);
+    transform: translateX(-50%);
+    transition: all 150ms ease;
+}
+
+.ResizeHandle:hover .ResizeHandleInner {
+    background: #0969da;
+    width: 3px;
+    box-shadow: 0 0 0 1px rgba(9, 105, 218, 0.1);
+}
+
+.ResizeHandle:active .ResizeHandleInner {
+    background: #0860ca;
+    width: 4px;
+    box-shadow: 0 0 0 2px rgba(8, 96, 202, 0.15);
+}
+
+/* Desktop and tablet responsive design */
+@media (max-width: 1200px) and (min-width: 769px) {
+    .LeftPanel {
+        padding: 0;
+    }
+    .MiddlePanel {
+        padding: 0;
+    }
+    .RightPanel {
+        padding: 0;
+    }
+}
+
+/* Ensure resizable layout is only used on desktop */
+@media (max-width: 768px) {
+    .Container {
+        display: none; /* Hide on mobile - handled by MobileLayout */
+    }
+}
+
+/* Double-click hint */
+.ResizeHandle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 40px;
+    border-radius: 4px;
+    background: transparent;
+    transition: background 200ms ease;
+    pointer-events: none;
+}
+
+.ResizeHandle:hover::after {
+    background: rgba(9, 105, 218, 0.05);
+}
+
+/* Collapsed panel indicators */
+.Panel[data-panel-collapsed='true'] {
+    min-width: 0 !important;
+}
+
+.Panel[data-panel-collapsed='true'] + .ResizeHandle .ResizeHandleInner {
+    background: #0969da;
+    width: 2px;
+}
+
+/* Smooth scrollbar styling */
+.LeftPanel::-webkit-scrollbar,
+.RightPanel::-webkit-scrollbar,
+.ThemePanel::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.LeftPanel::-webkit-scrollbar-track,
+.RightPanel::-webkit-scrollbar-track,
+.ThemePanel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.LeftPanel::-webkit-scrollbar-thumb,
+.RightPanel::-webkit-scrollbar-thumb,
+.ThemePanel::-webkit-scrollbar-thumb {
+    background: rgb(from var(--color-hint) r g b / 0.5);
+    border-radius: 4px;
+}
+
+.LeftPanel::-webkit-scrollbar-thumb:hover,
+.RightPanel::-webkit-scrollbar-thumb:hover,
+.ThemePanel::-webkit-scrollbar-thumb:hover {
+    background: rgb(from var(--color-hint) r g b / 0.8);
+}
+
+.HiddenHandle {
+    width: 0;
+    pointer-events: none;
+}

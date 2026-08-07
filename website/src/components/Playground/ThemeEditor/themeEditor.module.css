@@ -1,0 +1,409 @@
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    background: var(--ifm-background-surface-color);
+    color: var(--ifm-font-color-base);
+    font-family: var(--ifm-font-family-base);
+}
+
+.header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 1rem 1rem 0.5rem;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.headerText {
+    flex: 1;
+    min-width: 0;
+}
+
+.closeBtn {
+    flex-shrink: 0;
+    margin-left: 8px;
+    margin-top: 2px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ifm-color-emphasis-600);
+    font-size: 14px;
+    line-height: 1;
+    padding: 5px 6px 3px 6px;
+    border-radius: 4px;
+}
+
+.closeBtn:hover {
+    color: var(--ifm-font-color-base);
+    background: var(--ifm-color-emphasis-200);
+}
+
+.title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+}
+
+.subtitle {
+    font-size: 0.8rem;
+    color: var(--ifm-color-emphasis-600);
+    margin: 0;
+}
+
+.actions {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.darkToggleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.darkToggleLabel {
+    font-size: 0.8rem;
+    color: var(--ifm-color-emphasis-700);
+}
+
+/* Toggle switch */
+.toggleSwitch {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.toggleSwitch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+}
+
+.toggleSlider {
+    position: absolute;
+    inset: 0;
+    background: var(--ifm-color-emphasis-300);
+    border-radius: 20px;
+    transition: background 0.2s;
+}
+
+.toggleSlider::before {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.toggleSwitch input:checked + .toggleSlider {
+    background: var(--ifm-color-primary);
+}
+
+.toggleSwitch input:checked + .toggleSlider::before {
+    transform: translateX(16px);
+}
+
+.select {
+    width: 100%;
+    padding: 0.4rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    background: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.btnRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.btn {
+    flex: 1;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    background: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-weight: 500;
+}
+
+.btn:hover {
+    background: var(--ifm-color-emphasis-200);
+}
+
+.btnPrimary {
+    background: var(--ifm-color-primary);
+    color: #fff;
+    border-color: var(--ifm-color-primary);
+}
+
+.btnPrimary:hover {
+    background: var(--ifm-color-primary-dark);
+}
+
+.btnSm {
+    flex: none;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+.export {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    background: var(--ifm-color-emphasis-100);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.exportHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+}
+
+.exportTitle {
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.exportCode {
+    width: 100%;
+    font-family: var(--ifm-font-family-monospace);
+    font-size: 0.72rem;
+    line-height: 1.5;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    background: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
+    resize: vertical;
+}
+
+.importNote {
+    font-size: 0.72rem;
+    color: var(--ifm-color-emphasis-700);
+}
+
+.sections {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+.sections details {
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.sectionTitle {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    color: var(--ifm-font-color-base);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.sectionTitle::before {
+    content: '\25B6';
+    font-size: 0.55rem;
+    transition: transform 0.15s;
+}
+
+.sections details[open] > .sectionTitle::before {
+    transform: rotate(90deg);
+}
+
+.sectionTitle::-webkit-details-marker {
+    display: none;
+}
+
+.sectionBody {
+    padding: 0.5rem 1rem 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 0.75rem;
+}
+
+/* Range controls span full width */
+.sectionBody > *:has(input[type='range']) {
+    width: 100%;
+}
+
+.control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.label {
+    font-size: 0.7rem;
+    color: var(--ifm-color-emphasis-700);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.labelInherited {
+    color: var(--ifm-color-emphasis-500);
+    font-style: italic;
+}
+
+.colorRow {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.colorInput {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 6px;
+    cursor: pointer;
+    background: none;
+    flex-shrink: 0;
+}
+
+.colorInput::-webkit-color-swatch-wrapper {
+    padding: 2px;
+}
+
+.colorInput::-webkit-color-swatch {
+    border: none;
+    border-radius: 4px;
+}
+
+.hexInput {
+    flex: 1;
+    width: 80px;
+    padding: 0.2rem 0.4rem;
+    font-family: var(--ifm-font-family-monospace);
+    font-size: 0.7rem;
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 6px;
+    background: var(--ifm-background-color);
+    color: var(--ifm-font-color-base);
+}
+
+.rangeInput {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Component overrides section */
+.componentOverridesSection {
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.componentOverridesHint {
+    padding: 0.35rem 1rem 0.5rem;
+    font-size: 0.72rem;
+    color: var(--ifm-color-emphasis-600);
+    margin: 0;
+}
+
+.activeIndicator {
+    margin-left: 0.4rem;
+    font-size: 0.6rem;
+    color: var(--ifm-color-primary);
+    vertical-align: middle;
+}
+
+.componentGroups {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0 0.75rem 0.75rem;
+}
+
+.componentGroup {
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 6px;
+    margin-bottom: 0.4rem;
+    overflow: hidden;
+}
+
+.componentGroupHeader {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--ifm-font-color-base);
+}
+
+.componentGroupHeader::-webkit-details-marker {
+    display: none;
+}
+
+.groupActiveDot {
+    font-size: 0.55rem;
+    color: var(--ifm-color-primary);
+}
+
+.componentGroupBody {
+    padding: 0.4rem 0.6rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.componentRow {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.3rem;
+}
+
+.componentRow > .control {
+    flex: 1;
+    min-width: 0;
+}
+
+.clearBtn {
+    flex-shrink: 0;
+    height: 28px;
+    padding: 0 0.4rem;
+    font-size: 0.7rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--ifm-color-emphasis-500);
+    line-height: 1;
+    margin-bottom: 0;
+}
+
+.clearBtn:hover {
+    color: var(--ifm-font-color-base);
+}
