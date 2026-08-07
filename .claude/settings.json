@@ -1,9 +1,0 @@
-{
-    "permissions": {
-        "allow": [
-            "Read(/c/Users/C5418563/ORD/a2a-editor/src/lib/**)",
-            "Read(/c/Users/C5418563/ORD/mcp-server-card-ui/src/lib/**)",
-            "Read(/c/Users/C5418563/ORD/ui-components/src/**)"
-        ]
-    }
-}
