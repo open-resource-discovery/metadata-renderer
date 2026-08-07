@@ -1,3 +1,5 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/open-resource-discovery/metadata-renderer)](https://api.reuse.software/info/github.com/open-resource-discovery/metadata-renderer) [![CI](https://github.com/open-resource-discovery/metadata-renderer/actions/workflows/main.yml/badge.svg?branch=main)](https://github.com/open-resource-discovery/metadata-renderer/actions/workflows/main.yml) [![npm version](https://img.shields.io/npm/v/@open-resource-discovery/metadata-renderer)](https://www.npmjs.com/package/@open-resource-discovery/metadata-renderer)
+
 # Metadata Renderer
 
 React components that render metadata documents of various types consistently across SAP applications.
@@ -74,10 +76,6 @@ See the [Usage guide](https://open-resource-discovery.github.io/metadata-rendere
 
 > **Maintainers:** to change how each renderer is styled internally (native library output and this project's custom components), see [STYLING.md](STYLING.md).
 
-## Project status
-
-Released as **BETA** and ready for test-purpose adoption.
-
 ## Development
 
 ```bash
@@ -87,12 +85,6 @@ npm test                 # Run unit tests
 npm run typecheck        # TypeScript check
 npm run website:start    # Start the Docusaurus docs site locally
 ```
-
-## Publish
-
-1. Bump `version` in `package.json` and `library/package.json`.
-2. Trigger the build job:
-   <https://prod-build10200.wdf.sap.corp//job/ght-cpa/job/ght-cpa-metadata-renderer-SP-REL-common_indirectshipment/>
 
 ## Contributing
 
