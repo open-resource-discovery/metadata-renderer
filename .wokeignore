@@ -1,0 +1,10 @@
+# Generated / vendored files should not be scanned for inclusive-language issues.
+# Lockfile integrity hashes produce false positives (random base64 substrings).
+package-lock.json
+website/package-lock.json
+node_modules/
+website/node_modules/
+dist/
+dist-demo/
+website/build/
+website/.docusaurus/
