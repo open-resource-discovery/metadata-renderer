@@ -67,3 +67,4 @@ jobs:
               with:
                   tag-template: 'rel/<version>'
                   version: ${{ inputs.version }}
+                  ci-workflows: main.yml
