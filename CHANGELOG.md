@@ -5,7 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) rules.
 
+
 ## [unreleased]
+
+## [[1.0.0](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.0)] - 2026-08-10
 
 ### Added
 
@@ -135,3 +138,5 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Scalar (OpenAPI) sidebar and main panel restyled; syntax highlighting improved.
 - CSN renderer now isolated inside a Shadow DOM so its styles cannot leak into the host page.
 - Website CSS layer order aligned so renderer styles no longer override Docusaurus/Infima.
+
+
