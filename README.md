@@ -2,7 +2,7 @@
 
 # Metadata Renderer
 
-React components that render metadata documents of various types consistently across SAP applications.
+React components that render metadata documents of various types consistently.
 
 📖 **Full documentation:** <https://open-resource-discovery.github.io/metadata-renderer/>
 
@@ -12,12 +12,11 @@ React components that render metadata documents of various types consistently ac
 
 ## Supported formats
 
-- OpenAPI 3.0 / 3.1 (JSON or YAML) — via [Scalar](https://scalar.com/)
-- OpenAPI 2.0 / Swagger (JSON or YAML)
-- CSN interop JSON — via [csn-interop-renderer](https://sap.github.io/csn-interop-renderer/)
-- AsyncAPI 2.x / 3.x (JSON or YAML) — via [@asyncapi/react-component](https://github.com/asyncapi/asyncapi-react)
-- A2A agent cards (JSON) — via [@open-resource-discovery/a2a-editor](https://www.npmjs.com/package/@open-resource-discovery/a2a-editor)
-- MCP server cards (JSON) — via [@open-resource-discovery/mcp-server-card-ui](https://www.npmjs.com/package/@open-resource-discovery/mcp-server-card-ui)
+- [OpenAPI](https://www.openapis.org/) 2.0, 3.0 / 3.1+ (JSON or YAML) — via [Scalar](https://scalar.com/)
+- [CSN Interop](https://sap.github.io/csn-interop-specification/) — via [csn-interop-renderer](https://sap.github.io/csn-interop-renderer/)
+- [AsyncAPI](https://asyncapi.com/) 2.x / 3.x (JSON or YAML) — via [@asyncapi/react-component](https://github.com/asyncapi/asyncapi-react)
+- [A2A Agent Cards](https://a2a-protocol.org/latest/specification/) — via [@open-resource-discovery/a2a-editor](https://www.npmjs.com/package/@open-resource-discovery/a2a-editor)
+- [MCP Server Cards](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127) — via [@open-resource-discovery/mcp-server-card-ui](https://www.npmjs.com/package/@open-resource-discovery/mcp-server-card-ui)
 
 More formats will be added over time. See the [Support](https://open-resource-discovery.github.io/metadata-renderer/docs/Supported) page for the current list.
 
