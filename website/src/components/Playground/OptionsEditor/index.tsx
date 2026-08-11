@@ -1,5 +1,10 @@
 import { useState } from 'react';
 import type { MetadataRendererOptions } from '@open-resource-discovery/metadata-renderer';
+import {
+    sapOpenApiAttributesConfig,
+    sapAsyncApiAttributesConfig,
+    sapCsnAttributesConfig,
+} from '@open-resource-discovery/metadata-renderer';
 import s from './optionsEditor.module.css';
 
 type Props = {
@@ -29,7 +34,7 @@ export default function OptionsEditor({
     onStrictTypeCheckChange,
 }: Props) {
     const [fallback, setFallback] = useState<'error' | 'raw'>('error');
-    const [showCustomAttributes, setShowCustomAttributes] = useState(true);
+    const [showCustomAttributes, setShowCustomAttributes] = useState(false);
     const [a2aValidation, setA2aValidation] = useState(false);
     const [mcpValidation, setMcpValidation] = useState(false);
 
@@ -115,7 +120,13 @@ export default function OptionsEditor({
             autoDetect: s.autoDetect,
             strictTypeCheck: s.strictTypeCheck,
             fallback: s.fallback,
-            customAttributes: s.showCustomAttributes ? undefined : false,
+            customAttributes: s.showCustomAttributes
+                ? {
+                      openapi: [sapOpenApiAttributesConfig],
+                      asyncapi: [sapAsyncApiAttributesConfig],
+                      csn: [sapCsnAttributesConfig],
+                  }
+                : false,
             a2a: { showValidation: s.a2aValidation, showConnection: s.a2aConnection },
             mcp: { showValidation: s.mcpValidation },
             asyncapi: {
