@@ -30,13 +30,7 @@ export type CsnRendererProps = {
 type State =
     { kind: 'idle' } | { kind: 'loading' } | { kind: 'ready'; html: string } | { kind: 'error'; message: string };
 
-export function CsnRenderer({
-    content,
-    config,
-    customAttributes,
-    className,
-    theme,
-}: CsnRendererProps) {
+export function CsnRenderer({ content, config, customAttributes, className, theme }: CsnRendererProps) {
     const [state, setState] = useState<State>({ kind: 'idle' });
 
     useEffect(() => {
@@ -68,9 +62,7 @@ export function CsnRenderer({
 
         generateHtml(parsed as Parameters<typeof generateHtml>[0], rendererConfig)
             .then((html: string) => {
-                const processed = isEnabled
-                    ? applyAnnotationRenderers(html, activeConfigs, parsedDoc)
-                    : html;
+                const processed = isEnabled ? applyAnnotationRenderers(html, activeConfigs, parsedDoc) : html;
                 if (!cancelled) setState({ kind: 'ready', html: processed });
             })
             .catch((e: unknown) => {

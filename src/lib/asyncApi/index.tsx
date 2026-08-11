@@ -82,22 +82,13 @@ function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
     return rules.join('\n');
 }
 
-export function AsyncApiRenderer({
-    content,
-    config,
-    customAttributes,
-    className,
-    theme,
-}: AsyncApiRendererProps) {
+export function AsyncApiRenderer({ content, config, customAttributes, className, theme }: AsyncApiRendererProps) {
     const id = useId();
     const isDark = className?.split(/\s+/).includes('dark') ?? false;
     const effectiveTheme = theme ?? (isDark ? DARK_DEFAULTS : null);
     const themeStyle = effectiveTheme ? buildAsyncApiThemeStyle(id, effectiveTheme) : null;
 
-    const activeConfigs = useMemo<AsyncApiCustomAttributesConfig[]>(
-        () => customAttributes ?? [],
-        [customAttributes],
-    );
+    const activeConfigs = useMemo<AsyncApiCustomAttributesConfig[]>(() => customAttributes ?? [], [customAttributes]);
     const isEnabled = customAttributes !== undefined;
 
     const parsedDoc = useMemo(

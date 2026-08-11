@@ -18,20 +18,12 @@ export type OpenApiRendererProps = {
     theme?: RendererTheme;
 };
 
-export function OpenApiRenderer({
-    content,
-    customAttributes,
-    className,
-    theme,
-}: OpenApiRendererProps) {
+export function OpenApiRenderer({ content, customAttributes, className, theme }: OpenApiRendererProps) {
     const id = useId();
     const containerRef = useRef<HTMLDivElement>(null);
     const isDark = className?.split(/\s+/).includes('dark') ?? false;
 
-    const activeConfigs = useMemo<OpenApiCustomAttributesConfig[]>(
-        () => customAttributes ?? [],
-        [customAttributes],
-    );
+    const activeConfigs = useMemo<OpenApiCustomAttributesConfig[]>(() => customAttributes ?? [], [customAttributes]);
     const isEnabled = customAttributes !== undefined;
 
     useEffect(() => {
@@ -70,9 +62,7 @@ export function OpenApiRenderer({
         const parsed = loadObject(content) as Record<string, unknown> | undefined;
         const prefixes = activeConfigs.map((c) => c.prefixStartsWith).filter(Boolean) as string[];
         const docForScalar =
-            isEnabled && parsed && prefixes.length
-                ? injectSchemaExtensions(parsed, prefixes)
-                : (parsed ?? content);
+            isEnabled && parsed && prefixes.length ? injectSchemaExtensions(parsed, prefixes) : (parsed ?? content);
         return {
             content: docForScalar,
             plugins: isEnabled ? [buildCustomAttributesPlugin(parsed, activeConfigs)] : [],

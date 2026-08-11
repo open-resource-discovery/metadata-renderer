@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import type { MetadataRendererOptions } from '@open-resource-discovery/metadata-renderer';
 import {
+    type MetadataRendererOptions,
     sapOpenApiAttributesConfig,
     sapAsyncApiAttributesConfig,
     sapCsnAttributesConfig,

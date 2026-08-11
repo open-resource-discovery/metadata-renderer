@@ -48,7 +48,7 @@ import {
             csn: [sapCsnAttributesConfig],
         },
     }}
-/>
+/>;
 ```
 
 You can enable the SAP preset for individual formats only — omitting a key leaves that format's custom attributes disabled.
@@ -223,7 +223,6 @@ import { OpenApiRenderer } from '@open-resource-discovery/metadata-renderer/open
 <OpenApiRenderer content={openapiDocument} customAttributes={[acmeConfig]} />;
 ```
 
-
 ---
 
 # AsyncAPI custom attributes
@@ -367,4 +366,3 @@ import { sapCsnAttributesConfig } from '@open-resource-discovery/metadata-render
 
 <CsnRenderer content={csnDocument} customAttributes={[sapCsnAttributesConfig]} />;
 ```
-

@@ -56,7 +56,7 @@ describe('buildRendererExtraProps', () => {
         });
 
         it('forwards csn config', () => {
-            const config = {} as MetadataRendererOptions['csn'];
+            const config: MetadataRendererOptions['csn'] = {};
             const props = buildRendererExtraProps('csn', { csn: config });
             expect(props.config).toBe(config);
         });
@@ -73,7 +73,7 @@ describe('buildRendererExtraProps', () => {
         });
 
         it('does not forward asyncapi config to other renderer types', () => {
-            const config = {} as MetadataRendererOptions['asyncapi'];
+            const config: MetadataRendererOptions['asyncapi'] = {};
             expect(buildRendererExtraProps('openapi', { asyncapi: config }).config).toBeUndefined();
         });
     });
