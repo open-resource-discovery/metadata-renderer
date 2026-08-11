@@ -21,7 +21,7 @@ export type OpenApiRendererProps = {
 
 export function OpenApiRenderer({
     content,
-    showCustomAttributes = true,
+    showCustomAttributes,
     customAttributes,
     className,
     theme,
@@ -30,7 +30,11 @@ export function OpenApiRenderer({
     const containerRef = useRef<HTMLDivElement>(null);
     const isDark = className?.split(/\s+/).includes('dark') ?? false;
 
-    const activeConfigs = customAttributes ?? [sapOpenApiAttributesConfig];
+    const activeConfigs = useMemo(
+        () => customAttributes ?? [sapOpenApiAttributesConfig],
+        [customAttributes],
+    );
+    const isEnabled = showCustomAttributes ?? customAttributes !== undefined;
 
     useEffect(() => {
         const el = containerRef.current;
@@ -50,7 +54,7 @@ export function OpenApiRenderer({
     // Fingerprint only the custom attribute values so Scalar remounts when they
     // change, but not on every other content edit (Scalar handles those reactively).
     const customAttributesKey = useMemo(() => {
-        if (!showCustomAttributes) return '';
+        if (!isEnabled) return '';
         const parsed = loadObject(content) as Record<string, unknown> | undefined;
         if (!parsed) return '';
         return activeConfigs
@@ -60,33 +64,33 @@ export function OpenApiRenderer({
                 ),
             )
             .join('|');
-    }, [content, showCustomAttributes, activeConfigs]);
+    }, [content, isEnabled, activeConfigs]);
 
     const configuration = useMemo<AnyApiReferenceConfiguration>(() => {
         openApiContext.version = getVersion(content);
-        openApiContext.configs = showCustomAttributes ? activeConfigs : [];
+        openApiContext.configs = isEnabled ? activeConfigs : [];
         const parsed = loadObject(content) as Record<string, unknown> | undefined;
         const prefixes = activeConfigs.map((c) => c.prefixStartsWith).filter(Boolean) as string[];
         const docForScalar =
-            showCustomAttributes && parsed && prefixes.length
+            isEnabled && parsed && prefixes.length
                 ? injectSchemaExtensions(parsed, prefixes)
                 : (parsed ?? content);
         return {
             content: docForScalar,
-            plugins: showCustomAttributes ? [buildCustomAttributesPlugin(parsed, activeConfigs)] : [],
+            plugins: isEnabled ? [buildCustomAttributesPlugin(parsed, activeConfigs)] : [],
             forceDarkModeState: isDark ? 'dark' : 'light',
             hideDarkModeToggle: true,
             hideClientButton: true,
             showDeveloperTools: 'never',
         };
-    }, [content, isDark, showCustomAttributes, activeConfigs]);
+    }, [content, isDark, isEnabled, activeConfigs]);
 
     return (
         <div ref={containerRef} data-renderer-id={id} style={{ height: '100%', ...theme }}>
             <style>{sapAttributeStyles}</style>
             {theme && <style>{buildScalarThemeStyles(id, theme as Record<string, string>)}</style>}
             <ApiReferenceReact
-                key={`${isDark ? 'dark' : 'light'}-${showCustomAttributes}-${customAttributesKey}`}
+                key={`${isDark ? 'dark' : 'light'}-${isEnabled}-${customAttributesKey}`}
                 configuration={configuration}
             />
         </div>

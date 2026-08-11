@@ -87,7 +87,7 @@ function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
 export function AsyncApiRenderer({
     content,
     config,
-    showCustomAttributes = true,
+    showCustomAttributes,
     customAttributes,
     className,
     theme,
@@ -97,11 +97,15 @@ export function AsyncApiRenderer({
     const effectiveTheme = theme ?? (isDark ? DARK_DEFAULTS : null);
     const themeStyle = effectiveTheme ? buildAsyncApiThemeStyle(id, effectiveTheme) : null;
 
-    const activeConfigs = customAttributes ?? [sapAsyncApiAttributesConfig];
+    const activeConfigs = useMemo(
+        () => customAttributes ?? [sapAsyncApiAttributesConfig],
+        [customAttributes],
+    );
+    const isEnabled = showCustomAttributes ?? customAttributes !== undefined;
 
     const parsedDoc = useMemo(
-        () => (showCustomAttributes ? (loadObject(content) as Record<string, unknown> | null) : null),
-        [content, showCustomAttributes],
+        () => (isEnabled ? (loadObject(content) as Record<string, unknown> | null) : null),
+        [content, isEnabled],
     );
 
     const version = useMemo(() => {
@@ -110,14 +114,14 @@ export function AsyncApiRenderer({
     }, [parsedDoc]);
 
     const effectiveConfig = useMemo((): Partial<ConfigInterface> => {
-        if (!showCustomAttributes) return config ?? {};
+        if (!isEnabled) return config ?? {};
         const extensions = buildAsyncApiExtensionsConfig(activeConfigs, parsedDoc, version);
         return { ...config, extensions: { ...extensions, ...(config?.extensions ?? {}) } };
-    }, [config, showCustomAttributes, activeConfigs, parsedDoc, version]);
+    }, [config, isEnabled, activeConfigs, parsedDoc, version]);
 
     const rootPlugin = useMemo(
-        () => (showCustomAttributes ? buildRootExtensionsPlugin(activeConfigs) : null),
-        [showCustomAttributes, activeConfigs],
+        () => (isEnabled ? buildRootExtensionsPlugin(activeConfigs) : null),
+        [isEnabled, activeConfigs],
     );
 
     const scope = `[data-renderer-id="${id}"]`;
@@ -142,9 +146,9 @@ export function AsyncApiRenderer({
     return (
         <div data-renderer-id={id} className={className}>
             {themeStyle && <style>{themeStyle}</style>}
-            {showCustomAttributes && <style>{customAttributeStyles}</style>}
+            {isEnabled && <style>{customAttributeStyles}</style>}
             <style>{layoutStyle}</style>
-            {showCustomAttributes && (
+            {isEnabled && (
                 <style>{`[data-renderer-id="${id}"] #introduction .hidden { display: block !important; }`}</style>
             )}
             <AsyncApiComponent schema={content} config={effectiveConfig} plugins={rootPlugin ? [rootPlugin] : []} />
