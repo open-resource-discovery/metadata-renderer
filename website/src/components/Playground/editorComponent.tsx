@@ -60,7 +60,7 @@ export default function EditorComponent({
     }
 
     return (
-        <div className={style.container}>
+        <div>
             <div className={style.header}>
                 <div className={style.headerLeft}>
                     {openPanel !== 'theme' && (
@@ -148,40 +148,38 @@ export default function EditorComponent({
                     </div>
                 </div>
             ) : null}
-            <div className={style.editorWrapper}>
-                <Editor
-                    height="100%"
-                    language={fileFormat}
-                    theme={useColorMode().colorMode === 'dark' ? 'vs-dark' : 'light'}
-                    onMount={handleEditorDidMount}
-                    onChange={handleEditorChange}
-                    options={{
-                        automaticLayout: true,
-                        lineNumbers: 'on',
-                        lineNumbersMinChars: 6,
-                        minimap: {
-                            enabled: false,
-                        },
-                        hover: {
-                            delay: 500,
-                            sticky: false,
-                        },
-                        tabSize: 2,
-                        scrollBeyondLastLine: false,
-                        scrollbar: {
-                            vertical: 'auto',
-                            horizontal: 'auto',
-                            verticalScrollbarSize: 10,
-                            horizontalScrollbarSize: 10,
-                            alwaysConsumeMouseWheel: false,
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 10,
-                        },
-                    }}
-                />
-            </div>
+            <Editor
+                height="calc(100vh - 56px - 31px - 2ch)"
+                language={fileFormat}
+                theme={useColorMode().colorMode === 'dark' ? 'vs-dark' : 'light'}
+                onMount={handleEditorDidMount}
+                onChange={handleEditorChange}
+                options={{
+                    automaticLayout: true,
+                    lineNumbers: 'on',
+                    lineNumbersMinChars: 6,
+                    minimap: {
+                        enabled: false,
+                    },
+                    hover: {
+                        delay: 500,
+                        sticky: false,
+                    },
+                    tabSize: 2,
+                    scrollBeyondLastLine: false,
+                    scrollbar: {
+                        vertical: 'auto',
+                        horizontal: 'auto',
+                        verticalScrollbarSize: 10,
+                        horizontalScrollbarSize: 10,
+                        alwaysConsumeMouseWheel: false,
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 10,
+                    },
+                }}
+            />
         </div>
     );
 }
