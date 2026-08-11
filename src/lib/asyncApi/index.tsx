@@ -5,14 +5,12 @@ import '@asyncapi/react-component/styles/default.css';
 import type { RendererTheme } from '../types';
 import type { AsyncApiCustomAttributesConfig } from './customAttributes/types';
 import { buildAsyncApiExtensionsConfig, buildRootExtensionsPlugin } from './customAttributes/buildExtensionsConfig';
-import { sapAsyncApiAttributesConfig } from './customAttributes/sapPreset';
 import customAttributeStyles from './customAttributes/styles';
 import { loadObject } from '../core/utils';
 
 export type AsyncApiRendererProps = {
     content: string;
     config?: Partial<ConfigInterface>;
-    showCustomAttributes?: boolean;
     customAttributes?: AsyncApiCustomAttributesConfig[];
     className?: string;
     theme?: RendererTheme;
@@ -87,7 +85,6 @@ function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
 export function AsyncApiRenderer({
     content,
     config,
-    showCustomAttributes,
     customAttributes,
     className,
     theme,
@@ -97,11 +94,11 @@ export function AsyncApiRenderer({
     const effectiveTheme = theme ?? (isDark ? DARK_DEFAULTS : null);
     const themeStyle = effectiveTheme ? buildAsyncApiThemeStyle(id, effectiveTheme) : null;
 
-    const activeConfigs = useMemo(
-        () => customAttributes ?? [sapAsyncApiAttributesConfig],
+    const activeConfigs = useMemo<AsyncApiCustomAttributesConfig[]>(
+        () => customAttributes ?? [],
         [customAttributes],
     );
-    const isEnabled = showCustomAttributes ?? customAttributes !== undefined;
+    const isEnabled = customAttributes !== undefined;
 
     const parsedDoc = useMemo(
         () => (isEnabled ? (loadObject(content) as Record<string, unknown> | null) : null),

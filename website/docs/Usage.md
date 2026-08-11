@@ -82,7 +82,7 @@ Pass an `options` object to fine-tune behavior:
 | ------------------ | -------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `autoDetect`       | `boolean`                                                | `true`     | Auto-detect format from `content` when `type` is not set. When `false`, an explicit `type` prop is required; otherwise the fallback is shown.                          |
 | `fallback`         | `'error' \| 'raw'`                                       | `'error'`  | What to render when the format cannot be handled (unknown, or no renderer registered). `'error'` shows a styled message; `'raw'` shows the content in a `<pre>` block. |
-| `customAttributes` | `CustomAttributesOptions \| false`                       | SAP preset | Custom extension attribute renderers per protocol. Pass `false` to disable all custom attribute rendering. See [Custom Attributes](./Custom%20Attributes).             |
+| `customAttributes` | `CustomAttributesOptions \| false`                       | disabled   | Custom extension attribute renderers per protocol. Pass `false` to disable all custom attribute rendering. See [Custom Attributes](./Custom%20Attributes).             |
 | `csn`              | `CsnRendererConfig`                                      | —          | Passed through to `CsnRenderer`.                                                                                                                                       |
 | `asyncapi`         | `Partial<ConfigInterface>`                               | —          | Passed through to `AsyncApiRenderer`.                                                                                                                                  |
 | `a2a`              | `{ showValidation?: boolean; showConnection?: boolean }` | —          | Passed through to `A2ARenderer`.                                                                                                                                       |
@@ -94,7 +94,7 @@ Each renderer accepts `content`, `className`, and `theme`. Additional props:
 
 | Renderer           | Extra props                                                                            |
 | ------------------ | -------------------------------------------------------------------------------------- |
-| `OpenApiRenderer`  | `showCustomAttributes?: boolean`, `customAttributes?: OpenApiCustomAttributesConfig[]` |
+| `OpenApiRenderer`  | `customAttributes?: OpenApiCustomAttributesConfig[]`                                   |
 | `CsnRenderer`      | `config?: CsnRendererConfig`                                                           |
 | `AsyncApiRenderer` | `config?: Partial<ConfigInterface>`                                                    |
 | `A2ARenderer`      | `showValidation?: boolean`, `showConnection?: boolean`                                 |

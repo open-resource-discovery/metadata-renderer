@@ -5,7 +5,7 @@ import { openApiContext, getVersion } from './utils/context';
 import { buildCustomAttributesPlugin } from './utils/plugins';
 import { buildScalarThemeStyles } from './utils/scalarTheme';
 import { extractCustomAttributeValues, injectSchemaExtensions } from './customAttributes/autoDiscover';
-import { sapOpenApiAttributesConfig } from './customAttributes/sapAttributes/sapPreset';
+
 import sapAttributeStyles from './styles';
 import type { RendererTheme } from '../types';
 import type { OpenApiCustomAttributesConfig } from './customAttributes/types';
@@ -13,7 +13,6 @@ import { loadObject } from '../core/utils';
 
 export type OpenApiRendererProps = {
     content: string;
-    showCustomAttributes?: boolean;
     customAttributes?: OpenApiCustomAttributesConfig[];
     className?: string;
     theme?: RendererTheme;
@@ -21,7 +20,6 @@ export type OpenApiRendererProps = {
 
 export function OpenApiRenderer({
     content,
-    showCustomAttributes,
     customAttributes,
     className,
     theme,
@@ -30,11 +28,11 @@ export function OpenApiRenderer({
     const containerRef = useRef<HTMLDivElement>(null);
     const isDark = className?.split(/\s+/).includes('dark') ?? false;
 
-    const activeConfigs = useMemo(
-        () => customAttributes ?? [sapOpenApiAttributesConfig],
+    const activeConfigs = useMemo<OpenApiCustomAttributesConfig[]>(
+        () => customAttributes ?? [],
         [customAttributes],
     );
-    const isEnabled = showCustomAttributes ?? customAttributes !== undefined;
+    const isEnabled = customAttributes !== undefined;
 
     useEffect(() => {
         const el = containerRef.current;

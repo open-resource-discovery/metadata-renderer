@@ -4,7 +4,6 @@ import styles from './styles';
 import type { RendererTheme } from '../types';
 import type { CsnCustomAttributesConfig } from './customAttributes/types';
 import { applyAnnotationRenderers } from './customAttributes/postProcess';
-import { sapCsnAttributesConfig } from './customAttributes/sapPreset';
 import { loadObject } from '../core/utils';
 
 function buildAnnotationLinkCallbacks(configs: CsnCustomAttributesConfig[]): AnnotationLinkCallbacks {
@@ -23,7 +22,6 @@ function buildAnnotationLinkCallbacks(configs: CsnCustomAttributesConfig[]): Ann
 export type CsnRendererProps = {
     content: string;
     config?: CsnRendererConfig;
-    showCustomAttributes?: boolean;
     customAttributes?: CsnCustomAttributesConfig[];
     className?: string;
     theme?: RendererTheme;
@@ -35,7 +33,6 @@ type State =
 export function CsnRenderer({
     content,
     config,
-    showCustomAttributes = true,
     customAttributes,
     className,
     theme,
@@ -59,10 +56,11 @@ export function CsnRenderer({
             return;
         }
 
-        const activeConfigs = customAttributes ?? [sapCsnAttributesConfig];
-        const parsedDoc = showCustomAttributes ? (loadObject(content) as Record<string, unknown> | null) : null;
+        const activeConfigs: CsnCustomAttributesConfig[] = customAttributes ?? [];
+        const isEnabled = customAttributes !== undefined;
+        const parsedDoc = isEnabled ? (loadObject(content) as Record<string, unknown> | null) : null;
 
-        const linkCallbacks = showCustomAttributes ? buildAnnotationLinkCallbacks(activeConfigs) : {};
+        const linkCallbacks = isEnabled ? buildAnnotationLinkCallbacks(activeConfigs) : {};
         const rendererConfig: CsnRendererConfig = {
             ...config,
             annotationLinkCallbacks: { ...linkCallbacks, ...config?.annotationLinkCallbacks },
@@ -70,7 +68,7 @@ export function CsnRenderer({
 
         generateHtml(parsed as Parameters<typeof generateHtml>[0], rendererConfig)
             .then((html: string) => {
-                const processed = showCustomAttributes
+                const processed = isEnabled
                     ? applyAnnotationRenderers(html, activeConfigs, parsedDoc)
                     : html;
                 if (!cancelled) setState({ kind: 'ready', html: processed });
@@ -82,7 +80,7 @@ export function CsnRenderer({
         return () => {
             cancelled = true;
         };
-    }, [content, config, showCustomAttributes, customAttributes]);
+    }, [content, config, customAttributes]);
 
     return (
         <div className={`csn-root${className ? ` ${className}` : ''}`} style={theme}>
