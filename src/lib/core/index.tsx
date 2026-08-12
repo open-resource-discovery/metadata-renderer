@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { detectMetaType, extractVersion, type MetaType } from './utils';
+import { buildRendererExtraProps } from './dispatch';
 import type { RendererTheme, RendererMap, MetadataRendererOptions } from '../types';
 import { OpenApiRenderer } from '../openApi';
 import { CsnRenderer } from '../csn';
@@ -69,33 +70,7 @@ export function MetadataRenderer({ content, renderers, options, type, className,
             </div>
         );
     } else if (RendererComponent) {
-        const extraProps: Record<string, unknown> = {};
-        if (metaType === 'openapi') {
-            if (options?.customAttributes === false || options?.showSAPCustomFields === false) {
-                extraProps.showCustomAttributes = false;
-            } else if (options?.customAttributes?.openapi) {
-                extraProps.customAttributes = options.customAttributes.openapi;
-            }
-        }
-        if (metaType === 'asyncapi') {
-            if (options?.asyncapi) Object.assign(extraProps, { config: options.asyncapi });
-            if (options?.customAttributes === false) {
-                extraProps.showCustomAttributes = false;
-            } else if (options?.customAttributes?.asyncapi) {
-                extraProps.customAttributes = options.customAttributes.asyncapi;
-            }
-        }
-        if (metaType === 'csn') {
-            if (options?.csn) Object.assign(extraProps, { config: options.csn });
-            if (options?.customAttributes === false) {
-                extraProps.showCustomAttributes = false;
-            } else if (options?.customAttributes?.csn) {
-                extraProps.customAttributes = options.customAttributes.csn;
-            }
-        }
-        if (metaType === 'a2a' && options?.a2a) Object.assign(extraProps, options.a2a);
-        if (metaType === 'mcp' && options?.mcp) Object.assign(extraProps, options.mcp);
-
+        const extraProps = buildRendererExtraProps(metaType, options);
         renderer = <RendererComponent content={content} className={className} theme={theme} {...extraProps} />;
     } else if (options?.fallback === 'raw') {
         renderer = <pre style={{ margin: 0, padding: 16, overflow: 'auto', height: '100%' }}>{content}</pre>;

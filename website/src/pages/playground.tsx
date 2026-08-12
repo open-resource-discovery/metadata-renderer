@@ -13,11 +13,12 @@ import EditorComponent, {
 } from '@site/src/components/Playground/editorComponent';
 import Renderer from '@site/src/components/Playground/renderer';
 import ThemeEditor from '@site/src/components/Playground/ThemeEditor';
-import OptionsEditor from '@site/src/components/Playground/OptionsEditor';
 import PlaygroundToolbar from '@site/src/components/Playground/PlaygroundToolbar';
 import BrowserOnly from '@docusaurus/BrowserOnly';
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import type { FileFormats } from '@site/src/components/Playground/example';
+
+const OptionsEditor = lazy(() => import('@site/src/components/Playground/OptionsEditor'));
 
 export default function Playground() {
     const [file, setFile] = useState<string>('');
@@ -101,14 +102,16 @@ export default function Playground() {
                             <BrowserOnly>
                                 {() =>
                                     openPanel === 'options' ? (
-                                        <OptionsEditor
-                                            onOptionsChange={setRendererOptions}
-                                            onClose={() => togglePanel('options')}
-                                            autoDetect={autoDetect}
-                                            onAutoDetectChange={handleAutoDetectChange}
-                                            strictTypeCheck={strictTypeCheck}
-                                            onStrictTypeCheckChange={setStrictTypeCheck}
-                                        />
+                                        <Suspense fallback={null}>
+                                            <OptionsEditor
+                                                onOptionsChange={setRendererOptions}
+                                                onClose={() => togglePanel('options')}
+                                                autoDetect={autoDetect}
+                                                onAutoDetectChange={handleAutoDetectChange}
+                                                strictTypeCheck={strictTypeCheck}
+                                                onStrictTypeCheckChange={setStrictTypeCheck}
+                                            />
+                                        </Suspense>
                                     ) : (
                                         <ThemeEditor
                                             target={previewRef}

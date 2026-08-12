@@ -5,14 +5,12 @@ import '@asyncapi/react-component/styles/default.css';
 import type { RendererTheme } from '../types';
 import type { AsyncApiCustomAttributesConfig } from './customAttributes/types';
 import { buildAsyncApiExtensionsConfig, buildRootExtensionsPlugin } from './customAttributes/buildExtensionsConfig';
-import { sapAsyncApiAttributesConfig } from './customAttributes/sapPreset';
 import customAttributeStyles from './customAttributes/styles';
 import { loadObject } from '../core/utils';
 
 export type AsyncApiRendererProps = {
     content: string;
     config?: Partial<ConfigInterface>;
-    showCustomAttributes?: boolean;
     customAttributes?: AsyncApiCustomAttributesConfig[];
     className?: string;
     theme?: RendererTheme;
@@ -84,24 +82,18 @@ function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
     return rules.join('\n');
 }
 
-export function AsyncApiRenderer({
-    content,
-    config,
-    showCustomAttributes = true,
-    customAttributes,
-    className,
-    theme,
-}: AsyncApiRendererProps) {
+export function AsyncApiRenderer({ content, config, customAttributes, className, theme }: AsyncApiRendererProps) {
     const id = useId();
     const isDark = className?.split(/\s+/).includes('dark') ?? false;
     const effectiveTheme = theme ?? (isDark ? DARK_DEFAULTS : null);
     const themeStyle = effectiveTheme ? buildAsyncApiThemeStyle(id, effectiveTheme) : null;
 
-    const activeConfigs = customAttributes ?? [sapAsyncApiAttributesConfig];
+    const activeConfigs = useMemo<AsyncApiCustomAttributesConfig[]>(() => customAttributes ?? [], [customAttributes]);
+    const isEnabled = customAttributes !== undefined;
 
     const parsedDoc = useMemo(
-        () => (showCustomAttributes ? (loadObject(content) as Record<string, unknown> | null) : null),
-        [content, showCustomAttributes],
+        () => (isEnabled ? (loadObject(content) as Record<string, unknown> | null) : null),
+        [content, isEnabled],
     );
 
     const version = useMemo(() => {
@@ -110,14 +102,14 @@ export function AsyncApiRenderer({
     }, [parsedDoc]);
 
     const effectiveConfig = useMemo((): Partial<ConfigInterface> => {
-        if (!showCustomAttributes) return config ?? {};
+        if (!isEnabled) return config ?? {};
         const extensions = buildAsyncApiExtensionsConfig(activeConfigs, parsedDoc, version);
         return { ...config, extensions: { ...extensions, ...(config?.extensions ?? {}) } };
-    }, [config, showCustomAttributes, activeConfigs, parsedDoc, version]);
+    }, [config, isEnabled, activeConfigs, parsedDoc, version]);
 
     const rootPlugin = useMemo(
-        () => (showCustomAttributes ? buildRootExtensionsPlugin(activeConfigs) : null),
-        [showCustomAttributes, activeConfigs],
+        () => (isEnabled ? buildRootExtensionsPlugin(activeConfigs) : null),
+        [isEnabled, activeConfigs],
     );
 
     const scope = `[data-renderer-id="${id}"]`;
@@ -142,9 +134,9 @@ export function AsyncApiRenderer({
     return (
         <div data-renderer-id={id} className={className}>
             {themeStyle && <style>{themeStyle}</style>}
-            {showCustomAttributes && <style>{customAttributeStyles}</style>}
+            {isEnabled && <style>{customAttributeStyles}</style>}
             <style>{layoutStyle}</style>
-            {showCustomAttributes && (
+            {isEnabled && (
                 <style>{`[data-renderer-id="${id}"] #introduction .hidden { display: block !important; }`}</style>
             )}
             <AsyncApiComponent schema={content} config={effectiveConfig} plugins={rootPlugin ? [rootPlugin] : []} />
