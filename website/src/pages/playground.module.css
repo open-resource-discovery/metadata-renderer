@@ -1,10 +1,18 @@
-.Container {
+.PageContent {
     display: flex;
-    width: 100%;
+    flex-direction: column;
     height: 100%;
     overflow: hidden;
     background: var(--color-bg-primary);
     font-family: var(--font-stack), serif;
+}
+
+.Container {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    overflow: hidden;
 }
 
 .Panel {
@@ -12,7 +20,7 @@
     display: flex;
     flex-direction: column;
     min-height: 0;
-    height: calc(100vh - 60px);
+    height: 100%;
 }
 
 .ThemePanel {

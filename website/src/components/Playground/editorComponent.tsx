@@ -1,14 +1,23 @@
 import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { useColorMode } from '@docusaurus/theme-common';
 import type { MetaType } from '@open-resource-discovery/metadata-renderer';
-import { fileExamples, FileFormats } from '@site/src/components/Playground/example';
+import { fileExamples, type FileFormats } from '@site/src/components/Playground/example';
 import style from './editorComponent.module.css';
 
 export type MetaTypeChoice = MetaType | 'auto' | '';
 
+export interface EditorHandle {
+    copy: () => Promise<void>;
+    clear: () => void;
+}
+
 type Props = {
+    fileFormat: FileFormats;
+    onFileFormatChange: (f: FileFormats) => void;
+    isEmpty: boolean;
+    onIsEmptyChange: (isEmpty: boolean) => void;
     onChange: (value: string) => void;
     metaType: MetaTypeChoice;
     onMetaTypeChange: (t: MetaTypeChoice) => void;
@@ -17,30 +26,42 @@ type Props = {
     openPanel?: 'theme' | 'options' | null;
 };
 
-export default function EditorComponent({
-    onChange,
-    metaType,
-    onMetaTypeChange,
-    onToggleTheme,
-    onToggleOptions,
-    openPanel,
-}: Props) {
-    const [fileFormat, setFileFormat] = useState<FileFormats>('json');
-    const [isEmpty, setIsEmpty] = useState(true);
-    const [copied, setCopied] = useState(false);
-
-    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>(null);
+const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent(
+    {
+        fileFormat,
+        onFileFormatChange,
+        isEmpty,
+        onIsEmptyChange,
+        onChange,
+        metaType,
+        onMetaTypeChange,
+        onToggleTheme,
+        onToggleOptions,
+        openPanel,
+    },
+    ref,
+) {
+    const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
     let cachedValue = '';
+
+    useImperativeHandle(ref, () => ({
+        copy: async () => {
+            const value = editorRef.current?.getValue() ?? '';
+            await navigator.clipboard.writeText(value);
+        },
+        clear: () => {
+            editorRef.current?.setValue('');
+        },
+    }));
 
     function handleEditorDidMount(editor: monaco.editor.IStandaloneCodeEditor) {
         editorRef.current = editor;
     }
 
-    function handleEditorChange(value) {
-        setIsEmpty(!value);
+    function handleEditorChange(value: string | undefined) {
+        onIsEmptyChange(!value);
 
-        // reduce the number of onChange calls by adding a delay
-        cachedValue = value;
+        cachedValue = value ?? '';
         setTimeout(() => {
             if (value === cachedValue) {
                 onChange(value || '');
@@ -48,76 +69,8 @@ export default function EditorComponent({
         }, 500);
     }
 
-    async function handleCopy() {
-        const value = editorRef.current?.getValue() ?? '';
-        await navigator.clipboard.writeText(value);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-    }
-
-    function handleClear() {
-        editorRef.current?.setValue('');
-    }
-
     return (
-        <div>
-            <div className={style.header}>
-                <div className={style.headerLeft}>
-                    {openPanel !== 'theme' && (
-                        <button type="button" className={style.themeToggle} onClick={onToggleTheme}>
-                            Theme Editor
-                        </button>
-                    )}
-                    {openPanel !== 'options' && (
-                        <button type="button" className={style.themeToggle} onClick={onToggleOptions}>
-                            Options
-                        </button>
-                    )}
-                </div>
-                <div className={style.headerRight}>
-                    <button type="button" className={style.themeToggle} onClick={handleCopy} disabled={isEmpty}>
-                        {copied ? 'Copied!' : 'Copy'}
-                    </button>
-                    <button type="button" className={style.themeToggle} onClick={handleClear} disabled={isEmpty}>
-                        Clear
-                    </button>
-                    <span className="px-2">
-                        <span className="mr-2">Syntax Highlight</span>
-                        <select
-                            className={style['select-format']}
-                            value={fileFormat}
-                            onChange={(event) => setFileFormat(event.target.value as FileFormats)}
-                        >
-                            <option value="json" title="JSON">
-                                JSON
-                            </option>
-                            <option value="yaml" title="YAML">
-                                YAML
-                            </option>
-                        </select>
-                    </span>
-                    <span className="px-2">
-                        <span className="mr-2">Type</span>
-                        <select
-                            className={style['select-format']}
-                            value={metaType}
-                            onChange={(event) => onMetaTypeChange(event.target.value as MetaTypeChoice)}
-                        >
-                            {metaType === '' && (
-                                <option value="" disabled>
-                                    Select type
-                                </option>
-                            )}
-                            <option value="auto">Automatic detection</option>
-                            <option value="openapi">OpenAPI</option>
-                            <option value="csn">CSN Interop</option>
-                            <option value="asyncapi">AsyncAPI</option>
-                            <option value="a2a">A2A</option>
-                            <option value="mcp">MCP</option>
-                        </select>
-                    </span>
-                </div>
-            </div>
+        <div className={style.container}>
             {isEmpty ? (
                 <div className={style['empty-state']}>
                     <h3>Paste your document here</h3>
@@ -130,13 +83,13 @@ export default function EditorComponent({
                                 tabIndex={0}
                                 key={example.name}
                                 onClick={() => {
-                                    setFileFormat(example.extension);
-                                    editorRef.current.setValue(example.content);
+                                    onFileFormatChange(example.extension);
+                                    editorRef.current?.setValue(example.content);
                                 }}
                                 onKeyDown={(key) => {
                                     if (key.key === 'Enter' || key.key === ' ') {
-                                        setFileFormat(example.extension);
-                                        editorRef.current.setValue(example.content);
+                                        onFileFormatChange(example.extension);
+                                        editorRef.current?.setValue(example.content);
                                         key.preventDefault();
                                     }
                                 }}
@@ -148,38 +101,42 @@ export default function EditorComponent({
                     </div>
                 </div>
             ) : null}
-            <Editor
-                height="calc(100vh - 56px - 31px - 2ch)"
-                language={fileFormat}
-                theme={useColorMode().colorMode === 'dark' ? 'vs-dark' : 'light'}
-                onMount={handleEditorDidMount}
-                onChange={handleEditorChange}
-                options={{
-                    automaticLayout: true,
-                    lineNumbers: 'on',
-                    lineNumbersMinChars: 6,
-                    minimap: {
-                        enabled: false,
-                    },
-                    hover: {
-                        delay: 500,
-                        sticky: false,
-                    },
-                    tabSize: 2,
-                    scrollBeyondLastLine: false,
-                    scrollbar: {
-                        vertical: 'auto',
-                        horizontal: 'auto',
-                        verticalScrollbarSize: 10,
-                        horizontalScrollbarSize: 10,
-                        alwaysConsumeMouseWheel: false,
-                    },
-                    padding: {
-                        top: 10,
-                        bottom: 10,
-                    },
-                }}
-            />
+            <div className={style.editorWrapper}>
+                <Editor
+                    height="100%"
+                    language={fileFormat}
+                    theme={useColorMode().colorMode === 'dark' ? 'vs-dark' : 'light'}
+                    onMount={handleEditorDidMount}
+                    onChange={handleEditorChange}
+                    options={{
+                        automaticLayout: true,
+                        lineNumbers: 'on',
+                        lineNumbersMinChars: 6,
+                        minimap: {
+                            enabled: false,
+                        },
+                        hover: {
+                            delay: 500,
+                            sticky: false,
+                        },
+                        tabSize: 2,
+                        scrollBeyondLastLine: false,
+                        scrollbar: {
+                            vertical: 'auto',
+                            horizontal: 'auto',
+                            verticalScrollbarSize: 10,
+                            horizontalScrollbarSize: 10,
+                            alwaysConsumeMouseWheel: false,
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 10,
+                        },
+                    }}
+                />
+            </div>
         </div>
     );
-}
+});
+
+export default EditorComponent;
