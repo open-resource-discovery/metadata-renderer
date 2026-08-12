@@ -34,9 +34,7 @@ export type MetadataRendererOptions = {
      * show an error instead of passing content to the renderer. Default: true.
      */
     strictTypeCheck?: boolean;
-    /** @deprecated Use `customAttributes.openapi` instead. */
-    showSAPCustomFields?: boolean;
-    /** Custom attribute renderers per protocol. Pass `false` to disable all. Default: SAP preset for OpenAPI. */
+    /** Custom attribute renderers per protocol. Pass `false` to disable all. Default: disabled. */
     customAttributes?: CustomAttributesOptions | false;
     /** Passed through to CsnRenderer. */
     csn?: CsnRendererConfig;

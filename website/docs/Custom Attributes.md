@@ -17,36 +17,47 @@ All three renderers share the same configuration model — a per-prefix config o
 
 The OpenAPI system is documented in full first; the [AsyncAPI](#asyncapi-custom-attributes) and [CSN](#csn-custom-attributes) sections below focus on what differs.
 
-## Default behaviour (SAP preset)
+## Enabling SAP custom attributes
 
-This library has built-in support for SAP custom fields defined in the following specifications:
+This library includes built-in support for SAP custom fields defined in the following specifications:
 
 - OpenAPI — https://github.com/SAP/openapi-specification/tree/main/sap-schemas/v3.0
 - AsyncAPI — https://github.com/SAP/asyncapi-specification/
 - CSN — the SAP interoperable CSN vocabularies (`@EndUserText`, `@ObjectModel`, `@PersonalData`, `@ODM`, `@API`, …)
 
 :::info
-If you are not following SAP specifications in your metadata files, you can still use custom attribute rendering for your own extension namespaces — see [Configuring custom attributes](#configuring-custom-attributes) below. If you don't use extension attributes at all, consider disabling the feature via `customAttributes: false`. See [How it works](./How%20it%20works) for more about the library's design.
+If you are not following SAP specifications in your metadata files, you can still use custom attribute rendering for your own extension namespaces — see [Configuring custom attributes](#configuring-custom-attributes) below. See [How it works](./How%20it%20works) for more about the library's design.
 :::
 
-Out of the box, each renderer recognises its SAP custom fields and renders them with sensible labels, links to the specification, and specialised components for complex types. This happens automatically — nothing to configure:
+Custom attribute rendering is **disabled by default**. To enable the SAP preset for all three formats, import the preset configs and pass them via `options.customAttributes`:
 
 ```tsx
-// SAP attributes render automatically for OpenAPI, AsyncAPI, and CSN
-<MetadataRenderer content={document} />
+import {
+    MetadataRenderer,
+    sapOpenApiAttributesConfig,
+    sapAsyncApiAttributesConfig,
+    sapCsnAttributesConfig,
+} from '@open-resource-discovery/metadata-renderer';
+
+<MetadataRenderer
+    content={document}
+    options={{
+        customAttributes: {
+            openapi: [sapOpenApiAttributesConfig],
+            asyncapi: [sapAsyncApiAttributesConfig],
+            csn: [sapCsnAttributesConfig],
+        },
+    }}
+/>;
 ```
 
-To disable custom attribute rendering entirely (all formats), pass `customAttributes: false`:
-
-```tsx
-<MetadataRenderer content={document} options={{ customAttributes: false }} />
-```
+You can enable the SAP preset for individual formats only — omitting a key leaves that format's custom attributes disabled.
 
 ## Configuring custom attributes
 
 The examples in this section use **OpenAPI**; the pattern is identical for AsyncAPI (`asyncapi` key) and CSN (`csn` key), with the format-specific differences described in their own sections below.
 
-Pass `options.customAttributes.openapi` to override or replace the default preset. Each entry in the array is an `OpenApiCustomAttributesConfig` that covers one prefix:
+Pass `options.customAttributes.openapi` to configure rendering for OpenAPI. Each entry in the array is an `OpenApiCustomAttributesConfig` that covers one prefix:
 
 ```tsx
 import { MetadataRenderer } from '@open-resource-discovery/metadata-renderer';
@@ -204,7 +215,7 @@ const myConfig: OpenApiCustomAttributesConfig = {
 
 ## Using directly with `OpenApiRenderer`
 
-If you are using `OpenApiRenderer` directly instead of `MetadataRenderer`, pass the config via the `customAttributes` prop:
+If you are using `OpenApiRenderer` directly instead of `MetadataRenderer`, pass the config via the `customAttributes` prop — this also implicitly enables rendering:
 
 ```tsx
 import { OpenApiRenderer } from '@open-resource-discovery/metadata-renderer/openapi';
@@ -212,13 +223,11 @@ import { OpenApiRenderer } from '@open-resource-discovery/metadata-renderer/open
 <OpenApiRenderer content={openapiDocument} customAttributes={[acmeConfig]} />;
 ```
 
-Pass `showCustomAttributes={false}` to disable rendering without passing a config.
-
 ---
 
 # AsyncAPI custom attributes
 
-The AsyncAPI renderer uses the same `x-*` extension model as OpenAPI. Configure it via `options.customAttributes.asyncapi` (an array of `AsyncApiCustomAttributesConfig`), or pass `customAttributes` directly to `AsyncApiRenderer`. The SAP preset `sapAsyncApiAttributesConfig` (prefix `x-sap-`, 20 fields) is applied by default.
+The AsyncAPI renderer uses the same `x-*` extension model as OpenAPI. Configure it via `options.customAttributes.asyncapi` (an array of `AsyncApiCustomAttributesConfig`), or pass `customAttributes` directly to `AsyncApiRenderer`. The SAP preset is `sapAsyncApiAttributesConfig` (prefix `x-sap-`, 20 fields).
 
 ```tsx
 <MetadataRenderer
@@ -283,13 +292,11 @@ import { AsyncApiRenderer } from '@open-resource-discovery/metadata-renderer/asy
 <AsyncApiRenderer content={asyncapiDocument} customAttributes={[acmeConfig]} />;
 ```
 
-Pass `showCustomAttributes={false}` to disable rendering without a config.
-
 ---
 
 # CSN custom attributes
 
-CSN (CSN Interop) uses **annotations** rather than `x-*` extensions, so its configuration differs from OpenAPI/AsyncAPI in naming while keeping the same overall shape. Annotations are keyed by their full dotted `@Vocabulary.term` (e.g. `@EndUserText.label`, `@ObjectModel.modelingPattern`). Configure via `options.customAttributes.csn` (an array of `CsnCustomAttributesConfig`) or the `customAttributes` prop on `CsnRenderer`. The SAP preset `sapCsnAttributesConfig` (39 annotations across `EndUserText`, `ObjectModel`, `Consumption`, `PersonalData`, `Semantics`, `API`, `ODM`, `Aggregation`, `EntityRelationship`, `DataIntegration`) is applied by default.
+CSN (CSN Interop) uses **annotations** rather than `x-*` extensions, so its configuration differs from OpenAPI/AsyncAPI in naming while keeping the same overall shape. Annotations are keyed by their full dotted `@Vocabulary.term` (e.g. `@EndUserText.label`, `@ObjectModel.modelingPattern`). Configure via `options.customAttributes.csn` (an array of `CsnCustomAttributesConfig`) or the `customAttributes` prop on `CsnRenderer`. The SAP preset is `sapCsnAttributesConfig` (39 annotations across `EndUserText`, `ObjectModel`, `Consumption`, `PersonalData`, `Semantics`, `API`, `ODM`, `Aggregation`, `EntityRelationship`, `DataIntegration`).
 
 ```tsx
 <MetadataRenderer
@@ -359,5 +366,3 @@ import { sapCsnAttributesConfig } from '@open-resource-discovery/metadata-render
 
 <CsnRenderer content={csnDocument} customAttributes={[sapCsnAttributesConfig]} />;
 ```
-
-Pass `showCustomAttributes={false}` to disable rendering without a config.

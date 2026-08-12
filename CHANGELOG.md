@@ -22,8 +22,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 'object' | 'link'` or a custom `component`), `CustomAttributesOptions`.
 - `sapOpenApiAttributesConfig` — the built-in SAP preset exported as a named constant;
   importable to extend or replace.
-- `showCustomAttributes` and `customAttributes` props on `OpenApiRenderer` for use without
-  `MetadataRenderer`.
 - Documentation: _Custom Attributes_ page covering default behaviour, configuring a custom
   prefix, multiple prefix sets, attribute types, custom React components, and extending the
   SAP preset.
@@ -36,9 +34,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   rendered by post-processing the generated HTML: the output is parsed with `DOMParser`
   and `@Key: <code>value</code>` pairs are replaced with styled attribute rows. Undeclared
   annotation keys are auto-discovered from the document.
-- `showCustomAttributes` and `customAttributes` props on `AsyncApiRenderer` and
-  `CsnRenderer` (matching `OpenApiRenderer`), plus `asyncapi` and `csn` keys on
-  `CustomAttributesOptions`.
+- `customAttributes` prop on `AsyncApiRenderer` and `CsnRenderer` (matching
+  `OpenApiRenderer`), plus `asyncapi` and `csn` keys on `CustomAttributesOptions`.
 - New public exports: `AsyncApiCustomAttributesConfig`, `AsyncApiAttributeDefinition`,
   `sapAsyncApiAttributesConfig`; `CsnCustomAttributesConfig`, `CsnAnnotationDefinition`,
   `sapCsnAttributesConfig`.
@@ -58,8 +55,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - SAP custom attribute rendering now runs through the generic renderer. All existing SAP
   complex components (`extOverview`, `stateInfo`, `extensible`, `deprecatedOperation`,
   `odmEntityName`, `odmSemanticKey`) are preserved inside `sapOpenApiAttributesConfig`.
-- `options.showSAPCustomFields` is deprecated; use `options.customAttributes: false` to
-  disable, or `options.customAttributes.openapi` to supply a custom config.
+- `customAttributes` now defaults to **disabled**. Pass `{ openapi: [sapOpenApiAttributesConfig], asyncapi: [sapAsyncApiAttributesConfig], csn: [sapCsnAttributesConfig] }` to opt in to the SAP preset, or provide your own config. Passing `false` explicitly disables all custom-attribute rendering.
+- `options.showSAPCustomFields` removed (was deprecated in earlier builds). Use `customAttributes` instead.
+- `showCustomAttributes` prop removed from `OpenApiRenderer`, `AsyncApiRenderer`, and `CsnRenderer` — enabled state is now derived purely from whether `customAttributes` is passed.
 - `Attributes.md` removed; its content has been merged into `Custom Attributes.md`.
 - Upgraded `@asyncapi/react-component` from `^2.6.5` to `^3.1.3` to unlock the plugin API
   used by the AsyncAPI custom attributes system.
