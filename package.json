@@ -66,9 +66,9 @@
             "default": "./dist/mcp.js"
         },
         "./styles": {
-      "types": "./dist/styles.d.ts",
-      "default": "./dist/index.css"
-    }
+            "types": "./dist/styles.d.ts",
+            "default": "./dist/index.css"
+        }
     },
     "files": [
         "dist",
