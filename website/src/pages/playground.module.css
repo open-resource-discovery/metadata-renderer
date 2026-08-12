@@ -1,7 +1,7 @@
 .PageContent {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: calc(100vh - var(--ifm-navbar-height));
     overflow: hidden;
     background: var(--color-bg-primary);
     font-family: var(--font-stack), serif;
