@@ -75,7 +75,7 @@ const config: Config = {
                 assert: false,
                 net: false,
                 tls: false,
-            };
+            } as const;
             return {
                 name: 'webpack-node-fallbacks',
                 configureWebpack() {
