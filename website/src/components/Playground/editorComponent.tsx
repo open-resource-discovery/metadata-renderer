@@ -19,26 +19,10 @@ type Props = {
     isEmpty: boolean;
     onIsEmptyChange: (isEmpty: boolean) => void;
     onChange: (value: string) => void;
-    metaType: MetaTypeChoice;
-    onMetaTypeChange: (t: MetaTypeChoice) => void;
-    onToggleTheme: () => void;
-    onToggleOptions: () => void;
-    openPanel?: 'theme' | 'options' | null;
 };
 
 const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent(
-    {
-        fileFormat,
-        onFileFormatChange,
-        isEmpty,
-        onIsEmptyChange,
-        onChange,
-        metaType,
-        onMetaTypeChange,
-        onToggleTheme,
-        onToggleOptions,
-        openPanel,
-    },
+    { fileFormat, onFileFormatChange, isEmpty, onIsEmptyChange, onChange },
     ref,
 ) {
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);

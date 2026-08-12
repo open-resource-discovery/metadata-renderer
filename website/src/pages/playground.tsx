@@ -1,13 +1,16 @@
 import Layout from '@theme/Layout';
 import { Panel, PanelGroup, PanelResizeHandle, type ImperativePanelHandle } from 'react-resizable-panels';
-import type {
-    MetaType,
-    MetadataRendererOptions,
-    RendererTheme,
+import {
+    detectMetaType,
+    type MetaType,
+    type MetadataRendererOptions,
+    type RendererTheme,
 } from '@open-resource-discovery/metadata-renderer';
-import { detectMetaType } from '@open-resource-discovery/metadata-renderer';
 import styles from './playground.module.css';
-import EditorComponent, { type MetaTypeChoice, type EditorHandle } from '@site/src/components/Playground/editorComponent';
+import EditorComponent, {
+    type MetaTypeChoice,
+    type EditorHandle,
+} from '@site/src/components/Playground/editorComponent';
 import Renderer from '@site/src/components/Playground/renderer';
 import ThemeEditor from '@site/src/components/Playground/ThemeEditor';
 import OptionsEditor from '@site/src/components/Playground/OptionsEditor';
@@ -130,11 +133,6 @@ export default function Playground() {
                                 onFileFormatChange={setFileFormat}
                                 isEmpty={isEmpty}
                                 onIsEmptyChange={setIsEmpty}
-                                metaType={metaTypeOverride}
-                                onMetaTypeChange={handleMetaTypeChange}
-                                onToggleTheme={() => togglePanel('theme')}
-                                onToggleOptions={() => togglePanel('options')}
-                                openPanel={openPanel}
                             />
                         </div>
                     </Panel>
