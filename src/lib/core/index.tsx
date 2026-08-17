@@ -5,6 +5,7 @@ import type { RendererTheme, RendererMap, MetadataRendererOptions } from '../typ
 import { OpenApiRenderer } from '../openApi';
 import { CsnRenderer } from '../csn';
 import { AsyncApiRenderer } from '../asyncApi';
+import { OverlayRenderer } from '../overlay';
 import { A2ARenderer } from '../a2a';
 import { McpRenderer } from '../mcp';
 
@@ -12,6 +13,7 @@ const DEFAULT_RENDERERS: RendererMap = {
     openapi: OpenApiRenderer,
     csn: CsnRenderer,
     asyncapi: AsyncApiRenderer,
+    overlay: OverlayRenderer,
     a2a: A2ARenderer,
     mcp: McpRenderer,
 };
@@ -29,6 +31,7 @@ const PROTOCOL_LABELS: Partial<Record<MetaType, string>> = {
     openapi: 'OpenAPI',
     csn: 'CSN',
     asyncapi: 'AsyncAPI',
+    overlay: 'Overlay',
     a2a: 'A2A',
     mcp: 'MCP',
 };

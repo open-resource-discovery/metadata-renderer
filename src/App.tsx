@@ -3,11 +3,13 @@ import { MetadataRenderer } from './lib/core';
 import { OpenApiRenderer } from './lib/openApi';
 import { CsnRenderer } from './lib/csn';
 import { AsyncApiRenderer } from './lib/asyncApi';
+import { OverlayRenderer } from './lib/overlay';
 import { A2ARenderer } from './lib/a2a';
 import { McpRenderer } from './lib/mcp';
 import { csn } from './demo/csn';
 import { openApi } from './demo/openapi';
 import { asyncApi } from './demo/asyncapi';
+import { overlay } from './demo/overlay';
 import { a2a } from './demo/a2a';
 import { mcp } from './demo/mcp';
 
@@ -15,6 +17,7 @@ const ALL_RENDERERS = {
     openapi: OpenApiRenderer,
     csn: CsnRenderer,
     asyncapi: AsyncApiRenderer,
+    overlay: OverlayRenderer,
     a2a: A2ARenderer,
     mcp: McpRenderer,
 };
@@ -25,6 +28,7 @@ const tabs: Tab[] = [
     { id: 'openapi', label: 'OpenAPI', content: openApi },
     { id: 'csn', label: 'CSN', content: csn },
     { id: 'asyncapi', label: 'AsyncAPI', content: asyncApi },
+    { id: 'overlay', label: 'Overlay', content: overlay },
     { id: 'a2a', label: 'A2A', content: a2a },
     { id: 'mcp', label: 'MCP', content: mcp },
 ];

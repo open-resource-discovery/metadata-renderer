@@ -70,6 +70,20 @@ describe('detectMetaType', () => {
         expect(detectMetaType(asyncApiJson)).toBe('asyncapi');
     });
 
+    it('should detect ORD Overlay by ordOverlay string + patches array', () => {
+        const overlay = JSON.stringify({
+            ordOverlay: '0.1',
+            ordId: 'sap.foo:overlay:demo:v1',
+            patches: [{ description: 'demo', action: 'merge', selector: { root: true }, data: {} }],
+        });
+        expect(detectMetaType(overlay)).toBe('overlay');
+    });
+
+    it('should not detect Overlay when patches is missing', () => {
+        const notOverlay = JSON.stringify({ ordOverlay: '0.1' });
+        expect(detectMetaType(notOverlay)).toBe('unknown');
+    });
+
     it('should detect MCP server card by supportedProtocolVersions', () => {
         const mcp = JSON.stringify({
             $schema: 'https://static.modelcontextprotocol.io/schemas/server-card.json',

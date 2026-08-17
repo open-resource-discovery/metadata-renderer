@@ -7,6 +7,18 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+### Added
+
+- **Overlay renderer** for [ORD Overlay](https://open-resource-discovery.org/) 0.1 documents,
+  via the published [@open-resource-discovery/overlay-editor](https://www.npmjs.com/package/@open-resource-discovery/overlay-editor)
+  package. Auto-detected from documents carrying an `ordOverlay` version string and a
+  `patches` array, and dispatched to the new `OverlayRenderer`.
+- New public export `OverlayRenderer` (and its `OverlayRendererProps` type), plus a
+  tree-shakable `@open-resource-discovery/metadata-renderer/overlay` subpath entry point.
+- `overlay` added to the `MetaType` union, the default renderer map, and protocol labels;
+  `extractVersion` now reports the `ordOverlay` version for the badge.
+- Demo app tab and website Playground example (with an Overlay logo) for the new format.
+
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 
 ### Added

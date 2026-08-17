@@ -66,6 +66,7 @@ export default defineConfig(({ mode }) => {
                           openapi: resolve(__dirname, 'src/lib/entries/openapi.ts'),
                           csn: resolve(__dirname, 'src/lib/entries/csn.ts'),
                           asyncapi: resolve(__dirname, 'src/lib/entries/asyncapi.ts'),
+                          overlay: resolve(__dirname, 'src/lib/entries/overlay.ts'),
                           a2a: resolve(__dirname, 'src/lib/entries/a2a.ts'),
                           mcp: resolve(__dirname, 'src/lib/entries/mcp.ts'),
                           // Styles aggregator: bundles every renderer's CSS into

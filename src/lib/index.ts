@@ -10,6 +10,9 @@ export type { CsnRendererProps } from './csn';
 export { AsyncApiRenderer } from './asyncApi';
 export type { AsyncApiRendererProps } from './asyncApi';
 
+export { OverlayRenderer } from './overlay';
+export type { OverlayRendererProps } from './overlay';
+
 export { A2ARenderer } from './a2a';
 export type { A2ARendererProps } from './a2a';
 

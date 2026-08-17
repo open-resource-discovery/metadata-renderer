@@ -2,6 +2,7 @@ import OpenApi from './icons/openapi-avatar-logo.svg';
 import CsnLight from './icons/csn-interop-logo.svg';
 import CsnDark from './icons/csn-interop-logo-dark.svg';
 import AsyncApi from './icons/asyncapi-logo.svg';
+import OverlayLogo from './icons/overlay-logo.svg';
 import A2ALogo from './icons/a2a-logo.svg';
 import McpLogo from './icons/mcp-logo.svg';
 import { JSX } from 'react';
@@ -1421,6 +1422,54 @@ const mcpExample = JSON.stringify(
 
 export type FileFormats = 'json' | 'yaml';
 
+const overlayExample = JSON.stringify(
+    {
+        $schema: 'https://open-resource-discovery.org/spec-v1/interfaces/OrdOverlay.schema.json#',
+        ordOverlay: '0.1',
+        ordId: 'sap.foo:overlay:astronomy-api:v1',
+        description:
+            'Adds deprecation notices and supplementary documentation to the Astronomy REST API without modifying the original OpenAPI specification.',
+        describedSystemType: { systemNamespace: 'sap.foo' },
+        visibility: 'internal',
+        target: {
+            ordId: 'sap.foo:apiResource:astronomy:v1',
+            url: '/ord/metadata/astronomy-v1.oas3.json',
+            definitionType: 'openapi-v3',
+        },
+        meta: {
+            sourceSystem: 'AI Enrichment Pipeline v2.1',
+            enrichmentDate: '2026-04-01',
+        },
+        patches: [
+            {
+                description: 'Mark the legacy endpoint as deprecated.',
+                action: 'merge',
+                selector: { operation: 'getConstellationByAbbreviation' },
+                data: {
+                    deprecated: true,
+                    'x-deprecation-notice':
+                        'Use getConstellationByIAUCode instead. This operation will be removed in v2.',
+                },
+            },
+            {
+                description: 'Add an OAuth2 security scheme at the document root.',
+                action: 'merge',
+                selector: { root: true },
+                data: {
+                    info: {
+                        contact: {
+                            name: 'Astronomy API Support',
+                            email: 'astronomy-api@example.com',
+                        },
+                    },
+                },
+            },
+        ],
+    },
+    null,
+    2,
+);
+
 export const fileExamples: {
     name: string;
     extension: FileFormats;
@@ -1461,6 +1510,15 @@ export const fileExamples: {
         image: {
             dark: <AsyncApi className={styles.img} />,
             light: <AsyncApi className={styles.img} />,
+        },
+    },
+    {
+        name: 'Overlay',
+        extension: 'json',
+        content: overlayExample,
+        image: {
+            dark: <OverlayLogo className={styles.img} />,
+            light: <OverlayLogo className={styles.img} />,
         },
     },
     {
