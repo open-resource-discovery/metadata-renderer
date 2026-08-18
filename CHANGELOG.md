@@ -19,6 +19,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   `extractVersion` now reports the `ordOverlay` version for the badge.
 - Demo app tab and website Playground example (with an Overlay logo) for the new format.
 
+### Fixed
+
+- Overlay renderer: sidebar height now respects the container size when embedded in Docusaurus
+  or other non-fullscreen layouts (measured via `ResizeObserver` and applied as a scoped override
+  of the library's `100dvh` sidebar rule), so the sidebar footer stays visible instead of
+  requiring a full scroll.
+
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 
 ### Added
