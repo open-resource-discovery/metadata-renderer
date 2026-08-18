@@ -87,13 +87,13 @@ export function MetadataRenderer({ content, renderers, options, type, className,
 
     return (
         <div style={{ position: 'relative', height: '100%', ...theme }}>
-            {label && (
+            {label && label !== PROTOCOL_LABELS.overlay && label !== PROTOCOL_LABELS.openapi && (
                 <div
                     style={{
                         position: 'absolute',
                         top: 8,
                         right: 8,
-                        zIndex: 10,
+                        zIndex: 100,
                         padding: '2px 8px',
                         borderRadius: 4,
                         fontSize: 11,
