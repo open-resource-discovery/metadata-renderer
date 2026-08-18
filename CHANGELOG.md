@@ -18,6 +18,9 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `overlay` added to the `MetaType` union, the default renderer map, and protocol labels;
   `extractVersion` now reports the `ordOverlay` version for the badge.
 - Demo app tab and website Playground example (with an Overlay logo) for the new format.
+- Overlay renderer: inline `<code>` elements are now styled with the `--ord-code-fg` and
+  `--ord-code-bg` theme tokens (falling back to `--ord-foreground` / `--ord-muted`, then a
+  literal), scoped to the renderer instance.
 
 ### Fixed
 
