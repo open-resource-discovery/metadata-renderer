@@ -81,6 +81,8 @@
     },
     "scripts": {
         "dev": "vite",
+        "generate:overlay-styles": "node scripts/generate-overlay-code-styles.mjs",
+        "prebuild": "npm run generate:overlay-styles",
         "build": "tsc -b && vite build --mode lib",
         "build:lib:watch": "vite build --mode lib --watch",
         "build:demo": "vite build",
@@ -125,6 +127,7 @@
     },
     "devDependencies": {
         "@sap/eslint-config": "0.5.2",
+        "@shikijs/themes": "^4.4.3",
         "@types/node": "24.13.3",
         "@types/react": "19.2.17",
         "@types/react-dom": "19.2.3",

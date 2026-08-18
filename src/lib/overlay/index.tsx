@@ -2,6 +2,7 @@ import { useEffect, useId, useRef } from 'react';
 import { OverlayCardView, useOverlayStore, useTheme } from '@open-resource-discovery/overlay-editor/card-view';
 import '@open-resource-discovery/overlay-editor/styles';
 import { buildShadcnThemeStyle } from '../core/utils';
+import overlayCodeStyles from './generated-code-styles';
 import type { RendererTheme } from '../types';
 
 export type OverlayRendererProps = {
@@ -56,6 +57,7 @@ export function OverlayRenderer({ content, className, theme }: OverlayRendererPr
 
     return (
         <div ref={containerRef} data-renderer-id={id} className="h-full">
+            <style>{overlayCodeStyles}</style>
             <style>{scopedStyles}</style>
             {themeStyle && <style>{themeStyle}</style>}
             <OverlayCardView />
