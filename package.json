@@ -1,6 +1,6 @@
 {
     "name": "@open-resource-discovery/metadata-renderer",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "React components that render OpenAPI, CSN, AsyncAPI, A2A, and MCP metadata documents.",
     "author": "SAP SE",
     "license": "Apache-2.0",
