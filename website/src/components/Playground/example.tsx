@@ -1259,80 +1259,6 @@ export const asyncApiJsonExample = `{
   }
 }`;
 
-//Example from https://github.com/asyncapi/spec/blob/master/examples.
-// But the version there is 3.1.0, which is not supported by the existing renderer.
-const asyncApiYamlExample = `
-asyncapi: 3.0.0
-id: 'urn:example:rpcserver'
-info:
-  title: RPC Server Example
-  version: 1.0.0
-  description: This example demonstrates how to define an RPC server.
-defaultContentType: application/json
-servers:
-  production:
-    host: rabbitmq.example.org
-    protocol: amqp
-channels:
-  queue:
-    address: '{queue}'
-    messages:
-      sendSumResult:
-        correlationId:
-          location: $message.header#/correlation_id
-        payload:
-          type: object
-          properties:
-            result:
-              type: number
-              examples:
-                - 7
-    parameters:
-      queue: {}
-    bindings:
-      amqp:
-        is: queue
-        queue:
-          exclusive: true
-  rpc_queue:
-    address: rpc_queue
-    messages:
-      sum:
-        correlationId:
-          location: $message.header#/correlation_id
-        payload:
-          type: object
-          properties:
-            numbers:
-              type: array
-              items:
-                type: number
-              examples:
-                - - 4
-                  - 3
-    bindings:
-      amqp:
-        is: queue
-        queue:
-          durable: false
-operations:
-  sendSumResult:
-    action: send
-    channel:
-      $ref: '#/channels/queue'
-    bindings:
-      amqp:
-        ack: true
-    messages:
-      - $ref: '#/channels/queue/messages/sendSumResult'
-  sum:
-    action: receive
-    channel:
-      $ref: '#/channels/rpc_queue'
-    messages:
-      - $ref: '#/channels/rpc_queue/messages/sum'
-  `;
-
 const mcpExample = JSON.stringify(
     {
         $schema: 'https://static.modelcontextprotocol.io/schemas/2025-06-18/server-card.json',
@@ -1446,18 +1372,9 @@ export const fileExamples: {
         },
     },
     {
-        name: 'AsyncAPI json',
+        name: 'AsyncAPI',
         extension: 'json',
         content: asyncApiJsonExample,
-        image: {
-            dark: <AsyncApi className={styles.img} />,
-            light: <AsyncApi className={styles.img} />,
-        },
-    },
-    {
-        name: 'AsyncAPI yaml',
-        extension: 'yaml',
-        content: asyncApiYamlExample,
         image: {
             dark: <AsyncApi className={styles.img} />,
             light: <AsyncApi className={styles.img} />,
