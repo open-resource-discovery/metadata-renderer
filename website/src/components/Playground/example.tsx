@@ -636,7 +636,7 @@ const a2aExample = JSON.stringify(
     2,
 );
 
-export const asyncApiJsonExample = `{
+export const asyncApiExample = `{
   "asyncapi": "2.0.0",
   "x-sap-catalog-spec-version": "1.2",
   "x-sap-application-namespace": "sap.grc",
@@ -1374,7 +1374,7 @@ export const fileExamples: {
     {
         name: 'AsyncAPI',
         extension: 'json',
-        content: asyncApiJsonExample,
+        content: asyncApiExample,
         image: {
             dark: <AsyncApi className={styles.img} />,
             light: <AsyncApi className={styles.img} />,
