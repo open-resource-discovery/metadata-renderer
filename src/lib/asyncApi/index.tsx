@@ -76,7 +76,6 @@ function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
             `${scope} .rounded, ${scope} .prose pre, ${scope} .\\32 xl\\:rounded { border-radius: ${borderRadius}px; }`,
             `${scope} .rounded:not(.inline-block) { overflow: hidden; }`,
             `${scope} .rounded-tl-none { border-top-left-radius: 0px; }`,
-            `${scope} .examples { border-radius: 0px !important; }`,
         );
 
     return rules.join('\n');
