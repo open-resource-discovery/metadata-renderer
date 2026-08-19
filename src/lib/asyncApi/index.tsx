@@ -138,6 +138,14 @@ export function AsyncApiRenderer({ content, config, customAttributes, className,
             {isEnabled && (
                 <style>{`[data-renderer-id="${id}"] #introduction .hidden { display: block !important; }`}</style>
             )}
+            {/* When custom attributes are disabled, hide the library's default per-message
+                "Extensions" block so message/messageTrait x-* fields are not rendered. Targets
+                the anonymous Extensions wrapper div (its direct child is the `.flex.py-2` header
+                containing `span.Extensions`) so header + collapsible body are removed together.
+                NB: couples to asyncapi-react's internal class names — re-check on library upgrade. */}
+            {!isEnabled && (
+                <style>{`[data-renderer-id="${id}"] :is(#operations, #messages) div:has(> .flex.py-2 span.Extensions) { display: none; }`}</style>
+            )}
             <AsyncApiComponent schema={content} config={effectiveConfig} plugins={rootPlugin ? [rootPlugin] : []} />
         </div>
     );
