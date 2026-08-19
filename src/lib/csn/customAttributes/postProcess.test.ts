@@ -11,7 +11,9 @@ const cell = (inner: string) => `<table><tbody><tr><td>${inner}</td></tr></tbody
 describe('stripAllAnnotations', () => {
     it('removes @Key: <code> annotation runs and their <br /> separators', () => {
         const out = stripAllAnnotations(
-            cell('type: <code>"String"</code><br />@EndUserText.label: <code>"Name"</code><br />@Semantics.text: <code>true</code>'),
+            cell(
+                'type: <code>"String"</code><br />@EndUserText.label: <code>"Name"</code><br />@Semantics.text: <code>true</code>',
+            ),
         );
         expect(out).not.toContain('@EndUserText.label');
         expect(out).not.toContain('@Semantics.text');
@@ -22,7 +24,9 @@ describe('stripAllAnnotations', () => {
 
     it('removes the @Key: <a href><code> link form', () => {
         const out = stripAllAnnotations(
-            cell('@ObjectModel.foreignKey.association: <a href="https://example.com" target="_blank"><code>"ref"</code></a>'),
+            cell(
+                '@ObjectModel.foreignKey.association: <a href="https://example.com" target="_blank"><code>"ref"</code></a>',
+            ),
         );
         expect(out).not.toContain('@ObjectModel.foreignKey.association');
         expect(out).not.toContain('example.com');

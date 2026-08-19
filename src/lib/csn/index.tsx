@@ -62,7 +62,9 @@ export function CsnRenderer({ content, config, customAttributes, className, them
 
         generateHtml(parsed as Parameters<typeof generateHtml>[0], rendererConfig)
             .then((html: string) => {
-                const processed = isEnabled ? applyAnnotationRenderers(html, activeConfigs, parsedDoc) : stripAllAnnotations(html);
+                const processed = isEnabled
+                    ? applyAnnotationRenderers(html, activeConfigs, parsedDoc)
+                    : stripAllAnnotations(html);
                 if (!cancelled) setState({ kind: 'ready', html: processed });
             })
             .catch((e: unknown) => {
