@@ -7,6 +7,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+### Fixed
+
+- AsyncAPI: message- and messageTrait-level custom attributes (`x-*`) are now hidden when
+  `customAttributes` is not passed. Previously only document-root attributes were hidden while
+  the library's default per-message "Extensions" section still rendered the message-level ones.
+- CSN: `@`-annotations are now hidden when `customAttributes` is not passed. Previously the
+  library's default annotation rows still rendered even with custom attributes disabled; the
+  generated HTML is now post-processed to strip them, leaving names, types, and descriptions intact.
+- AsyncAPI: the Examples section now has rounded corners, consistent with the other renderers.
+
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 
 ### Added
