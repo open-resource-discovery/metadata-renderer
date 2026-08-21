@@ -65,7 +65,10 @@
             "import": "./dist/mcp.js",
             "default": "./dist/mcp.js"
         },
-        "./styles": "./dist/index.css"
+        "./styles": {
+            "types": "./dist/styles.d.ts",
+            "default": "./dist/index.css"
+        }
     },
     "files": [
         "dist",
