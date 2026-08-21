@@ -3,7 +3,7 @@ import { generateHtml, type CsnRendererConfig, type AnnotationLinkCallbacks } fr
 import styles from './styles';
 import type { RendererTheme } from '../types';
 import type { CsnCustomAttributesConfig } from './customAttributes/types';
-import { applyAnnotationRenderers } from './customAttributes/postProcess';
+import { applyAnnotationRenderers, stripAllAnnotations } from './customAttributes/postProcess';
 import { loadObject } from '../core/utils';
 
 function buildAnnotationLinkCallbacks(configs: CsnCustomAttributesConfig[]): AnnotationLinkCallbacks {
@@ -62,7 +62,9 @@ export function CsnRenderer({ content, config, customAttributes, className, them
 
         generateHtml(parsed as Parameters<typeof generateHtml>[0], rendererConfig)
             .then((html: string) => {
-                const processed = isEnabled ? applyAnnotationRenderers(html, activeConfigs, parsedDoc) : html;
+                const processed = isEnabled
+                    ? applyAnnotationRenderers(html, activeConfigs, parsedDoc)
+                    : stripAllAnnotations(html);
                 if (!cancelled) setState({ kind: 'ready', html: processed });
             })
             .catch((e: unknown) => {

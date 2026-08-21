@@ -13,69 +13,20 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Toolbar controls (format selector, type selector, Copy, Clear, Theme Editor, Options) lifted out of the editor panel and are now accessible without resizing or scrolling within a panel
 - Monaco editor height now fills remaining viewport space via flexbox layout instead of a hardcoded `calc(100vh - ...)` value, improving correctness across different screen sizes and when the toolbar height changes
 
+### Fixed
+
+- AsyncAPI: message- and messageTrait-level custom attributes (`x-*`) are now hidden when
+  `customAttributes` is not passed. Previously only document-root attributes were hidden while
+  the library's default per-message "Extensions" section still rendered the message-level ones.
+- CSN: `@`-annotations are now hidden when `customAttributes` is not passed. Previously the
+  library's default annotation rows still rendered even with custom attributes disabled; the
+  generated HTML is now post-processed to strip them, leaving names, types, and descriptions intact.
+- AsyncAPI: the Examples section now has rounded corners, consistent with the other renderers.
+
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
-
-### Added
-
-- Generic custom attributes system for the OpenAPI renderer — any vendor extension prefix
-  (e.g. `x-acme-*`) can now be configured, not only SAP. Matching attributes are
-  auto-discovered from the document; strings, arrays, objects, and links render with
-  sensible defaults and auto-generated labels.
-- `options.customAttributes` on `MetadataRendererOptions` — accepts a
-  `CustomAttributesOptions` object (`{ openapi: [...] }`) or `false` to disable rendering
-  entirely. The `openapi` array supports multiple independent prefix configurations in a
-  single document.
-- New public types: `OpenApiCustomAttributesConfig` (`prefixStartsWith`, `documentationUrl`,
-  `extensions`), `AttributeDefinition` (discriminated union: `type: 'string' | 'array' |
-'object' | 'link'` or a custom `component`), `CustomAttributesOptions`.
-- `sapOpenApiAttributesConfig` — the built-in SAP preset exported as a named constant;
-  importable to extend or replace.
-- Documentation: _Custom Attributes_ page covering default behaviour, configuring a custom
-  prefix, multiple prefix sets, attribute types, custom React components, and extending the
-  SAP preset.
-- Generic custom attributes system for the **AsyncAPI** renderer, mirroring the OpenAPI
-  system. Root-level `x-sap-*` fields render via the library's `PluginSlot.INFO` plugin
-  (replacing the previous document-mutation workaround), and field discovery covers both
-  AsyncAPI v2 and v3 document locations.
-- Generic custom attributes system for the **CSN** renderer. Because
-  `@sap/csn-interop-renderer` emits HTML strings (not React components), annotations are
-  rendered by post-processing the generated HTML: the output is parsed with `DOMParser`
-  and `@Key: <code>value</code>` pairs are replaced with styled attribute rows. Undeclared
-  annotation keys are auto-discovered from the document.
-- `customAttributes` prop on `AsyncApiRenderer` and `CsnRenderer` (matching
-  `OpenApiRenderer`), plus `asyncapi` and `csn` keys on `CustomAttributesOptions`.
-- New public exports: `AsyncApiCustomAttributesConfig`, `AsyncApiAttributeDefinition`,
-  `sapAsyncApiAttributesConfig`; `CsnCustomAttributesConfig`, `CsnAnnotationDefinition`,
-  `sapCsnAttributesConfig`.
-- Built-in SAP presets for the new renderers: `sapAsyncApiAttributesConfig` (20 `x-sap-*`
-  fields) and `sapCsnAttributesConfig` (38 annotations across the 11 SAP interoperable
-  vocabularies). AsyncAPI adds an `AsyncApiStateInfo` component for `x-sap-stateInfo`
-  lifecycle badges.
-- CSN renderer: responsive design for tables and custom fields — columns and attribute
-  rows adapt to the width available to the renderer (via CSS container queries), stacking
-  vertically when space is tight.
-- OpenAPI and AsyncAPI renderers: custom fields are now width-adaptive too — each
-  label/value row switches from side-by-side to stacked (label above value) when its
-  available width is tight, via CSS container queries, matching the CSN behaviour.
-- `renderers` prop on `MetadataRenderer` — an optional `RendererMap` that controls which
-  renderer components are active. When omitted, all five renderers are included (same
-  behavior as before). When provided explicitly, bundlers can tree-shake out the renderers
-  that are not imported, reducing bundle size.
-- `RendererMap` type — `Partial<Record<MetaType, RendererEntry>>` — exported from the
-  main entry.
-- `MetadataRendererOptions` type and optional `options` prop on `MetadataRenderer`:
-    - `autoDetect` — set to `false` to disable format auto-detection and require an
-      explicit `type` prop (default: `true`).
-    - `fallback` — `'error'` (default) shows a styled message for unsupported/disabled
-      types; `'raw'` renders the content in a `<pre>` block.
-    - `csn`, `asyncapi`, `a2a`, `mcp` — format-specific options passed through to each
-      renderer (replaces the old top-level `config` prop for CSN).
 
 ### Changed
 
-- SAP custom attribute rendering now runs through the generic renderer. All existing SAP
-  complex components (`extOverview`, `stateInfo`, `extensible`, `deprecatedOperation`,
-  `odmEntityName`, `odmSemanticKey`) are preserved inside `sapOpenApiAttributesConfig`.
 - `customAttributes` now defaults to **disabled**. Pass
   `{ openapi: [sapOpenApiAttributesConfig], asyncapi: [sapAsyncApiAttributesConfig], csn: [sapCsnAttributesConfig] }`
   to opt in to the SAP preset, or provide your own config. Passing `false` explicitly
@@ -85,36 +36,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `showCustomAttributes` prop removed from `OpenApiRenderer`, `AsyncApiRenderer`, and
   `CsnRenderer` — enabled state is now derived purely from whether `customAttributes` is
   passed.
-- `Attributes.md` removed; its content has been merged into `Custom Attributes.md`.
-- Upgraded `@asyncapi/react-component` from `^2.6.5` to `^3.1.3` to unlock the plugin
-  API used by the AsyncAPI custom attributes system.
-- CSN custom-attribute post-processing rewritten from raw-string regex to DOM-based
-  extraction (`DOMParser` + node walk), removing the fragile manual entity-unescaping
-  step. Link-type annotations now flow through the library's official
-  `annotationLinkCallbacks` hook. Handles both element-level (`<td>`) and
-  entity/service-level (`<p>`) placements.
-- Restructured OpenAPI custom attributes: `sapAttributes` is now a subfolder of
-  `customAttributes`; generic array/object rendering improved.
-- Refreshed appearance of custom fields across the OpenAPI, AsyncAPI, and CSN renderers
-  (styling, spacing, documentation links), and applied a consistent font family throughout
-  the CSN renderer.
-- OpenAPI and AsyncAPI custom-field styling moved out of inline React style objects into a
-  single injected stylesheet per renderer (the `styling.ts` modules are removed); elements
-  now carry classNames, which is what makes the container-query responsive layout possible.
-- Removed the top-level `config` prop from `MetadataRenderer`. Use `options.csn` instead.
-- Theme panel resize handle in the playground is now enabled (was accidentally disabled).
-
-### Fixed
-
-- OpenAPI: schema-level custom attributes are now shown (they are not rendered natively).
-- SAP predefined custom attributes corrected to match the specification.
-- CSN: array-valued custom fields now render correctly inside entity/service-level rows
-  (previously the value was dropped and the list leaked out of its container).
-- OpenAPI viewer: ORD sidebar theme tokens now correctly style the Scalar search input —
-  background, text color, and border color are applied via the sidebar theme map.
-- OpenAPI viewer: sidebar height now respects the container size when embedded in
-  Docusaurus or other non-fullscreen layouts by overriding Scalar's
-  `--refs-sidebar-height` variable instead of the inner list height.
 
 ## [[1.0.0](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.0)] - 2026-08-07
 
@@ -125,6 +46,60 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   (`MCPServerCardView`).
 - Theme editor in the playground for live customization of renderer styles.
 - Auto-detection badge that displays the detected protocol and version in the playground.
+- Rendering custom attributes
+    - Generic custom attributes system for the OpenAPI renderer — any vendor extension prefix
+      (e.g. `x-acme-*`) can now be configured, not only SAP. Matching attributes are
+      auto-discovered from the document; strings, arrays, objects, and links render with
+      sensible defaults and auto-generated labels.
+    - `options.customAttributes` on `MetadataRendererOptions` — accepts a
+      `CustomAttributesOptions` object (`{ openapi: [...] }`) or `false` to disable rendering
+      entirely. The `openapi` array supports multiple independent prefix configurations in a
+      single document.
+    - New public types: `OpenApiCustomAttributesConfig` (`prefixStartsWith`, `documentationUrl`,
+      `extensions`), `AttributeDefinition` (discriminated union: `type: 'string' | 'array' |
+'object' | 'link'` or a custom `component`), `CustomAttributesOptions`.
+    - `sapOpenApiAttributesConfig` — the built-in SAP preset exported as a named constant;
+      importable to extend or replace.
+    - Documentation: _Custom Attributes_ page covering default behaviour, configuring a custom
+      prefix, multiple prefix sets, attribute types, custom React components, and extending the
+      SAP preset.
+    - Generic custom attributes system for the **AsyncAPI** renderer, mirroring the OpenAPI
+      system. Root-level `x-sap-*` fields render via the library's `PluginSlot.INFO` plugin
+      (replacing the previous document-mutation workaround), and field discovery covers both
+      AsyncAPI v2 and v3 document locations.
+    - Generic custom attributes system for the **CSN** renderer. Because
+      `@sap/csn-interop-renderer` emits HTML strings (not React components), annotations are
+      rendered by post-processing the generated HTML: the output is parsed with `DOMParser`
+      and `@Key: <code>value</code>` pairs are replaced with styled attribute rows. Undeclared
+      annotation keys are auto-discovered from the document.
+    - `customAttributes` prop on `AsyncApiRenderer` and `CsnRenderer` (matching
+      `OpenApiRenderer`), plus `asyncapi` and `csn` keys on `CustomAttributesOptions`.
+    - New public exports: `AsyncApiCustomAttributesConfig`, `AsyncApiAttributeDefinition`,
+      `sapAsyncApiAttributesConfig`; `CsnCustomAttributesConfig`, `CsnAnnotationDefinition`,
+      `sapCsnAttributesConfig`.
+    - Built-in SAP presets for the new renderers: `sapAsyncApiAttributesConfig` (20 `x-sap-*`
+      fields) and `sapCsnAttributesConfig` (38 annotations across the 11 SAP interoperable
+      vocabularies). AsyncAPI adds an `AsyncApiStateInfo` component for `x-sap-stateInfo`
+      lifecycle badges.
+    - CSN renderer: responsive design for tables and custom fields — columns and attribute
+      rows adapt to the width available to the renderer (via CSS container queries), stacking
+      vertically when space is tight.
+    - OpenAPI and AsyncAPI renderers: custom fields are now width-adaptive too — each
+      label/value row switches from side-by-side to stacked (label above value) when its
+      available width is tight, via CSS container queries, matching the CSN behaviour.
+    - `renderers` prop on `MetadataRenderer` — an optional `RendererMap` that controls which
+      renderer components are active. When omitted, all five renderers are included (same
+      behavior as before). When provided explicitly, bundlers can tree-shake out the renderers
+      that are not imported, reducing bundle size.
+    - `RendererMap` type — `Partial<Record<MetaType, RendererEntry>>` — exported from the
+      main entry.
+    - `MetadataRendererOptions` type and optional `options` prop on `MetadataRenderer`:
+        - `autoDetect` — set to `false` to disable format auto-detection and require an
+          explicit `type` prop (default: `true`).
+        - `fallback` — `'error'` (default) shows a styled message for unsupported/disabled
+          types; `'raw'` renders the content in a `<pre>` block.
+        - `csn`, `asyncapi`, `a2a`, `mcp` — format-specific options passed through to each
+          renderer (replaces the old top-level `config` prop for CSN).
 
 ### Changed
 
@@ -148,6 +123,40 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Replace local `ui-components` file dependency with published `a2a-editor` in website.
 - Remove `watchLocalDeps` webpack plugin and rolldown shim (no longer needed).
 - Regenerate `package-lock` files against the npmjs registry.
+- Changes in rendering custom attributes
+    - SAP custom attribute rendering now runs through the generic renderer. All existing SAP
+      complex components (`extOverview`, `stateInfo`, `extensible`, `deprecatedOperation`,
+      `odmEntityName`, `odmSemanticKey`) are preserved inside `sapOpenApiAttributesConfig`.
+    - `Attributes.md` removed; its content has been merged into `Custom Attributes.md`.
+    - Upgraded `@asyncapi/react-component` from `^2.6.5` to `^3.1.3` to unlock the plugin
+      API used by the AsyncAPI custom attributes system.
+    - CSN custom-attribute post-processing rewritten from raw-string regex to DOM-based
+      extraction (`DOMParser` + node walk), removing the fragile manual entity-unescaping
+      step. Link-type annotations now flow through the library's official
+      `annotationLinkCallbacks` hook. Handles both element-level (`<td>`) and
+      entity/service-level (`<p>`) placements.
+    - Restructured OpenAPI custom attributes: `sapAttributes` is now a subfolder of
+      `customAttributes`; generic array/object rendering improved.
+    - Refreshed appearance of custom fields across the OpenAPI, AsyncAPI, and CSN renderers
+      (styling, spacing, documentation links), and applied a consistent font family throughout
+      the CSN renderer.
+    - OpenAPI and AsyncAPI custom-field styling moved out of inline React style objects into a
+      single injected stylesheet per renderer (the `styling.ts` modules are removed); elements
+      now carry classNames, which is what makes the container-query responsive layout possible.
+- Removed the top-level `config` prop from `MetadataRenderer`. Use `options.csn` instead.
+- Theme panel resize handle in the playground is now enabled (was accidentally disabled).
+
+### Fixed
+
+- OpenAPI: schema-level custom attributes are now shown (they are not rendered natively).
+- SAP predefined custom attributes corrected to match the specification.
+- CSN: array-valued custom fields now render correctly inside entity/service-level rows
+  (previously the value was dropped and the list leaked out of its container).
+- OpenAPI viewer: ORD sidebar theme tokens now correctly style the Scalar search input —
+  background, text color, and border color are applied via the sidebar theme map.
+- OpenAPI viewer: sidebar height now respects the container size when embedded in
+  Docusaurus or other non-fullscreen layouts by overriding Scalar's
+  `--refs-sidebar-height` variable instead of the inner list height.
 
 ### Security
 

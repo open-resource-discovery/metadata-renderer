@@ -76,7 +76,6 @@ function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
             `${scope} .rounded, ${scope} .prose pre, ${scope} .\\32 xl\\:rounded { border-radius: ${borderRadius}px; }`,
             `${scope} .rounded:not(.inline-block) { overflow: hidden; }`,
             `${scope} .rounded-tl-none { border-top-left-radius: 0px; }`,
-            `${scope} .examples { border-radius: 0px !important; }`,
         );
 
     return rules.join('\n');
@@ -138,6 +137,14 @@ export function AsyncApiRenderer({ content, config, customAttributes, className,
             <style>{layoutStyle}</style>
             {isEnabled && (
                 <style>{`[data-renderer-id="${id}"] #introduction .hidden { display: block !important; }`}</style>
+            )}
+            {/* When custom attributes are disabled, hide the library's default per-message
+                "Extensions" block so message/messageTrait x-* fields are not rendered. Targets
+                the anonymous Extensions wrapper div (its direct child is the `.flex.py-2` header
+                containing `span.Extensions`) so header + collapsible body are removed together.
+                NB: couples to asyncapi-react's internal class names — re-check on library upgrade. */}
+            {!isEnabled && (
+                <style>{`[data-renderer-id="${id}"] :is(#operations, #messages) div:has(> .flex.py-2 span.Extensions) { display: none; }`}</style>
             )}
             <AsyncApiComponent schema={content} config={effectiveConfig} plugins={rootPlugin ? [rootPlugin] : []} />
         </div>
