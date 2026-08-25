@@ -105,7 +105,7 @@ const config: Config = {
             title: 'Metadata Renderer',
             logo: {
                 alt: 'Metadata Logo',
-                src: 'img/Union.svg',
+                src: 'img/Metadata Renderer.svg',
             },
             items: [
                 {
