@@ -27,7 +27,7 @@ const DARK_DEFAULTS: RendererTheme = {
     '--ord-border': '#3e3e42',
 };
 
-function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
+export function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
     const t = theme as Record<string, string>;
     const bg = t['--ord-background'];
     const fg = t['--ord-foreground'];
@@ -73,7 +73,8 @@ function buildAsyncApiThemeStyle(id: string, theme: RendererTheme): string {
         );
     if (borderRadius)
         rules.push(
-            `${scope} .rounded, ${scope} .prose pre, ${scope} .\\32 xl\\:rounded { border-radius: ${borderRadius}px; }`,
+            `${scope} .rounded, ${scope} .prose pre { border-radius: ${borderRadius}px; }`,
+            `@media (min-width: 1536px) {\n${scope} .\\32 xl\\:rounded { border-radius: ${borderRadius}px; }\n}`,
             `${scope} .rounded:not(.inline-block) { overflow: hidden; }`,
             `${scope} .rounded-tl-none { border-top-left-radius: 0px; }`,
         );

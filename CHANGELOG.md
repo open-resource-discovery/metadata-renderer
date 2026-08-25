@@ -21,7 +21,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - CSN: `@`-annotations are now hidden when `customAttributes` is not passed. Previously the
   library's default annotation rows still rendered even with custom attributes disabled; the
   generated HTML is now post-processed to strip them, leaving names, types, and descriptions intact.
-- AsyncAPI: the Examples section now has rounded corners, consistent with the other renderers.
+- AsyncAPI: the Examples section now follows the upstream responsive border radius: square below
+  the `2xl` breakpoint and themed rounded corners at `2xl` and above.
 
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 
