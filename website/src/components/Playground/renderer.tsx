@@ -17,11 +17,12 @@ type Props = {
 // behind React.lazy keeps the module ESM all the way through.
 const MetadataRenderer = lazy(async () => {
     await import('@open-resource-discovery/metadata-renderer/styles');
-    const [mod, openapi, csn, asyncapi, a2a, mcp] = await Promise.all([
+    const [mod, openapi, csn, asyncapi, overlay, a2a, mcp] = await Promise.all([
         import('@open-resource-discovery/metadata-renderer'),
         import('@open-resource-discovery/metadata-renderer/openapi'),
         import('@open-resource-discovery/metadata-renderer/csn'),
         import('@open-resource-discovery/metadata-renderer/asyncapi'),
+        import('@open-resource-discovery/metadata-renderer/overlay'),
         import('@open-resource-discovery/metadata-renderer/a2a'),
         import('@open-resource-discovery/metadata-renderer/mcp'),
     ]);
@@ -29,6 +30,7 @@ const MetadataRenderer = lazy(async () => {
         openapi: openapi.OpenApiRenderer,
         csn: csn.CsnRenderer,
         asyncapi: asyncapi.AsyncApiRenderer,
+        overlay: overlay.OverlayRenderer,
         a2a: a2a.A2ARenderer,
         mcp: mcp.McpRenderer,
     };

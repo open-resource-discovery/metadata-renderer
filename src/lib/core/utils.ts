@@ -1,7 +1,7 @@
 import { parse } from 'yaml';
 import type { RendererTheme } from '../types';
 
-export type MetaType = 'csn' | 'openapi' | 'asyncapi' | 'a2a' | 'mcp' | 'unknown';
+export type MetaType = 'csn' | 'openapi' | 'asyncapi' | 'overlay' | 'a2a' | 'mcp' | 'unknown';
 
 export function loadObject(content: string): undefined | object {
     if (!content) return;
@@ -33,7 +33,7 @@ export function loadObject(content: string): undefined | object {
 }
 
 // Detection runs in priority order; the first match wins.
-// Order: csn -> openapi -> asyncapi -> mcp -> a2a -> unknown.
+// Order: csn -> openapi -> asyncapi -> overlay -> mcp -> a2a -> unknown.
 // MCP is checked before A2A because both carry a `capabilities` object,
 // but `supportedProtocolVersions` is unique to MCP and not present in A2A.
 export function detectMetaType(content: string): MetaType {
@@ -51,6 +51,10 @@ export function detectMetaType(content: string): MetaType {
 
     if (typeof o.asyncapi === 'string') {
         return 'asyncapi';
+    }
+
+    if (typeof o.ordOverlay === 'string' && Array.isArray(o.patches)) {
+        return 'overlay';
     }
 
     if (Array.isArray(o.supportedProtocolVersions)) {
@@ -74,6 +78,8 @@ export function extractVersion(type: MetaType, content: string): string {
             return '';
         case 'asyncapi':
             return typeof o.asyncapi === 'string' ? o.asyncapi : '';
+        case 'overlay':
+            return typeof o.ordOverlay === 'string' ? o.ordOverlay : '';
         case 'a2a':
             if (typeof o.protocolVersion === 'string') return o.protocolVersion;
             if (Array.isArray(o.supportedInterfaces) && o.supportedInterfaces.length > 0) {

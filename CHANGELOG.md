@@ -7,14 +7,26 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
-### Changed
+### Added
 
-- Playground toolbar extracted into a standalone full-width bar rendered above the resizable panels, so toolbar controls remain visible and consistently positioned regardless of panel size or resize operations
-- Toolbar controls (format selector, type selector, Copy, Clear, Theme Editor, Options) lifted out of the editor panel and are now accessible without resizing or scrolling within a panel
-- Monaco editor height now fills remaining viewport space via flexbox layout instead of a hardcoded `calc(100vh - ...)` value, improving correctness across different screen sizes and when the toolbar height changes
+- **Overlay renderer** for [ORD Overlay](https://open-resource-discovery.org/) 0.1 documents,
+  via the published [@open-resource-discovery/overlay-editor](https://www.npmjs.com/package/@open-resource-discovery/overlay-editor)
+  package. Auto-detected from documents carrying an `ordOverlay` version string and a
+  `patches` array, and dispatched to the new `OverlayRenderer`.
+- New public export `OverlayRenderer` (and its `OverlayRendererProps` type), plus a
+  tree-shakable `@open-resource-discovery/metadata-renderer/overlay` subpath entry point.
+- `overlay` added to the `MetaType` union, the default renderer map, and protocol labels;
+  `extractVersion` now reports the `ordOverlay` version for the badge.
+- Demo app tab and website Playground example (with an Overlay logo) for the new format.
+- Overlay renderer: inline `<code>` elements are now styled with the `--ord-code-fg` and
+  `--ord-code-bg` theme tokens (falling back to `--ord-foreground` / `--ord-muted`, then a
+  literal), scoped to the renderer instance.
 
 ### Fixed
 
+- Overlay renderer: the mobile sidebar footer (shown on narrow layouts) now uses the same
+  `--ord-background` / `--ord-muted-foreground` colors as the wide-layout footer and tracks
+  the Theme Editor selection, instead of rendering with default light-theme colors.
 - AsyncAPI: message- and messageTrait-level custom attributes (`x-*`) are now hidden when
   `customAttributes` is not passed. Previously only document-root attributes were hidden while
   the library's default per-message "Extensions" section still rendered the message-level ones.
@@ -23,6 +35,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   generated HTML is now post-processed to strip them, leaving names, types, and descriptions intact.
 - AsyncAPI: the Examples section now follows the upstream responsive border radius: square below
   the `2xl` breakpoint and themed rounded corners at `2xl` and above.
+
+### Changed
+
+- Playground toolbar extracted into a standalone full-width bar rendered above the resizable panels, so toolbar controls remain visible and consistently positioned regardless of panel size or resize operations
+- Toolbar controls (format selector, type selector, Copy, Clear, Theme Editor, Options) lifted out of the editor panel and are now accessible without resizing or scrolling within a panel
+- Monaco editor height now fills remaining viewport space via flexbox layout instead of a hardcoded `calc(100vh - ...)` value, improving correctness across different screen sizes and when the toolbar height changes
 
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 

@@ -6,6 +6,7 @@
 // build-time stripping needed). Side-effect-only file: no exports.
 import '@open-resource-discovery/a2a-editor/styles';
 import '@open-resource-discovery/mcp-server-card-ui/styles';
+import '@open-resource-discovery/overlay-editor/styles';
 import '@asyncapi/react-component/styles/default.css';
 import '@scalar/api-reference-react/style.css';
 

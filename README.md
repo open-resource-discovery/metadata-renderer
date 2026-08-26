@@ -17,6 +17,7 @@ React components that render metadata documents of various types consistently.
 - [AsyncAPI](https://asyncapi.com/) 2.x / 3.x (JSON or YAML) — via [@asyncapi/react-component](https://github.com/asyncapi/asyncapi-react)
 - [A2A Agent Cards](https://a2a-protocol.org/latest/specification/) — via [@open-resource-discovery/a2a-editor](https://www.npmjs.com/package/@open-resource-discovery/a2a-editor)
 - [MCP Server Cards](https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127) — via [@open-resource-discovery/mcp-server-card-ui](https://www.npmjs.com/package/@open-resource-discovery/mcp-server-card-ui)
+- [ORD Overlay](https://open-resource-discovery.org/) — via [@open-resource-discovery/overlay-editor](https://www.npmjs.com/package/@open-resource-discovery/overlay-editor)
 
 More formats will be added over time. See the [Support](https://open-resource-discovery.github.io/metadata-renderer/docs/Supported) page for the current list.
 
