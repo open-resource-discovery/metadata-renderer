@@ -70,7 +70,10 @@
             "import": "./dist/overlay.js",
             "default": "./dist/overlay.js"
         },
-        "./styles": "./dist/index.css"
+        "./styles": {
+            "types": "./dist/styles.d.ts",
+            "default": "./dist/index.css"
+        }
     },
     "files": [
         "dist",

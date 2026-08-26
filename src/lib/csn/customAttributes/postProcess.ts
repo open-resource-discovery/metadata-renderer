@@ -59,40 +59,84 @@ function replaceNodeRun(parentNode: Node, startNode: Node, endNode: Node, replac
     }
 }
 
+type AnnotationRun = { key: string; valueNode: Node; codeEl: Element };
+
+// If `node` is an `@Key:` text node whose `next` sibling is <code> (or <a> containing
+// <code>), return the run details; otherwise null. Shared by the apply and strip passes.
+function matchAnnotationRun(node: Node, next: Node | undefined): AnnotationRun | null {
+    if (node.nodeType !== Node.TEXT_NODE) return null;
+
+    const text = (node.textContent ?? '').replace(/^\s+/, '');
+    const match = /^@([\w.]+):\s*$/.exec(text);
+    if (!match) return null;
+
+    // Next sibling must be <code> or <a> containing <code>
+    if (!next || next.nodeType !== Node.ELEMENT_NODE) return null;
+    const el = next as Element;
+
+    let codeEl: Element | null = null;
+    if (el.tagName === 'CODE') {
+        codeEl = el;
+    } else if (el.tagName === 'A') {
+        codeEl = el.querySelector('code');
+    }
+    if (!codeEl) return null;
+
+    return { key: `@${match[1]}`, valueNode: next, codeEl };
+}
+
 // Collect all @Key: <code> (or @Key: <a><code>) pairs in a <td>, without mutating.
 function collectAnnotationPairs(td: Element, renderers: Map<string, RendererEntry>): AnnotationPair[] {
     const pairs: AnnotationPair[] = [];
     const childNodes = Array.from(td.childNodes);
 
     for (let i = 0; i < childNodes.length - 1; i++) {
-        const node = childNodes[i];
-        if (node.nodeType !== Node.TEXT_NODE) continue;
+        const run = matchAnnotationRun(childNodes[i], childNodes[i + 1]);
+        if (!run) continue;
 
-        const text = (node.textContent ?? '').replace(/^\s+/, '');
-        const match = /^@([\w.]+):\s*$/.exec(text);
-        if (!match) continue;
-
-        const key = `@${match[1]}`;
-        const entry = renderers.get(key);
+        const entry = renderers.get(run.key);
         if (!entry) continue;
 
-        // Next sibling must be <code> or <a> containing <code>
-        const valueNode = childNodes[i + 1];
-        if (!valueNode || valueNode.nodeType !== Node.ELEMENT_NODE) continue;
-        const el = valueNode as Element;
-
-        let codeEl: Element | null = null;
-        if (el.tagName === 'CODE') {
-            codeEl = el;
-        } else if (el.tagName === 'A') {
-            codeEl = el.querySelector('code');
-        }
-        if (!codeEl) continue;
-
-        pairs.push({ textNode: node, valueNode, codeEl, key, entry });
+        pairs.push({ textNode: childNodes[i], valueNode: run.valueNode, codeEl: run.codeEl, key: run.key, entry });
     }
 
     return pairs;
+}
+
+// Skip a single whitespace-only text node when looking backwards for a <br> separator.
+function precedingBr(textNode: Node): Node | null {
+    let prev = textNode.previousSibling;
+    if (prev && prev.nodeType === Node.TEXT_NODE && !(prev.textContent ?? '').trim()) {
+        prev = prev.previousSibling;
+    }
+    return prev && prev.nodeType === Node.ELEMENT_NODE && (prev as Element).tagName === 'BR' ? prev : null;
+}
+
+// When custom attributes are disabled, remove every @Key: <code> (or @Key: <a><code>) run
+// so the library's default annotation rows are not shown. Non-annotation content (type:,
+// doc/markdown) is left untouched. Mirrors the AsyncAPI "hide extensions when disabled" fix.
+export function stripAllAnnotations(html: string): string {
+    const domDoc = new DOMParser().parseFromString(html, 'text/html');
+
+    for (const container of Array.from(domDoc.querySelectorAll('td, p'))) {
+        const childNodes = Array.from(container.childNodes);
+
+        // Read-only pass: collect runs (any key) plus each run's preceding <br> separator,
+        // holding node references so removals below don't invalidate later entries.
+        const runs: Array<{ textNode: Node; valueNode: Node; br: Node | null }> = [];
+        for (let i = 0; i < childNodes.length - 1; i++) {
+            const run = matchAnnotationRun(childNodes[i], childNodes[i + 1]);
+            if (!run) continue;
+            runs.push({ textNode: childNodes[i], valueNode: run.valueNode, br: precedingBr(childNodes[i]) });
+        }
+
+        for (const { textNode, valueNode, br } of runs) {
+            replaceNodeRun(container, textNode, valueNode, '');
+            if (br && br.parentNode === container) container.removeChild(br);
+        }
+    }
+
+    return domDoc.body.innerHTML;
 }
 
 export function applyAnnotationRenderers(html: string, configs: CsnCustomAttributesConfig[], doc: Rec | null): string {

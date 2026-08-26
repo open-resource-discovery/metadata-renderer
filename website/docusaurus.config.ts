@@ -75,7 +75,7 @@ const config: Config = {
                 assert: false,
                 net: false,
                 tls: false,
-            };
+            } as const;
             return {
                 name: 'webpack-node-fallbacks',
                 configureWebpack() {
@@ -105,7 +105,7 @@ const config: Config = {
             title: 'Metadata Renderer',
             logo: {
                 alt: 'Metadata Logo',
-                src: 'img/Union.svg',
+                src: 'img/Metadata Renderer.svg',
             },
             items: [
                 {
