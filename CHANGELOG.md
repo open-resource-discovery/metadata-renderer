@@ -24,6 +24,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Fixed
 
+- AsyncAPI: the `PluginSlot` runtime value is now imported from the `@asyncapi/react-component`
+  browser build instead of the default (Node) entry. The default entry pulled in the full
+  `@asyncapi/parser` tree (`@asyncapi/avro-schema-parser` → `avsc`), which references Node
+  builtins (`Buffer`, `crypto`, `util`) and crashed browser consumers with
+  `Cannot read properties of undefined (reading 'alloc')`. The Avro parser is no longer bundled,
+  removing the need for `crypto`/`stream`/`events` polyfills in consuming apps.
 - Overlay renderer: the mobile sidebar footer (shown on narrow layouts) now uses the same
   `--ord-background` / `--ord-muted-foreground` colors as the wide-layout footer and tracks
   the Theme Editor selection, instead of rendering with default light-theme colors.

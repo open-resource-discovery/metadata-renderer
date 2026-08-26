@@ -1,3 +1,3 @@
 declare module '@asyncapi/react-component/browser/index.js' {
-    export { default } from '@asyncapi/react-component';
+    export { default, PluginSlot } from '@asyncapi/react-component';
 }
