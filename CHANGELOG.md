@@ -21,19 +21,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Overlay renderer: inline `<code>` elements are now styled with the `--ord-code-fg` and
   `--ord-code-bg` theme tokens (falling back to `--ord-foreground` / `--ord-muted`, then a
   literal), scoped to the renderer instance.
-- Overlay renderer: fenced code blocks (shiki) now follow the shared `--ord-hljs-*`
-  syntax-highlighting tokens, so they match the other renderers and respond to the Theme
-  Editor's Syntax Highlighting controls in both light and dark. The mapping CSS is generated
-  from shiki's github-light theme (`scripts/generate-overlay-code-styles.mjs`). Note:
-  github-light shares one color across numbers, booleans/null, and JSON property names, so
-  those map to a single token (`--ord-hljs-number`).
 
 ### Fixed
 
-- Overlay renderer: sidebar height now respects the container size when embedded in Docusaurus
-  or other non-fullscreen layouts (measured via `ResizeObserver` and applied as a scoped override
-  of the library's `100dvh` sidebar rule), so the sidebar footer stays visible instead of
-  requiring a full scroll.
+- Overlay renderer: the mobile sidebar footer (shown on narrow layouts) now uses the same
+  `--ord-background` / `--ord-muted-foreground` colors as the wide-layout footer and tracks
+  the Theme Editor selection, instead of rendering with default light-theme colors.
 - AsyncAPI: message- and messageTrait-level custom attributes (`x-*`) are now hidden when
   `customAttributes` is not passed. Previously only document-root attributes were hidden while
   the library's default per-message "Extensions" section still rendered the message-level ones.
