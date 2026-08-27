@@ -1,10 +1,13 @@
 import { createElement, type ComponentType } from 'react';
-import {
-    PluginSlot,
-    type ExtensionComponentProps,
-    type AsyncApiPlugin,
-    type PluginContext,
-} from '@asyncapi/react-component';
+// Import the runtime value (PluginSlot) from the dependency-free leaf module.
+// Importing it from the package root ('@asyncapi/react-component') pulls in the
+// Node parser tree (@asyncapi/parser -> @asyncapi/avro-schema-parser -> avsc),
+// which needs Node builtins (Buffer/crypto/util) and breaks browser consumers.
+// The browser build is UMD and does NOT expose PluginSlot as a named export, so
+// it can't come from there. Type-only imports below are erased at build time,
+// so they can stay on the package root.
+import { PluginSlot } from '@asyncapi/react-component/lib/esm/types.js';
+import type { ExtensionComponentProps, AsyncApiPlugin, PluginContext } from '@asyncapi/react-component';
 import type { AsyncApiCustomAttributesConfig } from './types';
 import { asyncApiContext } from './context';
 import { buildAsyncApiGenericRenderer } from './genericRenderer';
