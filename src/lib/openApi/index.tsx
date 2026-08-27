@@ -38,6 +38,10 @@ export function OpenApiRenderer({ content, customAttributes, className, theme }:
             if (window.location.hash) {
                 history.replaceState(null, '', window.location.pathname + window.location.search);
             }
+            // Scalar's useColorMode adds a light-mode/dark-mode class to document.body and
+            // never removes it on unmount, leaking `color-scheme` onto the host page (white
+            // background). Strip it so the page follows its own theme again.
+            document.body.classList.remove('light-mode', 'dark-mode');
         };
     }, []);
 
