@@ -30,6 +30,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   builtins (`Buffer`, `crypto`, `util`) and crashed browser consumers with
   `Cannot read properties of undefined (reading 'alloc')`. The Avro parser is no longer bundled,
   removing the need for `crypto`/`stream`/`events` polyfills in consuming apps.
+- OpenAPI renderer: the underlying Scalar component adds a `light-mode`/`dark-mode` class to
+  `document.body` and never removes it on unmount, leaking `color-scheme` onto the host page and
+  forcing a white background after the renderer was navigated away from. `OpenApiRenderer` now
+  strips those classes on unmount so the host page follows its own theme again.
+- Playground: the Theme Editor and Options panels no longer lose their state when switching
+  between them. They were rendered via a ternary at the same tree position, so opening the other
+  panel unmounted the first and reset all its local state; both panels now stay mounted with
+  visibility toggled via CSS, preserving the selected theme, custom colors, and Options toggles.
 - Overlay renderer: the mobile sidebar footer (shown on narrow layouts) now uses the same
   `--ord-background` / `--ord-muted-foreground` colors as the wide-layout footer and tracks
   the Theme Editor selection, instead of rendering with default light-theme colors.
@@ -47,6 +55,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Playground toolbar extracted into a standalone full-width bar rendered above the resizable panels, so toolbar controls remain visible and consistently positioned regardless of panel size or resize operations
 - Toolbar controls (format selector, type selector, Copy, Clear, Theme Editor, Options) lifted out of the editor panel and are now accessible without resizing or scrolling within a panel
 - Monaco editor height now fills remaining viewport space via flexbox layout instead of a hardcoded `calc(100vh - ...)` value, improving correctness across different screen sizes and when the toolbar height changes
+- Documentation site: the Infima primary/accent color palette (light and dark) now derives from the logo color instead of the default Docusaurus green.
 
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 

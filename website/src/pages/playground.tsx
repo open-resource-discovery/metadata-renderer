@@ -100,27 +100,32 @@ export default function Playground() {
                     >
                         <div className={styles.ThemePanel}>
                             <BrowserOnly>
-                                {() =>
-                                    openPanel === 'options' ? (
-                                        <Suspense fallback={null}>
-                                            <OptionsEditor
-                                                onOptionsChange={setRendererOptions}
-                                                onClose={() => togglePanel('options')}
-                                                autoDetect={autoDetect}
-                                                onAutoDetectChange={handleAutoDetectChange}
-                                                strictTypeCheck={strictTypeCheck}
-                                                onStrictTypeCheckChange={setStrictTypeCheck}
+                                {() => (
+                                    <>
+                                        {/* Both panels stay mounted so their local state survives
+                                            switching between them; CSS toggles which one is visible. */}
+                                        <div style={{ display: openPanel === 'theme' ? 'contents' : 'none' }}>
+                                            <ThemeEditor
+                                                target={previewRef}
+                                                file={file}
+                                                onClose={() => togglePanel('theme')}
+                                                onThemeChange={setRendererTheme}
                                             />
+                                        </div>
+                                        <Suspense fallback={null}>
+                                            <div style={{ display: openPanel === 'options' ? 'contents' : 'none' }}>
+                                                <OptionsEditor
+                                                    onOptionsChange={setRendererOptions}
+                                                    onClose={() => togglePanel('options')}
+                                                    autoDetect={autoDetect}
+                                                    onAutoDetectChange={handleAutoDetectChange}
+                                                    strictTypeCheck={strictTypeCheck}
+                                                    onStrictTypeCheckChange={setStrictTypeCheck}
+                                                />
+                                            </div>
                                         </Suspense>
-                                    ) : (
-                                        <ThemeEditor
-                                            target={previewRef}
-                                            file={file}
-                                            onClose={() => togglePanel('theme')}
-                                            onThemeChange={setRendererTheme}
-                                        />
-                                    )
-                                }
+                                    </>
+                                )}
                             </BrowserOnly>
                         </div>
                     </Panel>
