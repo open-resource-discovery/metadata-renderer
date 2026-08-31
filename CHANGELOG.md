@@ -56,6 +56,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Toolbar controls (format selector, type selector, Copy, Clear, Theme Editor, Options) lifted out of the editor panel and are now accessible without resizing or scrolling within a panel
 - Monaco editor height now fills remaining viewport space via flexbox layout instead of a hardcoded `calc(100vh - ...)` value, improving correctness across different screen sizes and when the toolbar height changes
 - Documentation site: the Infima primary/accent color palette (light and dark) now derives from the logo color instead of the default Docusaurus green.
+- New demo video
 
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 
