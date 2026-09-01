@@ -94,16 +94,10 @@
     color: var(--ifm-color-emphasis-800) !important;
 }
 
-/*.typeLink:hover .logo {
-    transform: scale(1.07);
-}*/
-
 .logoContainer {
     display: flex;
     align-items: center;
     justify-content: center;
-    /*width: 130px;
-    height: 60px;*/
 }
 
 .logo {
@@ -115,16 +109,6 @@
     object-fit: contain;
     transition: transform 0.2s ease;
 }
-
-/* A2A logo has very large internal coordinates — scale it down */
-/*.logoContainer[data-format="a2a"] .logo {
-    max-height: 26px;
-}*/
-
-/* MCP logo is compact with large text — scale it down */
-/*.logoContainer[data-format="mcp"] .logo {
-    max-height: 27px;
-}*/
 
 @media (max-width: 600px) {
     .typeList {
