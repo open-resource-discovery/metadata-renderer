@@ -1,0 +1,143 @@
+.hero {
+    padding: 4rem 0 3rem;
+    text-align: center;
+    background: transparent;
+}
+
+.heroInner {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+.heroLogo {
+    margin-left: auto;
+    margin-right: auto;
+    width: 180px;
+    padding-bottom: 40px;
+}
+
+.heroTitle {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 1rem;
+}
+
+.heroSubtitle {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    color: var(--ifm-color-emphasis-700);
+    margin-bottom: 2rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.heroCta {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.supported {
+    padding: 2.5rem 0 4rem;
+    border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.supportedInner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+
+.supportedTitle {
+    font-size: clamp(1.25rem, 4vw, 3rem);
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.typeList {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.typeItem {
+    flex: 0 0 auto;
+    align-content: center;
+    border: solid darkgray;
+    border-width: thin;
+    border-radius: var(--ifm-global-radius);
+    padding: 15px;
+    box-shadow: var(--ifm-global-shadow-lw);
+    &:hover {
+        background: var(--muted, var(--ifm-color-emphasis-100));
+        border-color: var(--primary, var(--ifm-color-primary));
+        box-shadow: 0 4px 12px #0000001a;
+        transform: translateY(-2px);
+    }
+}
+
+.typeLink {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none !important;
+    color: var(--ifm-color-emphasis-800) !important;
+}
+
+/*.typeLink:hover .logo {
+    transform: scale(1.07);
+}*/
+
+.logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /*width: 130px;
+    height: 60px;*/
+}
+
+.logo {
+    max-width: 140px;
+    max-height: 33px;
+    width: auto;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    transition: transform 0.2s ease;
+}
+
+/* A2A logo has very large internal coordinates — scale it down */
+/*.logoContainer[data-format="a2a"] .logo {
+    max-height: 26px;
+}*/
+
+/* MCP logo is compact with large text — scale it down */
+/*.logoContainer[data-format="mcp"] .logo {
+    max-height: 27px;
+}*/
+
+@media (max-width: 600px) {
+    .typeList {
+        gap: 1.25rem 1.5rem;
+    }
+
+    .logoContainer {
+        width: 90px;
+        height: 46px;
+    }
+
+    .logo {
+        max-width: 90px;
+        max-height: 40px;
+    }
+}

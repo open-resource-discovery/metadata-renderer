@@ -19,6 +19,7 @@
         "typecheck": "tsc"
     },
     "dependencies": {
+        "@easyops-cn/docusaurus-search-local": "0.55.3",
         "@asyncapi/react-component": "^2.6.5",
         "@docusaurus/core": "3.10.1",
         "@docusaurus/faster": "^3.10.2",
