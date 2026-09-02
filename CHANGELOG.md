@@ -37,6 +37,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   builtins (`Buffer`, `crypto`, `util`) and crashed browser consumers with
   `Cannot read properties of undefined (reading 'alloc')`. The Avro parser is no longer bundled,
   removing the need for `crypto`/`stream`/`events` polyfills in consuming apps.
+- Home page hero logo now resolves correctly in PR previews and non-root deployments by using `useBaseUrl` instead of a bare relative path.
 - OpenAPI renderer: the underlying Scalar component adds a `light-mode`/`dark-mode` class to
   `document.body` and never removes it on unmount, leaking `color-scheme` onto the host page and
   forcing a white background after the renderer was navigated away from. `OpenApiRenderer` now

@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useColorMode } from '@docusaurus/theme-common';
 import styles from './index.module.css';
 
@@ -67,6 +68,7 @@ function SupportedTypes(): React.JSX.Element {
 }
 
 export default function Home(): React.JSX.Element {
+    const heroLogoSrc = useBaseUrl('img/Metadata renderer.svg');
     return (
         <Layout
             title="Metadata Renderer"
@@ -74,7 +76,7 @@ export default function Home(): React.JSX.Element {
         >
             <section className={styles.hero}>
                 <div className={styles.heroInner}>
-                    <img src="img/Metadata renderer.svg" className={styles.heroLogo} />
+                    <img src={heroLogoSrc} className={styles.heroLogo} />
 
                     <h1 className={styles.heroTitle}>Metadata Renderer</h1>
                     <p className={styles.heroSubtitle}>
