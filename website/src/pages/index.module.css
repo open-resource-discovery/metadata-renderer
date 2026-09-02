@@ -1,5 +1,5 @@
 .hero {
-    padding: 4rem 0 3rem;
+    padding: 3rem 0 2rem;
     text-align: center;
     background: transparent;
 }
@@ -42,8 +42,7 @@
 }
 
 .supported {
-    padding: 2.5rem 0 4rem;
-    border-top: 1px solid var(--ifm-color-emphasis-200);
+    padding: 1rem 0 2.5rem;
 }
 
 .supportedInner {
@@ -54,7 +53,7 @@
 }
 
 .supportedTitle {
-    font-size: clamp(1.25rem, 4vw, 3rem);
+    font-size: clamp(1.25rem, 2.75vw, 3rem);
     font-weight: 600;
     margin-bottom: 2rem;
 }
@@ -111,17 +110,11 @@
 }
 
 @media (max-width: 600px) {
-    .typeList {
-        gap: 1.25rem 1.5rem;
-    }
-
-    .logoContainer {
-        width: 90px;
-        height: 46px;
-    }
-
     .logo {
         max-width: 90px;
-        max-height: 40px;
+        max-height: 25px;
+    }
+    .typeItem {
+        min-width: 120px;
     }
 }
