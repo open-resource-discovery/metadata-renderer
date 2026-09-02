@@ -68,7 +68,7 @@ function SupportedTypes(): React.JSX.Element {
 }
 
 export default function Home(): React.JSX.Element {
-    const heroLogoSrc = useBaseUrl('img/Metadata renderer.svg');
+    const heroLogoSrc = useBaseUrl('img/Metadata Renderer.svg');
     return (
         <Layout
             title="Metadata Renderer"
