@@ -26,7 +26,6 @@
         "@docusaurus/preset-classic": "3.10.1",
         "@mdx-js/react": "^3.0.0",
         "@monaco-editor/react": "^4.7.0",
-        "@open-resource-discovery/a2a-editor": "^0.4.2",
         "@open-resource-discovery/metadata-renderer": "file:..",
         "clsx": "^2.0.0",
         "monaco-editor": "^0.53.0",
@@ -39,14 +38,14 @@
         "serialize-javascript": "^7.0.3",
         "uuid": "^14.0.1",
         "dompurify": ">=3.4.12",
-        "fast-uri": ">=3.1.5",
         "undici": ">=7.29.0 <8",
         "postcss": ">=8.5.23",
         "brace-expansion": ">=1.1.18",
         "js-yaml@^4": "4.3.1",
         "gray-matter": {
             "js-yaml": "3.15.1"
-        }
+        },
+        "qs": "^6.16.0"
     },
     "devDependencies": {
         "@docusaurus/module-type-aliases": "3.10.1",

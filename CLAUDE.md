@@ -68,9 +68,9 @@ The lib build produces separate entry points for tree-shaking: `index`, `openapi
 
 ### CSS isolation
 
-The ORD card libraries (a2a-editor, mcp-server-card-ui) are Tailwind v4, which wraps its preflight reset in a cascade layer (`@layer base { *, ::before, ::after { margin: 0; box-sizing: border-box; … } }`). That layered reset **does** ship in `dist/index.css`, but because styles inside any `@layer` lose to unlayered styles regardless of specificity, the host page's own (unlayered) resets — e.g. Docusaurus/Infima — always win. So the preflight can't leak into the host page even though it's present.
+The ORD card libraries (a2a-editor, mcp-server-card-ui, overlay-editor) build on `@open-resource-discovery/ui-components`, which ships a self-contained, **`.ord-ui`-scoped reset** (`.ord-ui, .ord-ui :where(*) { … }`). The reset is emitted *unlayered* but is confined by the `.ord-ui` scope: it applies inside each renderer's `.ord-ui` wrapper (beating the host page's unlayered element rules there, since `.ord-ui :where(el)` out-specifies bare `el`) yet cannot match host elements outside `.ord-ui`, so it never leaks into the host page (Docusaurus/Infima). ui-components' internal utilities are namespaced (`ordu:`) and its tokens live under `.ord-ui`, so nothing collides with host CSS.
 
-This cascade-layer behavior is why the old `stripUnscopedPreflight` Vite plugin (which surgically removed the reset at build time, needed back when Tailwind v3 emitted _unlayered_ preflight) is no longer necessary. It is left commented out in `vite.config.ts` and has no implementation in the repo.
+Because isolation now comes from scoping rather than from the reset losing the cascade, no build-time preflight stripping is needed. (An old `stripUnscopedPreflight` Vite plugin — for the pre-scoping era — was removed; it had no implementation in the repo.)
 
 CSN renders in **light DOM** — a `.csn-root` div with an inline `<style>`, isolated purely by the `.csn-root` class prefix on every rule. (A `ShadowRoot` wrapper exists at `src/lib/core/ShadowRoot.tsx` but is not currently used by CsnRenderer.)
 

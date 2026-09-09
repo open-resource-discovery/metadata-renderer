@@ -46,7 +46,6 @@ export default defineConfig(({ mode }) => {
                                     copyDtsFiles: true,
                                 }),
                             ]),
-                      //stripUnscopedPreflight(),
                   ]
                 : []),
         ],
