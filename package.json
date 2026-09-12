@@ -128,9 +128,9 @@
     },
     "devDependencies": {
         "@sap/eslint-config": "0.5.2",
-        "@types/node": "24.13.3",
-        "@types/react": "19.2.17",
-        "@types/react-dom": "19.2.3",
+        "@types/node": "24.13.4",
+        "@types/react": "19.3.0",
+        "@types/react-dom": "19.3.0",
         "@vitejs/plugin-react": "6.0.5",
         "eslint": "10.6.0",
         "jsdom": "29.1.1",
