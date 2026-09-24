@@ -40,8 +40,8 @@ export default defineConfig(({ mode }) => {
                           : [
                                 dts({
                                     include: ['src/lib/**/*.ts', 'src/lib/**/*.tsx'],
-                                    outDir: 'dist',
-                                    rollupTypes: false,
+                                    outDirs: 'dist',
+                                    bundleTypes: false,
                                     tsconfigPath: './tsconfig.app.json',
                                     copyDtsFiles: true,
                                 }),
