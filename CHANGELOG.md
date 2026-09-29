@@ -9,6 +9,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ### Added
 
+- Added Neo Nephos footer (swizzled Docusaurus `Footer` component) with EU/NextGenerationEU funding notice, Linux Foundation Europe copyright, and theme-aware Neonephos logo, matching the `a2a-editor` and `overlay-editor` sites.
+- Added `@easyops-cn/docusaurus-search-local` for full-text doc search in the navbar.
+- Styled the navbar GitHub button and search bar to match the `a2a-editor` site (GitHub SVG icon pill, custom search box with icon and keyboard hint).
+- Added a home page with a hero section, short library description, and a link to the playground. Supported document types are shown as animated logo cards (OpenAPI, AsyncAPI, A2A, MCP, CSN Interop, ORD Overlay), each linking to its section in the Supported docs. Docs are now served under `/docs/` to make room for the home page.
+- The Home navbar item is now highlighted only on the root page, not while browsing the docs or playground.
+- Rewrote the Supported documentation page into per-format sections, each with a short description and links to the format's website/specification and its renderer.
+
 - **Overlay renderer** for [ORD Overlay](https://open-resource-discovery.org/) 0.1 documents,
   via the published [@open-resource-discovery/overlay-editor](https://www.npmjs.com/package/@open-resource-discovery/overlay-editor)
   package. Auto-detected from documents carrying an `ordOverlay` version string and a
@@ -30,6 +37,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   builtins (`Buffer`, `crypto`, `util`) and crashed browser consumers with
   `Cannot read properties of undefined (reading 'alloc')`. The Avro parser is no longer bundled,
   removing the need for `crypto`/`stream`/`events` polyfills in consuming apps.
+- Home page hero logo now resolves correctly in PR previews and non-root deployments by using `useBaseUrl` instead of a bare relative path.
 - OpenAPI renderer: the underlying Scalar component adds a `light-mode`/`dark-mode` class to
   `document.body` and never removes it on unmount, leaking `color-scheme` onto the host page and
   forcing a white background after the renderer was navigated away from. `OpenApiRenderer` now

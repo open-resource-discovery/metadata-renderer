@@ -18,6 +18,13 @@ const LAYER_ORDER = [
     'utilities',
 ].join(', ');
 
+const baseUrl = process.env.BASE_URL || '/metadata-renderer/';
+
+// The Home item should only be highlighted on the exact root page.
+// activeBaseRegex is matched against location.pathname, which includes baseUrl,
+// so match the baseUrl exactly (with or without a trailing slash).
+const homeActiveRegex = `^${baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\/$/, '')}/?$`;
+
 const config: Config = {
     title: 'Metadata Renderer',
     tagline: 'Rendering SAP Metadata with one component',
@@ -30,7 +37,7 @@ const config: Config = {
         },
     },
     url: 'https://open-resource-discovery.github.io',
-    baseUrl: process.env.BASE_URL || '/metadata-renderer/',
+    baseUrl,
     organizationName: 'ORD',
     projectName: 'metadata-renderer',
     onBrokenLinks: 'throw',
@@ -45,7 +52,7 @@ const config: Config = {
             {
                 docs: {
                     sidebarPath: './sidebars.ts',
-                    routeBasePath: '/',
+                    routeBasePath: '/docs',
                 },
                 theme: {
                     customCss: './src/css/custom.css',
@@ -53,6 +60,8 @@ const config: Config = {
             } satisfies Preset.Options,
         ],
     ],
+
+    themes: ['@easyops-cn/docusaurus-search-local'],
 
     plugins: [
         // @asyncapi/parser pulls in `avsc` etc. which reference Node builtins
@@ -109,6 +118,12 @@ const config: Config = {
             },
             items: [
                 {
+                    to: '/',
+                    label: 'Home',
+                    position: 'left',
+                    activeBaseRegex: homeActiveRegex,
+                },
+                {
                     type: 'docSidebar',
                     position: 'left',
                     sidebarId: 'tutorialSidebar',
@@ -123,6 +138,7 @@ const config: Config = {
                     href: 'https://github.com/open-resource-discovery/metadata-renderer',
                     label: 'GitHub',
                     position: 'right',
+                    className: 'header-github-pill',
                 },
             ],
         },
