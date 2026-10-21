@@ -5,7 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) rules.
 
-
 ## [unreleased]
 
 ## [[1.1.0](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.1.0)] - 2026-10-21
@@ -69,7 +68,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Documentation site: the Infima primary/accent color palette (light and dark) now derives from the logo color instead of the default Docusaurus green.
 - New demo video
 - Indidividual renderers (a2a-editor, mcp-server-card-ui and overlay-editor) upgradet to the versions, using `@open-resource-discovery/ui-components@0.2.0`
-
 
 ## [[1.0.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.0.1)] - 2026-08-12
 
