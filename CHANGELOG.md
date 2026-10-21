@@ -7,6 +7,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [unreleased]
 
+## [[1.1.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.1.1)] - 2026-10-21
+
+### Fixed
+
+- OpenAPI: the preview no longer grows far beyond its content when the host doesn't give it a fixed
+  height. The Scalar sidebar height is now capped at the visible height of the nearest scroll
+  container (or the viewport), so the layout can no longer get stuck at a past, larger height.
+
 ## [[1.1.0](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.1.0)] - 2026-10-21
 
 ### Added

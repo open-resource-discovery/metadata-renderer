@@ -4,6 +4,7 @@ import '@scalar/api-reference-react/style.css';
 import { openApiContext, getVersion } from './utils/context';
 import { buildCustomAttributesPlugin } from './utils/plugins';
 import { buildScalarThemeStyles } from './utils/scalarTheme';
+import { findScrollParent, sidebarHeight } from './utils/sidebarHeight';
 import { extractCustomAttributeValues, injectSchemaExtensions } from './customAttributes/autoDiscover';
 
 import sapAttributeStyles from './styles';
@@ -29,12 +30,20 @@ export function OpenApiRenderer({ content, customAttributes, className, theme }:
     useEffect(() => {
         const el = containerRef.current;
         if (!el) return;
-        const ro = new ResizeObserver(([entry]) => {
-            el.style.setProperty('--scalar-container-height', `${entry.contentRect.height}px`);
-        });
+        // Drives Scalar's sticky sidebar height (see styles.ts), capped at what is visible of the
+        // container so an auto-height host can't make the layout grow without bound (sidebarHeight.ts).
+        const scrollPort = findScrollParent(el);
+        const update = () => {
+            const height = sidebarHeight(el.clientHeight, scrollPort?.clientHeight ?? null, window.innerHeight);
+            el.style.setProperty('--scalar-container-height', `${height}px`);
+        };
+        const ro = new ResizeObserver(update);
         ro.observe(el);
+        if (scrollPort) ro.observe(scrollPort);
+        window.addEventListener('resize', update);
         return () => {
             ro.disconnect();
+            window.removeEventListener('resize', update);
             if (window.location.hash) {
                 history.replaceState(null, '', window.location.pathname + window.location.search);
             }

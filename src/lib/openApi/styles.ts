@@ -186,7 +186,8 @@ a:hover {
 }
 
 /* Override Scalar's sidebar height variable so the <aside> uses our measured container height
-   instead of Scalar's default 100dvh (which breaks when embedded in Docusaurus/non-fullscreen). */
+   instead of Scalar's default 100dvh (which breaks when embedded in Docusaurus/non-fullscreen).
+   The measurement is capped at the visible height — see utils/sidebarHeight.ts. */
 .scalar-app {
     --refs-sidebar-height: calc(var(--scalar-container-height, 100dvh) - var(--refs-header-height, 0px));
 }
