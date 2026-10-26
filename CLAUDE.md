@@ -68,9 +68,13 @@ The lib build produces separate entry points for tree-shaking: `index`, `openapi
 
 ### CSS isolation
 
-The ORD card libraries (a2a-editor, mcp-server-card-ui) are Tailwind v4, which wraps its preflight reset in a cascade layer (`@layer base { *, ::before, ::after { margin: 0; box-sizing: border-box; … } }`). That layered reset **does** ship in `dist/index.css`, but because styles inside any `@layer` lose to unlayered styles regardless of specificity, the host page's own (unlayered) resets — e.g. Docusaurus/Infima — always win. So the preflight can't leak into the host page even though it's present.
+The ORD card libraries (a2a-editor, mcp-server-card-ui) are Tailwind v4 and re-bundle `@open-resource-discovery/ui-components`' hand-written, `.ord-ui`-scoped reset (via `@import "…/ui-components/styles"` in their own `styles.css`). That reset — `.ord-ui :where(*){margin:0;padding:0}` plus border-box rules — has **real specificity `(0,1,0)`** (the `.ord-ui` class sits outside the `:where()`), so it is _not_ harmless: it matches every `.ord-ui` subtree on the page.
 
-This cascade-layer behavior is why the old `stripUnscopedPreflight` Vite plugin (which surgically removed the reset at build time, needed back when Tailwind v3 emitted _unlayered_ preflight) is no longer necessary. It is left commented out in `vite.config.ts` and has no implementation in the repo.
+The earlier "it's in `@layer base`, so unlayered host resets always win" reasoning only protects the **host page**. It does **not** protect a consumer that renders its own `@open-resource-discovery/ui-components` components: those are also wrapped in `.ord-ui`, so a second, late-loaded copy of this reset (one from a2a, one from mcp, aggregated into our `dist/index.css`) re-zeroes the consumer's own padding/margins (e.g. their cards).
+
+The fix lives **upstream** in a2a-editor and mcp-server-card-ui: their library build (`vite.config.ts`, lib mode) runs a `confineOrdUiReset` PostCSS step that rewrites every bare `.ord-ui` to the compound `.a2a-root.ord-ui` / `.mcp-root.ord-ui` (the card root is the same element as `.ord-ui`), and `:root`/`:host` theme blocks to that same card root. A build-time safety gate fails if any bare `.ord-ui` survives. overlay-editor already avoids the leak the same way (`scopeToCardView()` in its standalone config). As a result, `dist/index.css` here must contain **zero** bare `.ord-ui :where(*)` rules — only confined `.a2a-root.ord-ui …` / `.mcp-root.ord-ui …` copies. (The old `stripUnscopedPreflight` Vite plugin remains commented out in `vite.config.ts` with no implementation.)
+
+Note: Scalar teleports its search modal to `#headlessui-portal-root` on `document.body`, outside any renderer container. A consumer must therefore **not** re-scope our `dist/index.css` under a wrapper class (e.g. via a selector-prefixing script) — doing so is what breaks the search popup, because the teleported modal escapes that wrapper. With the `.ord-ui` leak fixed upstream, consumers can import `/styles` globally and drop any such workaround.
 
 CSN renders in **light DOM** — a `.csn-root` div with an inline `<style>`, isolated purely by the `.csn-root` class prefix on every rule. (A `ShadowRoot` wrapper exists at `src/lib/core/ShadowRoot.tsx` but is not currently used by CsnRenderer.)
 
@@ -85,6 +89,12 @@ For how each renderer is themed — native library output vs. this project's cus
 ### Build externalization
 
 The lib build externalizes **all** dependencies — including a2a-editor and mcp-server-card-ui. Consumers' bundlers resolve them. Only CSS is inlined.
+
+### Scalar version pinning (do not use caret ranges)
+
+`@scalar/api-reference` styles its layout grid and search modal with **Vue scoped styles** — selectors like `.references-layout[data-v-f08574be]` whose hash changes every Scalar version and must match the `data-v-…` attribute the running JS stamps on the DOM. Because the lib build **inlines Scalar's CSS** into `dist/index.css` but **externalizes Scalar's JS**, the consumer resolves the JS version independently. If that version differs from the one the CSS was inlined from, the hashes don't match and Scalar's layout silently collapses to a stacked/narrow layout and the search modal renders unstyled.
+
+Therefore `@scalar/api-reference-react`, `@scalar/react-renderer`, and `@scalar/types` are pinned to **exact** versions (not caret), so a consumer resolves the same JS whose CSS is inlined. `@scalar/api-reference-react` transitively pins `@scalar/api-reference` exactly, so pinning the react wrapper is sufficient. **Any Scalar bump is a lockstep change**: bump the exact pins, rebuild (CSS re-inlines), and re-verify the two metadata-renderer→Scalar CSS integrations against the new version's variable/class names — the theming map in `openApi/utils/scalarTheme.ts` (`--ord-*` → `--scalar-*` on `.scalar-app`/`.t-doc__sidebar`/`.dark-mode`/`#headlessui-portal-root`) and the sidebar-height override in `openApi/styles.ts` (`--refs-sidebar-height`, `--refs-header-height`, `--scalar-container-height`). These use named hooks (not the `data-v` hash), but a version can still rename them.
 
 ## Path aliases
 
