@@ -5,7 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) rules.
 
-## [unreleased]
+## [[1.1.2](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.1.2)] - 2026-10-27
+
+### Fixed
+
+- Pinned `@scalar/api-reference-react`, `@scalar/react-renderer`, and `@scalar/types`
+  to exact versions. Scalar's layout grid and search modal use Vue scoped styles
+  (hash-coupled CSS↔JS); because the lib inlines Scalar's CSS but externalizes its
+  JS, a caret range let consumers resolve a different Scalar version, breaking the
+  OpenAPI layout (stacked, full-width sidebar) and the search modal. Exact pins keep
+  the inlined CSS and the consumer-resolved JS on the same version.
+
+### Changed
+
+- Upgraded `@open-resource-discovery/a2a-editor` to `^0.4.7` and
+  `@open-resource-discovery/mcp-server-card-ui` to `^0.2.4`, which confine the
+  ui-components `.ord-ui` preflight reset to their card roots — the bundled
+  `dist/index.css` no longer leaks that reset onto a host app's own `.ord-ui`
+  elements.
 
 ## [[1.1.1](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.1.1)] - 2026-10-21
 
