@@ -113,7 +113,7 @@
         "@open-resource-discovery/overlay-editor": "^0.2.3",
         "@open-resource-discovery/ui-components": "^0.3.1",
         "@sap/csn-interop-renderer": "0.5.0",
-        "@scalar/api-reference-react": "0.9.83",
+        "@scalar/api-reference-react": "0.9.87",
         "@scalar/react-renderer": "0.4.5",
         "@scalar/types": "0.26.0",
         "react-error-boundary": "^6.0.0",
