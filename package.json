@@ -20,7 +20,7 @@
         "mcp"
     ],
     "engines": {
-        "node": ">=22",
+        "node": "22.23.4",
         "npm": ">=10"
     },
     "type": "module",
