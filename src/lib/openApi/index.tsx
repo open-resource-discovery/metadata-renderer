@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useRef } from 'react';
-import { ApiReferenceReact, type AnyApiReferenceConfiguration } from '@scalar/api-reference-react';
+import { createApiReference } from '@scalar/api-reference';
+import { type AnyApiReferenceConfiguration } from '@scalar/api-reference-react';
 import '@scalar/api-reference-react/style.css';
 import { openApiContext, getVersion } from './utils/context';
 import { buildCustomAttributesPlugin } from './utils/plugins';
@@ -12,6 +13,15 @@ import type { RendererTheme } from '../types';
 import type { OpenApiCustomAttributesConfig } from './customAttributes/types';
 import { loadObject } from '../core/utils';
 
+// Scalar is a Vue app; @scalar/api-reference-react's wrapper sets these Vue feature
+// flags as a side effect of importing its `vue-bundler-flags` module. We mount Scalar
+// directly (via createApiReference) instead of through that wrapper, so set the flags
+// here too — otherwise Vue logs a "feature flags not explicitly defined" dev warning.
+const vueFlags = globalThis as unknown as Record<string, boolean>;
+vueFlags.__VUE_OPTIONS_API__ = true;
+vueFlags.__VUE_PROD_HYDRATION_MISMATCH_DETAILS__ = true;
+vueFlags.__VUE_PROD_DEVTOOLS__ = false;
+
 export type OpenApiRendererProps = {
     content: string;
     customAttributes?: OpenApiCustomAttributesConfig[];
@@ -22,6 +32,8 @@ export type OpenApiRendererProps = {
 export function OpenApiRenderer({ content, customAttributes, className, theme }: OpenApiRendererProps) {
     const id = useId();
     const containerRef = useRef<HTMLDivElement>(null);
+    const scalarRef = useRef<HTMLDivElement>(null);
+    const instanceRef = useRef<ReturnType<typeof createApiReference> | null>(null);
     const isDark = className?.split(/\s+/).includes('dark') ?? false;
 
     const activeConfigs = useMemo<OpenApiCustomAttributesConfig[]>(() => customAttributes ?? [], [customAttributes]);
@@ -86,14 +98,47 @@ export function OpenApiRenderer({ content, customAttributes, className, theme }:
         };
     }, [content, isDark, isEnabled, activeConfigs]);
 
+    // Mount Scalar directly rather than through @scalar/api-reference-react, whose effect
+    // cleanup returns `instance.destroy` and so runs synchronously during React's commit.
+    // That synchronous teardown chains into Vue's app.unmount() → @scalar/react-renderer's
+    // nested react-dom root.unmount(), which React 19 warns about ("Attempted to
+    // synchronously unmount a root while React was already rendering"). Remount on the same
+    // identity the old `key` encoded (isDark / isEnabled / customAttributesKey).
+    //
+    // Each mount gets its OWN fresh child element inside the stable host: createApiReference
+    // calls app.mount() on the element we pass and destroy() → app.unmount() clears it. If
+    // instances shared one element, the deferred destroy of the outgoing instance would wipe
+    // the DOM of the incoming one (and a non-empty element makes Scalar mount in SSR/hydration
+    // mode — html-api.js). A per-mount child keeps outgoing teardown from touching the new app.
+    useEffect(() => {
+        const host = scalarRef.current;
+        if (!host) return;
+        const mountPoint = document.createElement('div');
+        mountPoint.style.height = '100%';
+        host.appendChild(mountPoint);
+        const instance = createApiReference(mountPoint, { _integration: 'react', ...configuration });
+        instanceRef.current = instance;
+        return () => {
+            instanceRef.current = null;
+            // Defer teardown out of React's commit phase so the nested react-dom
+            // root.unmount() runs after the host finishes committing, not during it.
+            queueMicrotask(() => {
+                instance.destroy();
+                mountPoint.remove();
+            });
+        };
+    }, [isDark, isEnabled, customAttributesKey]);
+
+    // Apply config changes reactively (what ApiReferenceReact's second effect did).
+    useEffect(() => {
+        instanceRef.current?.updateConfiguration({ _integration: 'react', ...configuration });
+    }, [configuration]);
+
     return (
         <div ref={containerRef} data-renderer-id={id} style={{ height: '100%', ...theme }}>
             <style>{sapAttributeStyles}</style>
             {theme && <style>{buildScalarThemeStyles(id, theme as Record<string, string>)}</style>}
-            <ApiReferenceReact
-                key={`${isDark ? 'dark' : 'light'}-${isEnabled}-${customAttributesKey}`}
-                configuration={configuration}
-            />
+            <div ref={scalarRef} />
         </div>
     );
 }
