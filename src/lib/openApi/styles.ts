@@ -127,16 +127,6 @@ export default `
     }
 }
 
-a {
-    text-decoration: none;
-    color: var(--sapLinkColor);
-    transition: color 0.1s ease-in-out;
-    cursor: pointer;
-}
-a:hover {
-    text-decoration: underline;
-}
-
 /* Keyboard key: use Scalar background instead of Infima colors */
 .scalar-app kbd {
     background: var(--scalar-background-1);
