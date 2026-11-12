@@ -16,11 +16,15 @@
                 "@open-resource-discovery/overlay-editor",
                 "@open-resource-discovery/ui-components",
                 "@sap/csn-interop-renderer",
-                "@scalar/api-reference-react",
-                "@scalar/react-renderer",
-                "@scalar/types"
+  
             ],
             "automerge": false
+        },
+        {
+            "matchPackageNames": ["/^@scalar\\//"],
+            "groupName": "Scalar",
+            "automerge": false,
+            "description": "Bump every @scalar/* package together in one PR and never automerge it. The lib inlines Scalar's CSS but externalizes its JS, so all @scalar/* versions must stay in lockstep (see CLAUDE.md 'Scalar version pinning'). A Scalar bump needs manual re-verification of theming/CSS integrations, so it must not automerge. The scalarVersionLockstep test fails CI if the grouped versions ever drift."
         }
     ]
 }
