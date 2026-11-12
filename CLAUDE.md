@@ -54,13 +54,13 @@ AsyncAPI is lazy-loaded to keep it out of the main bundle (it pulls in Node buil
 
 Each renderer is in its own directory under `src/lib/`:
 
-| Format   | Renderer             | External library                                                                 |
-| -------- | -------------------- | -------------------------------------------------------------------------------- |
+| Format   | Renderer             | External library                                                                                  |
+| -------- | -------------------- | ------------------------------------------------------------------------------------------------- |
 | OpenAPI  | `openApi/index.tsx`  | `createApiReference` from `@scalar/api-reference` (CSS + types via `@scalar/api-reference-react`) |
-| CSN      | `csn/index.tsx`      | `@sap/csn-interop-renderer` (inside ShadowRoot for CSS isolation)                |
-| AsyncAPI | `asyncApi/index.tsx` | `@asyncapi/react-component`                                                      |
-| A2A      | `a2a/index.tsx`      | `AgentCardView` from `@open-resource-discovery/a2a-editor/card-view`             |
-| MCP      | `mcp/index.tsx`      | `MCPServerCardView` from `@open-resource-discovery/mcp-server-card-ui/card-view` |
+| CSN      | `csn/index.tsx`      | `@sap/csn-interop-renderer` (inside ShadowRoot for CSS isolation)                                 |
+| AsyncAPI | `asyncApi/index.tsx` | `@asyncapi/react-component`                                                                       |
+| A2A      | `a2a/index.tsx`      | `AgentCardView` from `@open-resource-discovery/a2a-editor/card-view`                              |
+| MCP      | `mcp/index.tsx`      | `MCPServerCardView` from `@open-resource-discovery/mcp-server-card-ui/card-view`                  |
 
 ### Entry points
 
