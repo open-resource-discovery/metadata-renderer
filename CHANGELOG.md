@@ -258,3 +258,10 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Downgrade direct `monaco-editor` dependency in the website from `^0.55.0` to `^0.53.0`
   to avoid the vulnerable range (`0.54.0-dev-20250909 – 0.56.0-dev-20260211`) that ships
   a vulnerable `dompurify`.
+
+
+## [unreleased]
+
+## [[1.1.3](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.1.3)] - 2026-11-12
+This release includes the changes below.
+
