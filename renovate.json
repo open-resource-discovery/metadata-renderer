@@ -15,8 +15,7 @@
                 "@open-resource-discovery/mcp-server-card-ui",
                 "@open-resource-discovery/overlay-editor",
                 "@open-resource-discovery/ui-components",
-                "@sap/csn-interop-renderer",
-  
+                "@sap/csn-interop-renderer"
             ],
             "automerge": false
         },
