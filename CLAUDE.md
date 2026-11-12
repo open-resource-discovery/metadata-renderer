@@ -56,7 +56,7 @@ Each renderer is in its own directory under `src/lib/`:
 
 | Format   | Renderer             | External library                                                                 |
 | -------- | -------------------- | -------------------------------------------------------------------------------- |
-| OpenAPI  | `openApi/index.tsx`  | `@scalar/api-reference-react`                                                    |
+| OpenAPI  | `openApi/index.tsx`  | `createApiReference` from `@scalar/api-reference` (CSS + types via `@scalar/api-reference-react`) |
 | CSN      | `csn/index.tsx`      | `@sap/csn-interop-renderer` (inside ShadowRoot for CSS isolation)                |
 | AsyncAPI | `asyncApi/index.tsx` | `@asyncapi/react-component`                                                      |
 | A2A      | `a2a/index.tsx`      | `AgentCardView` from `@open-resource-discovery/a2a-editor/card-view`             |
@@ -94,7 +94,18 @@ The lib build externalizes **all** dependencies — including a2a-editor and mcp
 
 `@scalar/api-reference` styles its layout grid and search modal with **Vue scoped styles** — selectors like `.references-layout[data-v-f08574be]` whose hash changes every Scalar version and must match the `data-v-…` attribute the running JS stamps on the DOM. Because the lib build **inlines Scalar's CSS** into `dist/index.css` but **externalizes Scalar's JS**, the consumer resolves the JS version independently. If that version differs from the one the CSS was inlined from, the hashes don't match and Scalar's layout silently collapses to a stacked/narrow layout and the search modal renders unstyled.
 
-Therefore `@scalar/api-reference-react`, `@scalar/react-renderer`, and `@scalar/types` are pinned to **exact** versions (not caret), so a consumer resolves the same JS whose CSS is inlined. `@scalar/api-reference-react` transitively pins `@scalar/api-reference` exactly, so pinning the react wrapper is sufficient. **Any Scalar bump is a lockstep change**: bump the exact pins, rebuild (CSS re-inlines), and re-verify the two metadata-renderer→Scalar CSS integrations against the new version's variable/class names — the theming map in `openApi/utils/scalarTheme.ts` (`--ord-*` → `--scalar-*` on `.scalar-app`/`.t-doc__sidebar`/`.dark-mode`/`#headlessui-portal-root`) and the sidebar-height override in `openApi/styles.ts` (`--refs-sidebar-height`, `--refs-header-height`, `--scalar-container-height`). These use named hooks (not the `data-v` hash), but a version can still rename them.
+Therefore `@scalar/api-reference`, `@scalar/api-reference-react`, `@scalar/react-renderer`, and `@scalar/types` are all pinned to **exact** versions (not caret), so a consumer resolves the same JS whose CSS is inlined.
+
+`@scalar/api-reference` is a **direct** dependency even though `@scalar/api-reference-react` also pins it transitively: the OpenAPI renderer imports `createApiReference` from it to mount Scalar directly (see [the OpenAPI note below](#openapi-mounts-scalar-directly)), and `dist` imports it by bare specifier, so it must be a declared dependency to resolve under strict/pnpm consumers — it cannot be left transitive-only. That means the Scalar JS version is now encoded in two places (`@scalar/api-reference` and `@scalar/types` are declared both directly here and transitively by the wrapper), so **pinning the react wrapper alone is no longer sufficient**. Two mechanisms keep the pins in lockstep:
+
+1. **Renovate `Scalar` group** (`renovate.json`): all `@scalar/*` packages bump together in one PR, and that PR never automerges (a Scalar bump needs the manual re-verification below).
+2. **`scalarVersionLockstep` test** (`src/lib/openApi/scalarVersionLockstep.test.ts`): fails CI if any `@scalar/*` we declare directly drifts from the version `@scalar/api-reference-react` pins transitively.
+
+**Any Scalar bump is a lockstep change**: bump the exact pins together, run `npm install`, rebuild (CSS re-inlines), confirm `scalarVersionLockstep` passes, and re-verify the two metadata-renderer→Scalar CSS integrations against the new version's variable/class names — the theming map in `openApi/utils/scalarTheme.ts` (`--ord-*` → `--scalar-*` on `.scalar-app`/`.t-doc__sidebar`/`.dark-mode`/`#headlessui-portal-root`) and the sidebar-height override in `openApi/styles.ts` (`--refs-sidebar-height`, `--refs-header-height`, `--scalar-container-height`). These use named hooks (not the `data-v` hash), but a version can still rename them.
+
+#### OpenAPI mounts Scalar directly
+
+`openApi/index.tsx` mounts Scalar via `createApiReference` from `@scalar/api-reference`, **not** through `@scalar/api-reference-react`'s `ApiReferenceReact` component (the wrapper is used only for its inlined CSS and its re-exported config type). The wrapper's effect cleanup returns `instance.destroy` and so tears Scalar down **synchronously during React's commit**, which chains into Vue `app.unmount()` → `@scalar/react-renderer`'s nested react-dom `root.unmount()` and makes React 19 log "Attempted to synchronously unmount a root while React was already rendering." Mounting directly lets us defer `destroy()` to a `queueMicrotask` so teardown runs after the host commit. Each remount gets its **own fresh child container** inside the stable host div, because `createApiReference` mounts onto (and `destroy()` clears) the element it is given — a shared element would let an outgoing instance's deferred teardown blank out the incoming one, and a non-empty element makes Scalar mount in SSR/hydration mode.
 
 ## Path aliases
 
