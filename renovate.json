@@ -9,6 +9,17 @@
     "schedule": ["every weekend"],
     "packageRules": [
         {
+            "matchPackageNames": [
+                "@asyncapi/react-component",
+                "@open-resource-discovery/a2a-editor",
+                "@open-resource-discovery/mcp-server-card-ui",
+                "@open-resource-discovery/overlay-editor",
+                "@open-resource-discovery/ui-components",
+                "@sap/csn-interop-renderer"
+            ],
+            "automerge": false
+        },
+        {
             "matchPackageNames": ["/^@scalar\\//"],
             "groupName": "Scalar",
             "automerge": false,
