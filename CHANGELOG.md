@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) rules.
 
+## [Unreleased]
+
+### Fixed
+
+- OpenAPI: removed the unscoped `a` / `a:hover` rules from the renderer's styles.
+  They shipped unscoped in the aggregated `dist/index.css`, so they restyled every
+  anchor on the consumer's host page (link color, underline, cursor) instead of only
+  Scalar's own output.
+- OpenAPI: the preview no longer logs React 19's "Attempted to synchronously unmount
+  a root while React was already rendering" warning. The renderer now mounts Scalar
+  directly via `createApiReference` instead of `@scalar/api-reference-react`, whose
+  effect cleanup tore down synchronously during React's commit (Vue `app.unmount()` →
+  `@scalar/react-renderer`'s nested react-dom `root.unmount()`). Teardown is deferred
+  to a microtask so it runs after the host commit finishes. Each mount gets its own
+  fresh child container so an outgoing instance's deferred teardown can't blank out the
+  incoming one on remount (e.g. toggling custom attributes, or StrictMode). No Scalar
+  version change — `@scalar/api-reference` is added as an exact pin (`1.77.0`) so it
+  stays externalized and matches the inlined CSS.
+
 ## [[1.1.2](https://github.com/open-resource-discovery/metadata-renderer/releases/tag/rel/1.1.2)] - 2026-10-27
 
 ### Fixed
