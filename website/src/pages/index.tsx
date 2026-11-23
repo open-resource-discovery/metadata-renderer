@@ -3,6 +3,7 @@ import Layout from '@theme/Layout';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { useColorMode } from '@docusaurus/theme-common';
+import type { ExampleId } from '@site/src/components/Playground/example';
 import styles from './index.module.css';
 
 import OpenapiLight from '@site/static/img/formats/openapi/normal-light.svg';
@@ -19,23 +20,21 @@ import OrdOverlayLight from '@site/static/img/formats/ord-overlay/normal-light.s
 import OrdOverlayDark from '@site/static/img/formats/ord-overlay/normal-dark.svg';
 
 type FormatItem = {
-    id: string;
+    id: ExampleId;
     label: string;
-    anchor: string;
     LogoLight: React.ComponentType<React.SVGProps<SVGSVGElement>>;
     LogoDark?: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 };
 
 const FORMATS: FormatItem[] = [
-    { id: 'openapi', label: 'OpenAPI', anchor: 'openapi', LogoLight: OpenapiLight, LogoDark: OpenapiDark },
-    { id: 'asyncapi', label: 'AsyncAPI', anchor: 'asyncapi', LogoLight: AsyncapiLight, LogoDark: AsyncapiDark },
-    { id: 'a2a', label: 'A2A', anchor: 'a2a', LogoLight: A2aLight, LogoDark: A2aDark },
-    { id: 'mcp', label: 'MCP', anchor: 'mcp', LogoLight: McpLight, LogoDark: McpDark },
-    { id: 'csn', label: 'CSN:interop', anchor: 'csn-interop', LogoLight: CsnLight, LogoDark: CsnDark },
+    { id: 'openapi', label: 'OpenAPI', LogoLight: OpenapiLight, LogoDark: OpenapiDark },
+    { id: 'asyncapi', label: 'AsyncAPI', LogoLight: AsyncapiLight, LogoDark: AsyncapiDark },
+    { id: 'a2a', label: 'A2A', LogoLight: A2aLight, LogoDark: A2aDark },
+    { id: 'mcp', label: 'MCP', LogoLight: McpLight, LogoDark: McpDark },
+    { id: 'csn', label: 'CSN:interop', LogoLight: CsnLight, LogoDark: CsnDark },
     {
         id: 'ord-overlay',
         label: 'ORD Overlay',
-        anchor: 'ord-overlay',
         LogoLight: OrdOverlayLight,
         LogoDark: OrdOverlayDark,
     },
@@ -49,11 +48,11 @@ function SupportedTypes(): React.JSX.Element {
             <div className={styles.supportedInner}>
                 <h2 className={styles.supportedTitle}>Supported document types</h2>
                 <ul className={styles.typeList} role="list" aria-label="Supported formats">
-                    {FORMATS.map(({ id, label, anchor, LogoLight, LogoDark }) => {
+                    {FORMATS.map(({ id, label, LogoLight, LogoDark }) => {
                         const Logo = colorMode === 'light' ? LogoLight : (LogoDark ?? LogoLight);
                         return (
                             <li key={id} className={styles.typeItem}>
-                                <Link to={`/docs/Supported#${anchor}`} className={styles.typeLink} aria-label={label}>
+                                <Link to={`/playground?example=${id}`} className={styles.typeLink} aria-label={label}>
                                     <div className={styles.logoContainer} data-format={id}>
                                         <Logo className={styles.logo} aria-hidden="true" />
                                     </div>

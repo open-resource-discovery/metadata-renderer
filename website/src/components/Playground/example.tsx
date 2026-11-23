@@ -1396,13 +1396,19 @@ const overlayExample = JSON.stringify(
     2,
 );
 
-export const fileExamples: {
+export type ExampleId = 'openapi' | 'asyncapi' | 'a2a' | 'mcp' | 'csn' | 'ord-overlay';
+
+export type FileExample = {
+    id: ExampleId;
     name: string;
     extension: FileFormats;
     content: string;
     image: { dark: JSX.Element; light: JSX.Element };
-}[] = [
+};
+
+export const fileExamples: FileExample[] = [
     {
+        id: 'csn',
         name: 'CSN Interop',
         extension: 'json',
         content: csnExample,
@@ -1412,6 +1418,7 @@ export const fileExamples: {
         },
     },
     {
+        id: 'openapi',
         name: 'OpenAPI',
         extension: 'yaml',
         content: openApiExample,
@@ -1421,6 +1428,7 @@ export const fileExamples: {
         },
     },
     {
+        id: 'asyncapi',
         name: 'AsyncAPI',
         extension: 'json',
         content: asyncApiExample,
@@ -1430,6 +1438,7 @@ export const fileExamples: {
         },
     },
     {
+        id: 'ord-overlay',
         name: 'Overlay',
         extension: 'json',
         content: overlayExample,
@@ -1439,6 +1448,7 @@ export const fileExamples: {
         },
     },
     {
+        id: 'a2a',
         name: 'A2A',
         extension: 'json',
         content: a2aExample,
@@ -1448,6 +1458,7 @@ export const fileExamples: {
         },
     },
     {
+        id: 'mcp',
         name: 'MCP',
         extension: 'json',
         content: mcpExample,

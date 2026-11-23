@@ -71,17 +71,18 @@
 .typeItem {
     flex: 0 0 auto;
     align-content: center;
-    border: solid darkgray;
-    border-width: thin;
     border-radius: var(--ifm-global-radius);
     padding: 15px;
     box-shadow: var(--ifm-global-shadow-lw);
     &:hover {
         background: var(--muted, var(--ifm-color-emphasis-100));
-        border-color: var(--primary, var(--ifm-color-primary));
         box-shadow: 0 4px 12px #0000001a;
         transform: translateY(-2px);
     }
+}
+
+html[data-theme='light'] .typeItem:not(:hover) {
+    box-shadow: none;
 }
 
 .typeLink {

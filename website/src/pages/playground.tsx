@@ -15,12 +15,17 @@ import Renderer from '@site/src/components/Playground/renderer';
 import ThemeEditor from '@site/src/components/Playground/ThemeEditor';
 import PlaygroundToolbar from '@site/src/components/Playground/PlaygroundToolbar';
 import BrowserOnly from '@docusaurus/BrowserOnly';
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
-import type { FileFormats } from '@site/src/components/Playground/example';
+import { useHistory, useLocation } from '@docusaurus/router';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { fileExamples, type ExampleId, type FileFormats } from '@site/src/components/Playground/example';
 
 const OptionsEditor = lazy(() => import('@site/src/components/Playground/OptionsEditor'));
 
 export default function Playground() {
+    const history = useHistory();
+    const { search } = useLocation();
+    const exampleId = new URLSearchParams(search).get('example');
+    const selectedExample = fileExamples.find((example) => example.id === exampleId);
     const [file, setFile] = useState<string>('');
     const [metaTypeOverride, setMetaTypeOverride] = useState<MetaTypeChoice>('auto');
     const [autoDetect, setAutoDetect] = useState(true);
@@ -30,6 +35,32 @@ export default function Playground() {
     const [fileFormat, setFileFormat] = useState<FileFormats>('json');
     const [isEmpty, setIsEmpty] = useState(true);
     const editorRef = useRef<EditorHandle>(null);
+
+    const updateExampleUrl = useCallback(
+        (id?: ExampleId) => {
+            const location = history.location;
+            const params = new URLSearchParams(location.search);
+            if (id) {
+                params.set('example', id);
+            } else {
+                params.delete('example');
+            }
+            const query = params.toString();
+            const nextSearch = query ? `?${query}` : '';
+            if (nextSearch !== location.search) {
+                history.replace({ ...location, search: nextSearch });
+            }
+        },
+        [history],
+    );
+
+    const handleIsEmptyChange = useCallback(
+        (empty: boolean) => {
+            setIsEmpty(empty);
+            if (empty) updateExampleUrl();
+        },
+        [updateExampleUrl],
+    );
 
     function handleMetaTypeChange(t: MetaTypeChoice) {
         setMetaTypeOverride(t);
@@ -136,11 +167,13 @@ export default function Playground() {
                         <div className={styles.LeftPanel}>
                             <EditorComponent
                                 ref={editorRef}
+                                selectedExample={selectedExample}
+                                onExampleSelect={updateExampleUrl}
                                 onChange={setFile}
                                 fileFormat={fileFormat}
                                 onFileFormatChange={setFileFormat}
                                 isEmpty={isEmpty}
-                                onIsEmptyChange={setIsEmpty}
+                                onIsEmptyChange={handleIsEmptyChange}
                             />
                         </div>
                     </Panel>

@@ -1,9 +1,14 @@
-import type * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
-import { forwardRef, useImperativeHandle, useRef } from 'react';
+import type * as monaco from 'monaco-editor';
+import { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Editor } from '@monaco-editor/react';
 import { useColorMode } from '@docusaurus/theme-common';
 import type { MetaType } from '@open-resource-discovery/metadata-renderer';
-import { fileExamples, type FileFormats } from '@site/src/components/Playground/example';
+import {
+    fileExamples,
+    type ExampleId,
+    type FileExample,
+    type FileFormats,
+} from '@site/src/components/Playground/example';
 import style from './editorComponent.module.css';
 
 export type MetaTypeChoice = MetaType | 'auto' | '';
@@ -14,6 +19,8 @@ export interface EditorHandle {
 }
 
 type Props = {
+    selectedExample?: FileExample;
+    onExampleSelect: (id: ExampleId) => void;
     fileFormat: FileFormats;
     onFileFormatChange: (f: FileFormats) => void;
     isEmpty: boolean;
@@ -22,11 +29,44 @@ type Props = {
 };
 
 const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent(
-    { fileFormat, onFileFormatChange, isEmpty, onIsEmptyChange, onChange },
+    { selectedExample, onExampleSelect, fileFormat, onFileFormatChange, isEmpty, onIsEmptyChange, onChange },
     ref,
 ) {
+    const { colorMode } = useColorMode();
     const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-    let cachedValue = '';
+    const changeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const [isEditorReady, setIsEditorReady] = useState(false);
+
+    const loadExample = useCallback(
+        (example: FileExample) => {
+            if (!editorRef.current) return;
+
+            onFileFormatChange(example.extension);
+            editorRef.current.setValue(example.content);
+            if (changeTimeoutRef.current !== null) {
+                clearTimeout(changeTimeoutRef.current);
+                changeTimeoutRef.current = null;
+            }
+            onIsEmptyChange(false);
+            onChange(example.content);
+        },
+        [onFileFormatChange, onIsEmptyChange, onChange],
+    );
+
+    useEffect(() => {
+        if (isEditorReady && selectedExample) {
+            loadExample(selectedExample);
+        }
+    }, [isEditorReady, selectedExample, loadExample]);
+
+    useEffect(
+        () => () => {
+            if (changeTimeoutRef.current !== null) {
+                clearTimeout(changeTimeoutRef.current);
+            }
+        },
+        [],
+    );
 
     useImperativeHandle(ref, () => ({
         copy: async () => {
@@ -40,16 +80,18 @@ const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent
 
     function handleEditorDidMount(editor: monaco.editor.IStandaloneCodeEditor) {
         editorRef.current = editor;
+        setIsEditorReady(true);
     }
 
     function handleEditorChange(value: string | undefined) {
         onIsEmptyChange(!value);
 
-        cachedValue = value ?? '';
-        setTimeout(() => {
-            if (value === cachedValue) {
-                onChange(value || '');
-            }
+        if (changeTimeoutRef.current !== null) {
+            clearTimeout(changeTimeoutRef.current);
+        }
+        changeTimeoutRef.current = setTimeout(() => {
+            changeTimeoutRef.current = null;
+            onChange(value ?? '');
         }, 500);
     }
 
@@ -66,19 +108,15 @@ const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent
                                 role="button"
                                 tabIndex={0}
                                 key={example.name}
-                                onClick={() => {
-                                    onFileFormatChange(example.extension);
-                                    editorRef.current?.setValue(example.content);
-                                }}
+                                onClick={() => onExampleSelect(example.id)}
                                 onKeyDown={(key) => {
                                     if (key.key === 'Enter' || key.key === ' ') {
-                                        onFileFormatChange(example.extension);
-                                        editorRef.current?.setValue(example.content);
+                                        onExampleSelect(example.id);
                                         key.preventDefault();
                                     }
                                 }}
                             >
-                                {useColorMode().colorMode === 'dark' ? example.image.dark : example.image.light}
+                                {colorMode === 'dark' ? example.image.dark : example.image.light}
                                 {example.name}
                             </div>
                         ))}
@@ -89,7 +127,7 @@ const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent
                 <Editor
                     height="100%"
                     language={fileFormat}
-                    theme={useColorMode().colorMode === 'dark' ? 'vs-dark' : 'light'}
+                    theme={colorMode === 'dark' ? 'vs-dark' : 'light'}
                     onMount={handleEditorDidMount}
                     onChange={handleEditorChange}
                     options={{
