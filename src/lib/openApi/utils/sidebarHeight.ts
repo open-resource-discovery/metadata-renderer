@@ -3,10 +3,10 @@
  * vertically — or `null` when that is the document itself.
  */
 export function findScrollParent(el: HTMLElement): HTMLElement | null {
-    for (let node = el.parentElement; node && node !== document.body; node = node.parentElement) {
-        if (/^(auto|scroll|overlay|hidden)$/.test(getComputedStyle(node).overflowY)) return node;
-    }
-    return null;
+  for (let node = el.parentElement; node && node !== document.body; node = node.parentElement) {
+    if (/^(auto|scroll|overlay|hidden)$/.test(getComputedStyle(node).overflowY)) return node;
+  }
+  return null;
 }
 
 /**
@@ -17,9 +17,9 @@ export function findScrollParent(el: HTMLElement): HTMLElement | null {
  * height grow and never shrink back to the content.
  */
 export function sidebarHeight(
-    containerHeight: number,
-    scrollPortHeight: number | null,
-    viewportHeight: number,
+  containerHeight: number,
+  scrollPortHeight: number | null,
+  viewportHeight: number,
 ): number {
-    return Math.min(containerHeight, scrollPortHeight ?? Infinity, viewportHeight);
+  return Math.min(containerHeight, scrollPortHeight ?? Infinity, viewportHeight);
 }

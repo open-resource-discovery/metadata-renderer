@@ -1,149 +1,134 @@
 {
-    "name": "@open-resource-discovery/metadata-renderer",
-    "version": "1.1.3",
-    "description": "React components that render OpenAPI, CSN, AsyncAPI, A2A, and MCP metadata documents.",
-    "author": "SAP SE",
-    "license": "Apache-2.0",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/open-resource-discovery/metadata-renderer"
+  "name": "@open-resource-discovery/metadata-renderer",
+  "version": "1.1.3",
+  "description": "React components that render OpenAPI, CSN, AsyncAPI, A2A, and MCP metadata documents.",
+  "author": "SAP SE",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-resource-discovery/metadata-renderer"
+  },
+  "keywords": ["metadata", "renderer", "react", "openapi", "swagger", "csn", "asyncapi", "a2a", "mcp"],
+  "engines": {
+    "node": "22.23.5",
+    "npm": ">=10"
+  },
+  "type": "module",
+  "scarfSettings": {
+    "enabled": false
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "sideEffects": ["**/*.css"],
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
     },
-    "keywords": [
-        "metadata",
-        "renderer",
-        "react",
-        "openapi",
-        "swagger",
-        "csn",
-        "asyncapi",
-        "a2a",
-        "mcp"
-    ],
-    "engines": {
-        "node": "22.23.5",
-        "npm": ">=10"
+    "./openapi": {
+      "types": "./dist/entries/openapi.d.ts",
+      "import": "./dist/openapi.js",
+      "default": "./dist/openapi.js"
     },
-    "type": "module",
-    "scarfSettings": {
-        "enabled": false
+    "./csn": {
+      "types": "./dist/entries/csn.d.ts",
+      "import": "./dist/csn.js",
+      "default": "./dist/csn.js"
     },
-    "main": "./dist/index.js",
-    "module": "./dist/index.js",
-    "types": "./dist/index.d.ts",
-    "sideEffects": [
-        "**/*.css"
-    ],
-    "exports": {
-        "./package.json": "./package.json",
-        ".": {
-            "types": "./dist/index.d.ts",
-            "import": "./dist/index.js",
-            "default": "./dist/index.js"
-        },
-        "./openapi": {
-            "types": "./dist/entries/openapi.d.ts",
-            "import": "./dist/openapi.js",
-            "default": "./dist/openapi.js"
-        },
-        "./csn": {
-            "types": "./dist/entries/csn.d.ts",
-            "import": "./dist/csn.js",
-            "default": "./dist/csn.js"
-        },
-        "./asyncapi": {
-            "types": "./dist/entries/asyncapi.d.ts",
-            "import": "./dist/asyncapi.js",
-            "default": "./dist/asyncapi.js"
-        },
-        "./a2a": {
-            "types": "./dist/entries/a2a.d.ts",
-            "import": "./dist/a2a.js",
-            "default": "./dist/a2a.js"
-        },
-        "./mcp": {
-            "types": "./dist/entries/mcp.d.ts",
-            "import": "./dist/mcp.js",
-            "default": "./dist/mcp.js"
-        },
-        "./overlay": {
-            "types": "./dist/entries/overlay.d.ts",
-            "import": "./dist/overlay.js",
-            "default": "./dist/overlay.js"
-        },
-        "./styles": {
-            "types": "./dist/styles.d.ts",
-            "default": "./dist/index.css"
-        }
+    "./asyncapi": {
+      "types": "./dist/entries/asyncapi.d.ts",
+      "import": "./dist/asyncapi.js",
+      "default": "./dist/asyncapi.js"
     },
-    "files": [
-        "dist",
-        "README.md"
-    ],
-    "publishConfig": {
-        "access": "public"
+    "./a2a": {
+      "types": "./dist/entries/a2a.d.ts",
+      "import": "./dist/a2a.js",
+      "default": "./dist/a2a.js"
     },
-    "scripts": {
-        "dev": "vite",
-        "build": "tsc -b && vite build --mode lib",
-        "build:lib:watch": "vite build --mode lib --watch",
-        "build:demo": "vite build",
-        "website:start": "npm --prefix website run start",
-        "website:build": "npm --prefix website run build",
-        "preview": "vite preview",
-        "typecheck": "tsc -b --noEmit",
-        "test": "vitest run",
-        "test:watch": "vitest",
-        "lint": "npm run eslint:ci",
-        "eslint": "eslint . --fix",
-        "eslint:ci": "eslint .",
-        "prettier": "prettier --write .",
-        "prettier:ci": "prettier --check .",
-        "format": "npm run prettier && npm run eslint",
-        "format:check": "npm run prettier:ci && npm run eslint:ci",
-        "prepack": "npm run build"
+    "./mcp": {
+      "types": "./dist/entries/mcp.d.ts",
+      "import": "./dist/mcp.js",
+      "default": "./dist/mcp.js"
     },
-    "peerDependencies": {
-        "react": "^18.0.0 || ^19.0.0",
-        "react-dom": "^18.0.0 || ^19.0.0"
+    "./overlay": {
+      "types": "./dist/entries/overlay.d.ts",
+      "import": "./dist/overlay.js",
+      "default": "./dist/overlay.js"
     },
-    "dependencies": {
-        "@asyncapi/react-component": "^3.1.3",
-        "@open-resource-discovery/a2a-editor": "^0.4.7",
-        "@open-resource-discovery/mcp-server-card-ui": "^0.2.4",
-        "@open-resource-discovery/overlay-editor": "^0.2.3",
-        "@open-resource-discovery/ui-components": "^0.3.1",
-        "@sap/csn-interop-renderer": "0.5.0",
-        "@scalar/api-reference": "1.77.0",
-        "@scalar/api-reference-react": "0.9.88",
-        "@scalar/react-renderer": "0.4.5",
-        "@scalar/types": "0.27.0",
-        "react-error-boundary": "^6.0.0",
-        "react-markdown": "^10.1.0",
-        "yaml": "^2.8.1"
-    },
-    "overrides": {
-        "dompurify": ">=3.4.12",
-        "fast-uri": ">=3.1.5",
-        "undici": ">=7.29.0 <9",
-        "postcss": ">=8.5.23",
-        "brace-expansion": ">=1.1.18",
-        "js-yaml": "5.5.0"
-    },
-    "devDependencies": {
-        "@sap/eslint-config": "0.5.2",
-        "@types/node": "26.6.6",
-        "@types/react": "19.3.0",
-        "@types/react-dom": "19.3.0",
-        "@vitejs/plugin-react": "6.2.1",
-        "eslint": "10.14.0",
-        "jsdom": "31.0.1",
-        "jsonc-eslint-parser": "3.3.0",
-        "prettier": "3.9.10",
-        "react": "19.3.1",
-        "react-dom": "19.3.1",
-        "typescript": "5.9.3",
-        "vite": "8.3.8",
-        "vite-plugin-dts": "5.1.2",
-        "vitest": "5.1.0"
+    "./styles": {
+      "types": "./dist/styles.d.ts",
+      "default": "./dist/index.css"
     }
+  },
+  "files": ["dist", "README.md"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build --mode lib",
+    "build:lib:watch": "vite build --mode lib --watch",
+    "build:demo": "vite build",
+    "website:start": "npm --prefix website run start",
+    "website:build": "npm --prefix website run build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome lint .",
+    "eslint": "npm run lint",
+    "eslint:ci": "npm run lint",
+    "prettier": "npm run format",
+    "prettier:ci": "npm run format:check",
+    "format": "biome format --write . && oxfmt --no-error-on-unmatched-pattern '**/*.{md,yml,yaml,css,scss,html}'",
+    "format:check": "biome format . && oxfmt --check --no-error-on-unmatched-pattern '**/*.{md,yml,yaml,css,scss,html}'",
+    "prepack": "npm run build",
+    "lint:fix": "biome lint --write .",
+    "check:tooling": "npm run lint && npm run format:check"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "@asyncapi/react-component": "^3.1.3",
+    "@open-resource-discovery/a2a-editor": "^0.4.7",
+    "@open-resource-discovery/mcp-server-card-ui": "^0.2.4",
+    "@open-resource-discovery/overlay-editor": "^0.2.3",
+    "@open-resource-discovery/ui-components": "^0.3.1",
+    "@sap/csn-interop-renderer": "0.5.0",
+    "@scalar/api-reference": "1.77.0",
+    "@scalar/api-reference-react": "0.9.88",
+    "@scalar/react-renderer": "0.4.5",
+    "@scalar/types": "0.27.0",
+    "react-error-boundary": "^6.0.0",
+    "react-markdown": "^10.1.0",
+    "yaml": "^2.8.1"
+  },
+  "overrides": {
+    "dompurify": ">=3.4.12",
+    "fast-uri": ">=3.1.5",
+    "undici": ">=7.29.0 <9",
+    "postcss": ">=8.5.23",
+    "brace-expansion": ">=1.1.18",
+    "js-yaml": "5.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.6",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@vitejs/plugin-react": "6.2.1",
+    "jsdom": "31.0.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "typescript": "5.9.3",
+    "vite": "8.3.8",
+    "vite-plugin-dts": "5.1.2",
+    "vitest": "5.1.0",
+    "@biomejs/biome": "2.6.4",
+    "oxfmt": "0.75.0"
+  }
 }

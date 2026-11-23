@@ -1,5 +1,5 @@
 declare module '@asyncapi/react-component/browser/index.js' {
-    export { default } from '@asyncapi/react-component';
+  export { default } from '@asyncapi/react-component';
 }
 
 // The `PluginSlot` enum is defined in this dependency-free leaf module. We import
@@ -9,5 +9,5 @@ declare module '@asyncapi/react-component/browser/index.js' {
 // system keys on the same string values (INFO = "info"). Types are re-exported
 // from the package root and are erased at build time.
 declare module '@asyncapi/react-component/lib/esm/types.js' {
-    export { PluginSlot } from '@asyncapi/react-component';
+  export { PluginSlot } from '@asyncapi/react-component';
 }

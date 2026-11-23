@@ -1,29 +1,29 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": ["group:definitelyTyped"],
-    "timezone": "Europe/Berlin",
-    "prConcurrentLimit": 20,
-    "automerge": true,
-    "platformAutomerge": true,
-    "lockFileMaintenance": { "enabled": true },
-    "schedule": ["every weekend"],
-    "packageRules": [
-        {
-            "matchPackageNames": [
-                "@asyncapi/react-component",
-                "@open-resource-discovery/a2a-editor",
-                "@open-resource-discovery/mcp-server-card-ui",
-                "@open-resource-discovery/overlay-editor",
-                "@open-resource-discovery/ui-components",
-                "@sap/csn-interop-renderer"
-            ],
-            "automerge": false
-        },
-        {
-            "matchPackageNames": ["/^@scalar\\//"],
-            "groupName": "Scalar",
-            "automerge": false,
-            "description": "Bump every @scalar/* package together in one PR and never automerge it. The lib inlines Scalar's CSS but externalizes its JS, so all @scalar/* versions must stay in lockstep (see CLAUDE.md 'Scalar version pinning'). A Scalar bump needs manual re-verification of theming/CSS integrations, so it must not automerge. The scalarVersionLockstep test fails CI if the grouped versions ever drift."
-        }
-    ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["group:definitelyTyped"],
+  "timezone": "Europe/Berlin",
+  "prConcurrentLimit": 20,
+  "automerge": true,
+  "platformAutomerge": true,
+  "lockFileMaintenance": { "enabled": true },
+  "schedule": ["every weekend"],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "@asyncapi/react-component",
+        "@open-resource-discovery/a2a-editor",
+        "@open-resource-discovery/mcp-server-card-ui",
+        "@open-resource-discovery/overlay-editor",
+        "@open-resource-discovery/ui-components",
+        "@sap/csn-interop-renderer"
+      ],
+      "automerge": false
+    },
+    {
+      "matchPackageNames": ["/^@scalar\\//"],
+      "groupName": "Scalar",
+      "automerge": false,
+      "description": "Bump every @scalar/* package together in one PR and never automerge it. The lib inlines Scalar's CSS but externalizes its JS, so all @scalar/* versions must stay in lockstep (see CLAUDE.md 'Scalar version pinning'). A Scalar bump needs manual re-verification of theming/CSS integrations, so it must not automerge. The scalarVersionLockstep test fails CI if the grouped versions ever drift."
+    }
+  ]
 }

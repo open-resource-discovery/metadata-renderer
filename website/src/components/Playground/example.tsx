@@ -1,12 +1,12 @@
-import OpenApi from './icons/openapi-avatar-logo.svg';
+import type { JSX } from 'react';
+import styles from './editorComponent.module.css';
+import A2ALogo from './icons/a2a-logo.svg';
+import AsyncApi from './icons/asyncapi-logo.svg';
 import CsnLight from './icons/csn-interop-logo.svg';
 import CsnDark from './icons/csn-interop-logo-dark.svg';
-import AsyncApi from './icons/asyncapi-logo.svg';
-import OverlayLogo from './icons/overlay-logo.svg';
-import A2ALogo from './icons/a2a-logo.svg';
 import McpLogo from './icons/mcp-logo.svg';
-import { JSX } from 'react';
-import styles from './editorComponent.module.css';
+import OpenApi from './icons/openapi-avatar-logo.svg';
+import OverlayLogo from './icons/overlay-logo.svg';
 
 const csnExample = `{
   "$schema": "https://sap.github.io/csn-interop-specification/spec-v1/csn-interop-effective.schema.json#",
@@ -611,30 +611,30 @@ components:
           type: string`;
 
 const a2aExample = JSON.stringify(
-    {
-        name: 'Echo Agent',
-        description: 'Echoes whatever you send it. Useful for testing the A2A renderer.',
-        version: '1.0.0',
-        url: 'https://example.com/agents/echo',
-        capabilities: {
-            streaming: true,
-            pushNotifications: false,
-            stateTransitionHistory: false,
-        },
-        defaultInputModes: ['text/plain'],
-        defaultOutputModes: ['text/plain'],
-        skills: [
-            {
-                id: 'echo',
-                name: 'echo',
-                description: 'Returns the input message verbatim.',
-                tags: ['demo', 'echo'],
-                examples: ['hello', 'world'],
-            },
-        ],
+  {
+    name: 'Echo Agent',
+    description: 'Echoes whatever you send it. Useful for testing the A2A renderer.',
+    version: '1.0.0',
+    url: 'https://example.com/agents/echo',
+    capabilities: {
+      streaming: true,
+      pushNotifications: false,
+      stateTransitionHistory: false,
     },
-    null,
-    2,
+    defaultInputModes: ['text/plain'],
+    defaultOutputModes: ['text/plain'],
+    skills: [
+      {
+        id: 'echo',
+        name: 'echo',
+        description: 'Returns the input message verbatim.',
+        tags: ['demo', 'echo'],
+        examples: ['hello', 'world'],
+      },
+    ],
+  },
+  null,
+  2,
 );
 
 export const asyncApiExample = `{
@@ -1261,199 +1261,198 @@ export const asyncApiExample = `{
 }`;
 
 const mcpExample = JSON.stringify(
-    {
-        $schema: 'https://static.modelcontextprotocol.io/schemas/2025-06-18/server-card.json',
-        name: 'demo-mcp-server',
-        title: 'Demo MCP Server',
-        version: '1.0.0',
-        description: 'A minimal MCP server card used for the metadata-renderer demo.',
-        supportedProtocolVersions: ['2025-06-18'],
-        remotes: [
-            {
-                type: 'streamable-http',
-                url: 'https://example.com/mcp',
-            },
-            {
-                type: 'sse',
-                url: 'https://example.com/mcp',
-            },
-        ],
-        capabilities: {
-            tools: { listChanged: true },
-            resources: { listChanged: false, subscribe: false },
-            prompts: { listChanged: false },
-        },
-        tools: [
-            {
-                name: 'get_weather',
-                description: 'Get the current weather for a given location.',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        location: { type: 'string', description: 'City name or zip code' },
-                        units: { type: 'string', enum: ['celsius', 'fahrenheit'], description: 'Temperature unit' },
-                    },
-                    required: ['location'],
-                },
-            },
-            {
-                name: 'search_web',
-                description: 'Search the web and return a list of relevant results.',
-                inputSchema: {
-                    type: 'object',
-                    properties: {
-                        query: { type: 'string', description: 'Search query' },
-                        limit: { type: 'number', description: 'Maximum number of results to return' },
-                    },
-                    required: ['query'],
-                },
-            },
-        ],
-        resources: [
-            {
-                uri: 'file:///docs/readme.md',
-                name: 'README',
-                description: 'Project readme and getting-started guide.',
-                mimeType: 'text/markdown',
-            },
-            {
-                uri: 'config://app/settings',
-                name: 'App Settings',
-                description: 'Current application configuration.',
-                mimeType: 'application/json',
-            },
-        ],
-        prompts: [
-            {
-                name: 'summarize',
-                description: 'Summarize the provided text in a few sentences.',
-                arguments: [
-                    { name: 'text', description: 'Text to summarize', required: true },
-                    { name: 'style', description: 'Summary style: brief, detailed, or bullet-points', required: false },
-                ],
-            },
-            {
-                name: 'translate',
-                description: 'Translate text to a target language.',
-                arguments: [
-                    { name: 'text', description: 'Text to translate', required: true },
-                    { name: 'target_language', description: 'Target language (e.g. French, Japanese)', required: true },
-                ],
-            },
-        ],
+  {
+    $schema: 'https://static.modelcontextprotocol.io/schemas/2025-06-18/server-card.json',
+    name: 'demo-mcp-server',
+    title: 'Demo MCP Server',
+    version: '1.0.0',
+    description: 'A minimal MCP server card used for the metadata-renderer demo.',
+    supportedProtocolVersions: ['2025-06-18'],
+    remotes: [
+      {
+        type: 'streamable-http',
+        url: 'https://example.com/mcp',
+      },
+      {
+        type: 'sse',
+        url: 'https://example.com/mcp',
+      },
+    ],
+    capabilities: {
+      tools: { listChanged: true },
+      resources: { listChanged: false, subscribe: false },
+      prompts: { listChanged: false },
     },
-    null,
-    2,
+    tools: [
+      {
+        name: 'get_weather',
+        description: 'Get the current weather for a given location.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            location: { type: 'string', description: 'City name or zip code' },
+            units: { type: 'string', enum: ['celsius', 'fahrenheit'], description: 'Temperature unit' },
+          },
+          required: ['location'],
+        },
+      },
+      {
+        name: 'search_web',
+        description: 'Search the web and return a list of relevant results.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            query: { type: 'string', description: 'Search query' },
+            limit: { type: 'number', description: 'Maximum number of results to return' },
+          },
+          required: ['query'],
+        },
+      },
+    ],
+    resources: [
+      {
+        uri: 'file:///docs/readme.md',
+        name: 'README',
+        description: 'Project readme and getting-started guide.',
+        mimeType: 'text/markdown',
+      },
+      {
+        uri: 'config://app/settings',
+        name: 'App Settings',
+        description: 'Current application configuration.',
+        mimeType: 'application/json',
+      },
+    ],
+    prompts: [
+      {
+        name: 'summarize',
+        description: 'Summarize the provided text in a few sentences.',
+        arguments: [
+          { name: 'text', description: 'Text to summarize', required: true },
+          { name: 'style', description: 'Summary style: brief, detailed, or bullet-points', required: false },
+        ],
+      },
+      {
+        name: 'translate',
+        description: 'Translate text to a target language.',
+        arguments: [
+          { name: 'text', description: 'Text to translate', required: true },
+          { name: 'target_language', description: 'Target language (e.g. French, Japanese)', required: true },
+        ],
+      },
+    ],
+  },
+  null,
+  2,
 );
 
 export type FileFormats = 'json' | 'yaml';
 
 const overlayExample = JSON.stringify(
-    {
-        $schema: 'https://open-resource-discovery.org/spec-v1/interfaces/OrdOverlay.schema.json#',
-        ordOverlay: '0.1',
-        ordId: 'sap.foo:overlay:astronomy-api:v1',
-        description:
-            'Adds deprecation notices and supplementary documentation to the Astronomy REST API without modifying the original OpenAPI specification.',
-        describedSystemType: { systemNamespace: 'sap.foo' },
-        visibility: 'internal',
-        target: {
-            ordId: 'sap.foo:apiResource:astronomy:v1',
-            url: '/ord/metadata/astronomy-v1.oas3.json',
-            definitionType: 'openapi-v3',
-        },
-        meta: {
-            sourceSystem: 'AI Enrichment Pipeline v2.1',
-            enrichmentDate: '2026-04-01',
-        },
-        patches: [
-            {
-                description: 'Mark the legacy endpoint as deprecated.',
-                action: 'merge',
-                selector: { operation: 'getConstellationByAbbreviation' },
-                data: {
-                    deprecated: true,
-                    'x-deprecation-notice':
-                        'Use getConstellationByIAUCode instead. This operation will be removed in v2.',
-                },
-            },
-            {
-                description: 'Add an OAuth2 security scheme at the document root.',
-                action: 'merge',
-                selector: { root: true },
-                data: {
-                    info: {
-                        contact: {
-                            name: 'Astronomy API Support',
-                            email: 'astronomy-api@example.com',
-                        },
-                    },
-                },
-            },
-        ],
+  {
+    $schema: 'https://open-resource-discovery.org/spec-v1/interfaces/OrdOverlay.schema.json#',
+    ordOverlay: '0.1',
+    ordId: 'sap.foo:overlay:astronomy-api:v1',
+    description:
+      'Adds deprecation notices and supplementary documentation to the Astronomy REST API without modifying the original OpenAPI specification.',
+    describedSystemType: { systemNamespace: 'sap.foo' },
+    visibility: 'internal',
+    target: {
+      ordId: 'sap.foo:apiResource:astronomy:v1',
+      url: '/ord/metadata/astronomy-v1.oas3.json',
+      definitionType: 'openapi-v3',
     },
-    null,
-    2,
+    meta: {
+      sourceSystem: 'AI Enrichment Pipeline v2.1',
+      enrichmentDate: '2026-04-01',
+    },
+    patches: [
+      {
+        description: 'Mark the legacy endpoint as deprecated.',
+        action: 'merge',
+        selector: { operation: 'getConstellationByAbbreviation' },
+        data: {
+          deprecated: true,
+          'x-deprecation-notice': 'Use getConstellationByIAUCode instead. This operation will be removed in v2.',
+        },
+      },
+      {
+        description: 'Add an OAuth2 security scheme at the document root.',
+        action: 'merge',
+        selector: { root: true },
+        data: {
+          info: {
+            contact: {
+              name: 'Astronomy API Support',
+              email: 'astronomy-api@example.com',
+            },
+          },
+        },
+      },
+    ],
+  },
+  null,
+  2,
 );
 
 export const fileExamples: {
-    name: string;
-    extension: FileFormats;
-    content: string;
-    image: { dark: JSX.Element; light: JSX.Element };
+  name: string;
+  extension: FileFormats;
+  content: string;
+  image: { dark: JSX.Element; light: JSX.Element };
 }[] = [
-    {
-        name: 'CSN Interop',
-        extension: 'json',
-        content: csnExample,
-        image: {
-            dark: <CsnDark className={styles.img} />,
-            light: <CsnLight className={styles.img} />,
-        },
+  {
+    name: 'CSN Interop',
+    extension: 'json',
+    content: csnExample,
+    image: {
+      dark: <CsnDark className={styles.img} />,
+      light: <CsnLight className={styles.img} />,
     },
-    {
-        name: 'OpenAPI',
-        extension: 'yaml',
-        content: openApiExample,
-        image: {
-            dark: <OpenApi className={styles.img} />,
-            light: <OpenApi className={styles.img} />,
-        },
+  },
+  {
+    name: 'OpenAPI',
+    extension: 'yaml',
+    content: openApiExample,
+    image: {
+      dark: <OpenApi className={styles.img} />,
+      light: <OpenApi className={styles.img} />,
     },
-    {
-        name: 'AsyncAPI',
-        extension: 'json',
-        content: asyncApiExample,
-        image: {
-            dark: <AsyncApi className={styles.img} />,
-            light: <AsyncApi className={styles.img} />,
-        },
+  },
+  {
+    name: 'AsyncAPI',
+    extension: 'json',
+    content: asyncApiExample,
+    image: {
+      dark: <AsyncApi className={styles.img} />,
+      light: <AsyncApi className={styles.img} />,
     },
-    {
-        name: 'Overlay',
-        extension: 'json',
-        content: overlayExample,
-        image: {
-            dark: <OverlayLogo className={styles.img} />,
-            light: <OverlayLogo className={styles.img} />,
-        },
+  },
+  {
+    name: 'Overlay',
+    extension: 'json',
+    content: overlayExample,
+    image: {
+      dark: <OverlayLogo className={styles.img} />,
+      light: <OverlayLogo className={styles.img} />,
     },
-    {
-        name: 'A2A',
-        extension: 'json',
-        content: a2aExample,
-        image: {
-            dark: <A2ALogo className={styles.img} />,
-            light: <A2ALogo className={styles.img} />,
-        },
+  },
+  {
+    name: 'A2A',
+    extension: 'json',
+    content: a2aExample,
+    image: {
+      dark: <A2ALogo className={styles.img} />,
+      light: <A2ALogo className={styles.img} />,
     },
-    {
-        name: 'MCP',
-        extension: 'json',
-        content: mcpExample,
-        image: {
-            dark: <McpLogo className={styles.img} />,
-            light: <McpLogo className={styles.img} />,
-        },
+  },
+  {
+    name: 'MCP',
+    extension: 'json',
+    content: mcpExample,
+    image: {
+      dark: <McpLogo className={styles.img} />,
+      light: <McpLogo className={styles.img} />,
     },
+  },
 ];

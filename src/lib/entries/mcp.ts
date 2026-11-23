@@ -1,2 +1,2 @@
-export { McpRenderer } from '../mcp';
 export type { McpRendererProps } from '../mcp';
+export { McpRenderer } from '../mcp';

@@ -1,6 +1,6 @@
 export {
-    scalarAdapter,
-    scalarSidebarAdapter,
-    scalarModeAdapter,
-    scalarHljsAdapter,
+  scalarAdapter,
+  scalarHljsAdapter,
+  scalarModeAdapter,
+  scalarSidebarAdapter,
 } from '../../../../../../src/lib/openApi/utils/scalarTheme';

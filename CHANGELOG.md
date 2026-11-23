@@ -147,7 +147,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
       single document.
     - New public types: `OpenApiCustomAttributesConfig` (`prefixStartsWith`, `documentationUrl`,
       `extensions`), `AttributeDefinition` (discriminated union: `type: 'string' | 'array' |
-'object' | 'link'` or a custom `component`), `CustomAttributesOptions`.
+        'object' | 'link'` or a custom `component`), `CustomAttributesOptions`.
     - `sapOpenApiAttributesConfig` — the built-in SAP preset exported as a named constant;
       importable to extend or replace.
     - Documentation: _Custom Attributes_ page covering default behaviour, configuring a custom

@@ -22,27 +22,27 @@ const readPkg = (path: string): { dependencies?: Record<string, string> } => JSO
 const rootDir = resolve(__dirname, '../../..');
 const ourDeps = readPkg(resolve(rootDir, 'package.json')).dependencies ?? {};
 const wrapperDeps =
-    readPkg(resolve(rootDir, 'node_modules/@scalar/api-reference-react/package.json')).dependencies ?? {};
+  readPkg(resolve(rootDir, 'node_modules/@scalar/api-reference-react/package.json')).dependencies ?? {};
 
 describe('Scalar version lockstep', () => {
-    // Every @scalar/* we declare directly that the wrapper also declares transitively.
-    const overlap = Object.keys(ourDeps).filter((name) => name.startsWith('@scalar/') && name in wrapperDeps);
+  // Every @scalar/* we declare directly that the wrapper also declares transitively.
+  const overlap = Object.keys(ourDeps).filter((name) => name.startsWith('@scalar/') && name in wrapperDeps);
 
-    it('shares at least the known dual-declared packages with the wrapper', () => {
-        // Guard against the overlap set silently going empty (e.g. a refactor that drops a
-        // dep), which would make the lockstep assertions below vacuously pass.
-        expect(overlap).toEqual(expect.arrayContaining(['@scalar/api-reference', '@scalar/types']));
-    });
+  it('shares at least the known dual-declared packages with the wrapper', () => {
+    // Guard against the overlap set silently going empty (e.g. a refactor that drops a
+    // dep), which would make the lockstep assertions below vacuously pass.
+    expect(overlap).toEqual(expect.arrayContaining(['@scalar/api-reference', '@scalar/types']));
+  });
 
-    it.each(['@scalar/api-reference', '@scalar/types'])(
-        'pins %s to the same version @scalar/api-reference-react pins transitively',
-        (name) => {
-            expect(ourDeps[name]).toBe(wrapperDeps[name]);
-        },
-    );
+  it.each(['@scalar/api-reference', '@scalar/types'])(
+    'pins %s to the same version @scalar/api-reference-react pins transitively',
+    (name) => {
+      expect(ourDeps[name]).toBe(wrapperDeps[name]);
+    },
+  );
 
-    it('pins every dual-declared @scalar/* in lockstep with the wrapper', () => {
-        const drift = overlap.filter((name) => ourDeps[name] !== wrapperDeps[name]);
-        expect(drift).toEqual([]);
-    });
+  it('pins every dual-declared @scalar/* in lockstep with the wrapper', () => {
+    const drift = overlap.filter((name) => ourDeps[name] !== wrapperDeps[name]);
+    expect(drift).toEqual([]);
+  });
 });
