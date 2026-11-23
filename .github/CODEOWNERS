@@ -1,0 +1,5 @@
+# Review owners for CI and build configuration.
+/.github/ @open-resource-discovery/metadata-renderer-admin
+/renovate.json @open-resource-discovery/metadata-renderer-admin
+/package.json @open-resource-discovery/metadata-renderer-admin
+/package-lock.json @open-resource-discovery/metadata-renderer-admin
