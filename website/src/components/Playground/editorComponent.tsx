@@ -95,39 +95,21 @@ const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent
         }, 500);
     }
 
+    const loadingIndicator = (
+        <div className={style.editorLoading} role="status">
+            <span className={style.spinner} aria-hidden="true" />
+            <span>Loading editor…</span>
+        </div>
+    );
+
     return (
         <div className={style.container}>
-            {isEmpty ? (
-                <div className={style['empty-state']}>
-                    <h3>Paste your document here</h3>
-                    <span className={style.label}>or choose an example below</span>
-                    <div className={style.examples}>
-                        {fileExamples.map((example) => (
-                            <div
-                                className={style['example-button']}
-                                role="button"
-                                tabIndex={0}
-                                key={example.name}
-                                onClick={() => onExampleSelect(example.id)}
-                                onKeyDown={(key) => {
-                                    if (key.key === 'Enter' || key.key === ' ') {
-                                        onExampleSelect(example.id);
-                                        key.preventDefault();
-                                    }
-                                }}
-                            >
-                                {colorMode === 'dark' ? example.image.dark : example.image.light}
-                                {example.name}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            ) : null}
-            <div className={style.editorWrapper}>
+            <div className={style.editorWrapper} data-empty={isEmpty} aria-busy={!isEditorReady}>
                 <Editor
                     height="100%"
                     language={fileFormat}
                     theme={colorMode === 'dark' ? 'vs-dark' : 'light'}
+                    loading={loadingIndicator}
                     onMount={handleEditorDidMount}
                     onChange={handleEditorChange}
                     options={{
@@ -156,6 +138,34 @@ const EditorComponent = forwardRef<EditorHandle, Props>(function EditorComponent
                         },
                     }}
                 />
+                {isEmpty && isEditorReady ? (
+                    <div className={style.emptyStateOverlay}>
+                        <div className={style['empty-state']}>
+                            <h3>Paste your document here</h3>
+                            <span className={style.label}>or choose an example below</span>
+                            <div className={style.examples}>
+                                {fileExamples.map((example) => (
+                                    <div
+                                        className={style['example-button']}
+                                        role="button"
+                                        tabIndex={0}
+                                        key={example.name}
+                                        onClick={() => onExampleSelect(example.id)}
+                                        onKeyDown={(key) => {
+                                            if (key.key === 'Enter' || key.key === ' ') {
+                                                onExampleSelect(example.id);
+                                                key.preventDefault();
+                                            }
+                                        }}
+                                    >
+                                        {colorMode === 'dark' ? example.image.dark : example.image.light}
+                                        {example.name}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ) : null}
             </div>
         </div>
     );
