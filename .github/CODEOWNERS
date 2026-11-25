@@ -3,3 +3,8 @@
 /renovate.json @open-resource-discovery/metadata-renderer-admin
 /package.json @open-resource-discovery/metadata-renderer-admin
 /package-lock.json @open-resource-discovery/metadata-renderer-admin
+/npmrc @open-resource-discovery/metadata-renderer-admin
+/website/.npmrc @open-resource-discovery/metadata-renderer-admin
+/website/package.json @open-resource-discovery/metadata-renderer-admin
+/website/package-lock.json @open-resource-discovery/metadata-renderer-admin
+/SECURITY_INSTALL.md @open-resource-discovery/metadata-renderer-admin
