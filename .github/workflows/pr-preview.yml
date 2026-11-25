@@ -39,10 +39,10 @@ jobs:
                   BASE_URL: /pr-preview/metadata-renderer/pr-${{ github.event.pull_request.number }}/
               run: |
                   set -euo pipefail
-                  npm ci
+                  npm ci --ignore-scripts
                   npm run build
                   cd website
-                  npm ci
+                  npm ci --ignore-scripts
                   npm run build
 
             - name: PR preview
