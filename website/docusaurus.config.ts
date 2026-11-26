@@ -99,6 +99,14 @@ const config: Config = {
 
     headTags: [
         {
+            tagName: 'link',
+            attributes: {
+                rel: 'apple-touch-icon',
+                sizes: '180x180',
+                href: `${baseUrl}img/apple-touch-icon.png`,
+            },
+        },
+        {
             tagName: 'style',
             attributes: {},
             innerHTML: `@layer ${LAYER_ORDER};`,
@@ -107,6 +115,17 @@ const config: Config = {
 
     themeConfig: {
         image: 'img/social-card.png',
+        metadata: [
+            { property: 'og:image:width', content: '1200' },
+            { property: 'og:image:height', content: '630' },
+            {
+                property: 'og:image:alt',
+                content:
+                    'Metadata Renderer: one React component for OpenAPI, AsyncAPI, A2A, MCP, CSN:interop and ORD Overlay.',
+            },
+            { property: 'og:site_name', content: 'Metadata Renderer' },
+            { property: 'og:type', content: 'website' },
+        ],
         colorMode: {
             respectPrefersColorScheme: false,
         },
