@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+    <defs>
+        <radialGradient id="glow" cx="50%" cy="30%" r="65%">
+            <stop offset="0%" stop-color="#3ea06c" stop-opacity="0.16" />
+            <stop offset="100%" stop-color="#3ea06c" stop-opacity="0" />
+        </radialGradient>
+    </defs>
+
+    <rect width="1200" height="630" fill="#1b1b1d" />
+    <rect width="1200" height="630" fill="url(#glow)" />
+    <rect width="1200" height="4" fill="#3ea06c" />
+
+    <!-- The site's Metadata Renderer mark. -->
+    <g transform="translate(537 96) scale(0.9)" fill="#3ea06c">
+        <path d="m140 60-35.745 45-16.7785-21.1225-22.6892 36.1225-23.0858-36.7501 23.0858-36.7502 6.3793 10.1557 33.0884-41.6554z" />
+        <path d="m41.7015 72.75-9.6803 26.2502-9.6804-26.2502 9.6804-26.2503z" />
+        <path d="m13.4045 70.4999-2.9791 13.5003-2.97816-13.5003 2.97816-13.5003z" />
+        <path d="m2.97908 60-1.49001 10.4999-1.48907-10.4999 1.48907-10.4999z" />
+        <path d="m23.8298 40.4999-5.2131 19.5001-5.2122-19.5001 5.2122-19.5001z" />
+        <path d="m65.5314 28.5003-14.1486 28.4993-14.1485-28.4993 14.1485-28.5003z" />
+    </g>
+
+    <g font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" text-anchor="middle">
+        <text x="600" y="308" font-size="72" font-weight="700" letter-spacing="-2" fill="#ffffff">Metadata Renderer</text>
+        <text x="600" y="365" font-size="28" fill="#b4c2bd">One React component. Six metadata formats.</text>
+
+        <rect x="137" y="430" width="926" height="60" rx="16" fill="#202a24" stroke="#34493d" />
+        <text x="600" y="468" font-size="22" font-weight="500" fill="#d9e6df">OpenAPI · AsyncAPI · A2A · MCP · CSN:interop · ORD Overlay</text>
+    </g>
+
+    <rect y="626" width="1200" height="4" fill="#3ea06c" opacity="0.3" />
+</svg>
