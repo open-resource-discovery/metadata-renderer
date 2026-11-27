@@ -7,10 +7,8 @@
     },
     "scripts": {
         "docusaurus": "docusaurus",
-        "prestart": "npm --prefix .. run build",
-        "start": "docusaurus start",
-        "prebuild": "npm --prefix .. run build",
-        "build": "docusaurus build",
+        "start": "npm --prefix .. run build && docusaurus start",
+        "build": "npm --prefix .. run build && docusaurus build",
         "swizzle": "docusaurus swizzle",
         "deploy": "docusaurus deploy",
         "clear": "docusaurus clear",
@@ -46,6 +44,9 @@
         "js-yaml@^4": "4.3.2",
         "gray-matter": {
             "js-yaml": "5.5.0"
+        },
+        "@docusaurus/core": {
+            "tinypool": "2.1.2"
         }
     },
     "devDependencies": {
@@ -67,6 +68,20 @@
         ]
     },
     "engines": {
-        "node": ">=20.0"
+        "node": ">=26"
+    },
+    "packageManager": "npm@11.20.0",
+    "devEngines": {
+        "packageManager": {
+            "name": "npm",
+            "version": ">=11.20.0",
+            "onFail": "error"
+        }
+    },
+    "allowScripts": {
+        "@scarf/scarf@1.4.0": false,
+        "@swc/core@1.16.22": false,
+        "core-js@3.51.0": false,
+        "fsevents@2.3.3": false
     }
 }
