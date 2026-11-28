@@ -43,7 +43,7 @@ jobs:
                   npm run build
 
             - name: PR preview
-              uses: open-resource-discovery/pr-preview-action@c892f0b412ce189a215795fc15c78bb5f1815afd # main
+              uses: open-resource-discovery/pr-preview-action@e89b5e39a6445cce283f7b1162224de428bedb53 # main
               with:
                   fork: true
                   target-repo: open-resource-discovery/pr-preview
