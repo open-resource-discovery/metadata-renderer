@@ -137,7 +137,7 @@
         "@vitejs/plugin-react": "6.2.1",
         "eslint": "10.14.0",
         "jsdom": "31.0.1",
-        "jsonc-eslint-parser": "3.3.0",
+        "jsonc-eslint-parser": "3.3.2",
         "prettier": "3.9.10",
         "react": "19.3.1",
         "react-dom": "19.3.1",
