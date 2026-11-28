@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState, type JSX, type RefObject } from 'react';
+import { useColorMode } from '@docusaurus/theme-common';
 import type { RendererTheme } from '@open-resource-discovery/metadata-renderer';
 import { ADAPTERS } from './adapters/registry';
 import type { ThemeAdapter } from './adapters/types';
@@ -764,57 +765,78 @@ function findAdapterMatches(wrapper: HTMLElement): AdapterMatch[] {
     return matches;
 }
 
-function getDefaultPreset(): Preset {
-    if (typeof window === 'undefined') return PRESETS[0];
-    const docTheme = document.documentElement.getAttribute('data-theme');
-    const isDark =
-        docTheme === 'dark' || (docTheme !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    const label = isDark ? 'Default Dark' : 'Default Light';
+function getDefaultPreset(colorMode: 'light' | 'dark'): Preset {
+    const label = colorMode === 'dark' ? 'Default Dark' : 'Default Light';
     return PRESETS.find((p) => p.label === label) ?? PRESETS[0];
 }
 
 export default function ThemeEditor({ target, onThemeChange, file: _file, onClose }: Props): JSX.Element {
-    const [overrides, setOverrides] = useState<Record<string, string>>(() => getDefaultPreset().values);
+    const { colorMode } = useColorMode();
+    const defaultPreset = getDefaultPreset(colorMode);
+    const [followsSiteTheme, setFollowsSiteTheme] = useState(true);
+    const [customOverrides, setCustomOverrides] = useState<Record<string, string>>(defaultPreset.values);
     const [componentColors, setComponentColors] = useState<Record<string, string>>({});
-    const [activePreset, setActivePreset] = useState(() => getDefaultPreset().label);
+    const [selectedPreset, setSelectedPreset] = useState(defaultPreset.label);
     const [showExport, setShowExport] = useState(false);
     const [importText, setImportText] = useState('');
     const [importNote, setImportNote] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+
+    const overrides = followsSiteTheme ? defaultPreset.values : customOverrides;
+    const activePreset = followsSiteTheme ? defaultPreset.label : selectedPreset;
 
     useEffect(() => {
         const merged: RendererTheme = { ...overrides, ...componentColors };
         onThemeChange(merged);
     }, [overrides, componentColors, onThemeChange]);
 
-    const handleChange = useCallback((name: string, value: string) => {
-        setOverrides((prev) => ({ ...prev, [name]: value }));
-        setActivePreset('');
-    }, []);
+    // Capture the displayed defaults before the first edit switches to a custom theme.
+    const stopFollowingSiteTheme = useCallback(() => {
+        if (!followsSiteTheme) return;
+        setCustomOverrides(overrides);
+        setSelectedPreset(activePreset);
+        setFollowsSiteTheme(false);
+    }, [followsSiteTheme, overrides, activePreset]);
 
-    const setComponentColor = useCallback((k: string, v: string) => {
-        setComponentColors((prev) => ({ ...prev, [k]: v }));
-    }, []);
+    const handleChange = useCallback(
+        (name: string, value: string) => {
+            stopFollowingSiteTheme();
+            setCustomOverrides((prev) => ({ ...prev, [name]: value }));
+            setSelectedPreset('');
+        },
+        [stopFollowingSiteTheme],
+    );
 
-    const clearComponentColor = useCallback((k: string) => {
-        setComponentColors((prev) => {
-            const next = { ...prev };
-            delete next[k];
-            return next;
-        });
-    }, []);
+    const setComponentColor = useCallback(
+        (k: string, v: string) => {
+            stopFollowingSiteTheme();
+            setComponentColors((prev) => ({ ...prev, [k]: v }));
+        },
+        [stopFollowingSiteTheme],
+    );
+
+    const clearComponentColor = useCallback(
+        (k: string) => {
+            stopFollowingSiteTheme();
+            setComponentColors((prev) => {
+                const next = { ...prev };
+                delete next[k];
+                return next;
+            });
+        },
+        [stopFollowingSiteTheme],
+    );
 
     const applyPreset = useCallback((label: string) => {
         const preset = PRESETS.find((p) => p.label === label);
         if (!preset) return;
-        setActivePreset(label);
-        setOverrides(preset.values);
+        setFollowsSiteTheme(false);
+        setSelectedPreset(label);
+        setCustomOverrides(preset.values);
     }, []);
 
     const resetAll = useCallback(() => {
-        const preset = getDefaultPreset();
-        setActivePreset(preset.label);
-        setOverrides(preset.values);
+        setFollowsSiteTheme(true);
         setComponentColors({});
     }, []);
 
@@ -855,20 +877,23 @@ export default function ThemeEditor({ target, onThemeChange, file: _file, onClos
             setImportNote('No matching variables found.');
             return;
         }
+        stopFollowingSiteTheme();
         if (Object.keys(nextOverrides).length > 0) {
-            setOverrides((prev) => ({ ...prev, ...nextOverrides }));
-            setActivePreset('');
+            setCustomOverrides((prev) => ({ ...prev, ...nextOverrides }));
+            setSelectedPreset('');
         }
         if (Object.keys(nextComponents).length > 0) {
             setComponentColors((prev) => ({ ...prev, ...nextComponents }));
         }
         setImportNote(`Imported ${count} variable${count === 1 ? '' : 's'}.`);
-    }, [importText]);
+    }, [importText, stopFollowingSiteTheme]);
 
     const initFromTarget = useCallback(() => {
         const wrapper = target?.current;
         if (!wrapper) return;
-        setOverrides({});
+        setFollowsSiteTheme(false);
+        setSelectedPreset(activePreset);
+        setCustomOverrides({});
         setComponentColors({});
         const matches = findAdapterMatches(wrapper);
         const readable = matches.find((m) => m.adapter.read && m.scopes.length > 0);
@@ -883,10 +908,10 @@ export default function ThemeEditor({ target, onThemeChange, file: _file, onClos
             const raw = native[name];
             fresh[name] = raw ? oklchToHex(raw) : '#000000';
         }
-        setOverrides(fresh);
+        setCustomOverrides(fresh);
         setComponentColors({});
-        setActivePreset('');
-    }, [target]);
+        setSelectedPreset('');
+    }, [target, activePreset]);
 
     return (
         <div className={styles.sidebar}>
