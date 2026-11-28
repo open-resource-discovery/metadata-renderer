@@ -138,7 +138,7 @@
         "eslint": "10.14.0",
         "jsdom": "31.0.1",
         "jsonc-eslint-parser": "3.3.0",
-        "prettier": "3.9.10",
+        "prettier": "3.10.1",
         "react": "19.3.1",
         "react-dom": "19.3.1",
         "typescript": "5.9.3",
